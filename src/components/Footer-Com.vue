@@ -1,5 +1,5 @@
 <template>
-<footer class="bg-dark mb-0 bottom-0">
+<footer class="bg-dark mb-0 bottom-0 position-relative">
 <div class="pt-2 text-white text-center d-flex flex-column flex-md-row align-content-center justify-content-center">
    <strong class="align-self-center">Đăng ký nhận thông tin</strong>
    <div class="ms-md-5 d-flex justify-content-center m-2">
@@ -36,6 +36,7 @@ export default {
 }
 </script>
 
-<style>
+<style  scoped>
+
 
 </style>

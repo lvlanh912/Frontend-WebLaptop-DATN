@@ -4,8 +4,8 @@ import FooterCom from './components/Footer-Com.vue'
 </script>
 
 <template>
-    <HeaderCom/>
-  <RouterView class="container-fluid d-block px-0" />
+    <header-com/>
+  <RouterView />
     <footer-com/>
 </template>
 <style scoped>

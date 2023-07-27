@@ -1,5 +1,5 @@
 <template>
-    <header class=" position-sticky w-100 card flex-row pb-1 top-0" style="height: 55px;">
+    <header class=" position-fixed w-100 card flex-row pb-1 top-0" style="height: 55px;">
         <img class="img-fluid h-auto" src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg" alt="logo"
         style="min-width: 60px;"    >
         <div class=" border d-flex col-9 col-sm-10 col-md-4 px-1 me-1">
@@ -68,6 +68,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+header{
+    z-index: 100;
+}
 </style>
