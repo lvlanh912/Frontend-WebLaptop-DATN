@@ -1,18 +1,12 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import HeaderCom from './components/Header-Com.vue'
+import FooterCom from './components/Footer-Com.vue'
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink :to="{ name:'authenticaton' }">Login</RouterLink>
-      </nav>
-    </div>
-  </header>
-  <RouterView />
+    <HeaderCom/>
+  <RouterView class="container-fluid d-block px-0" />
+    <footer-com/>
 </template>
 <style scoped>
 header{
