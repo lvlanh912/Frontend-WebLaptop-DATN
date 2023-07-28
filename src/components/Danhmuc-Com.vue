@@ -1,6 +1,6 @@
 <template>
-<aside class="d d-none d-md-block card border-top-0 ms-0 start-0 me-0 p-0 position-absolute ">
-<ul class="nav navbar-brand  m-0">
+<aside class="d d-none d-md-block card border-top-0 ms-5 mt-3 start-0 me-0 p-0 position-relative">
+<ul class="nav navbar-brand m-0">
     <strong class="px-1 mt-2">Danh mục sản phẩm</strong>
     <li class="w-100 d-flex align-items-center justify-content-start p-1 active">
        <div class="icon-item laptop">
@@ -18,9 +18,9 @@
         </i>
          <span href="#" class="nav-link text-dark d-block">Phụ kiện</span>
        </div>
-         <ul :class="{'dropdown-menu position-relative border-0 ps-3 py-1 w-100 d-block':true,' showchild':ishow}">
+         <ul :class="{'dropdown-menu position-relative border-0 py-0 ps-3 w-100 d-block h-0':true,' showchild':ishow}">
             <li class="ps-4 d-flex">
-                <div class="rounded phukien-item mt-1"></div>
+                <div class="rounded phukien-item"></div>
                 <a class="nav-item nav-link text-dark" href="#">Bàn phím</a></li>
             <li class="ps-4 d-flex justify-content-start">
                 <div class="rounded phukien-item chuot mt-1"></div>
@@ -51,8 +51,20 @@ export default{
 
 <style scoped>
 aside{
-    width: 200px;
+   max-width: 250px;
     height: auto;
+    animation: animation 1;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+}
+@keyframes animation{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity:  1;
+    }
+   
 }
 .icon-item{
     width: 45px;

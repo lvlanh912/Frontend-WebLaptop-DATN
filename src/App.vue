@@ -8,10 +8,5 @@ import FooterCom from './components/Footer-Com.vue'
   <RouterView />
     <footer-com/>
 </template>
-<style scoped>
-header{
-  position: relative;
-  height: 70px;
-  width: 100%;
-}
+<style >
 </style>

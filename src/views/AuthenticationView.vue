@@ -10,6 +10,9 @@ import Login from '../components/Login.vue';
 import SignUp  from '../components/SignUp.vue';
 import Forgotpassword from '../components/Forgotpassword.vue'
 export default {
+  created () {
+    console.log(this.$route)
+  },
   data () {
     return {
       select:1

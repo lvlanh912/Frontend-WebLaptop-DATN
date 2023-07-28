@@ -1,9 +1,21 @@
 <template>
-    <div  class=" ms-0 position-relative banner bg-danger">
-        <img class="banner-item" src="https://laptop88.vn/media/banner/03_May50c92c020b8ada51c78e3e8639d6b6ef.jpg"/>
-        <img class="banner-item" src="https://laptop88.vn/media/banner/10_Jul0ae396f01178bb86caf1549486f0e70f.jpg"/>
-        <img class="banner-item" src="https://laptop88.vn/media/banner/03_May50c92c020b8ada51c78e3e8639d6b6ef.jpg"/>
-    </div>
+    <div id="slide" class="carousel slide mx-2 mt-3" data-bs-ride="carousel">
+        <div class="carousel-inner h-100">
+          <div class="carousel-item position-absolute active" data-bs-interval="999">
+            <img src="https://laptop88.vn/media/banner/21_Jul0d758f885dcacfcf9d41c24e6cd16db3.jpg" class="d-block w-100" alt="img">
+          </div>
+          <div class="carousel-item position-absolute" data-bs-interval="2000">
+            <img src="https://laptop88.vn/media/banner/21_Jul0d758f885dcacfcf9d41c24e6cd16db3.jpg" class="d-block w-100 h-auto" alt="img">
+          </div>
+          <div class="carousel-item position-absolute">
+            <img src="https://laptop88.vn/media/banner/21_Jul0d758f885dcacfcf9d41c24e6cd16db3.jpg" class="d-block w-100" alt="img">
+          </div>
+        </div>
+        <button class="carousel-control-prev position-absolute top-0 " type="button" data-bs-target="#slide" data-bs-slide="prev">
+        </button>
+        <button class="carousel-control-next position-absolute top-0 " type="button" data-bs-target="#slide" data-bs-slide="next">
+        </button>
+      </div>
 </template>
 
 <script>
@@ -12,26 +24,11 @@ export default {
 </script>
 
 <style scoped>
-.banner{
-    border-radius: 2px;
-    left: 200px;
-    width:calc(100% - 200px);
-    height: auto;
-    min-height: 350px;
-    max-height: 400px;
-    overflow: hidden;
-}
-.banner .banner-item{
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    transition: all 0.4s ease-in;
-    background-position: center center;
-    background: black url("https://laptop88.vn/media/banner/03_May50c92c020b8ada51c78e3e8639d6b6ef.jpg") no-repeat center center  ;
-}
-.banner .active{
-    opacity: 1;
-}
+    #slide{
+        max-width: 700px;
+        height: auto;
+        width: 100%;
+        position: relative;
+        max-height: fit-content;
+    }
 </style>
