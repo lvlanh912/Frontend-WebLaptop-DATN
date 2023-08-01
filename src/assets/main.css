@@ -1,1 +1,4 @@
-/* @import './base.css';*/
+ @import './base.css'; */
+a{
+    cursor: pointer;
+}
