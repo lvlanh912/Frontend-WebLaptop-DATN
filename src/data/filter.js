@@ -1,0 +1,68 @@
+import { reactive } from "vue";
+const price_list=reactive({
+    select:'',
+    data:[
+        {
+        name:'Dưới 10 triệu',
+        value:1
+        },
+        {
+        name:'từ 10 đến 20 triệu',
+        value:2
+        },
+        {
+        name:'Từ 20 đến 30 triệu',
+        value:3
+        },
+        {
+           name:'Trên 30 triệu' ,
+           value:4
+        }
+    ]
+   })
+
+const cpu_list=reactive({
+    select:'',
+    data:[{
+        name:'Intel Core i3',
+        value:'i3'
+    },
+    {
+        name:'Intel Core i5',
+        value:'i5'
+    },
+    {
+        name:'Intel Core i7',
+        value:'i7'
+    },
+    {
+        name:'Intel Core i9',
+        value:'i9'
+    },
+    {
+        name:'Ryzen 3',
+        value:'r3'
+    },
+    {
+        name:'Ryzen 5',
+        value:'r5'
+    },
+    {
+        name:'Ryzen 7',
+        value:'r7'
+    },
+    {
+        name:'Ryzen 9',
+        value:'r9'
+    },
+    {
+        name:'Intel Xeon',
+        value:'i5'
+    },
+    {
+        name:'CPU khác',
+        value:'other'
+    }
+]
+})
+   export {price_list,cpu_list}

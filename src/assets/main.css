@@ -2,3 +2,6 @@
 a{
     cursor: pointer;
 }
+.justify{
+    text-align: justify!important;
+}
