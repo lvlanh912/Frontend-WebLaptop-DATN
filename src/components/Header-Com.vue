@@ -78,24 +78,16 @@
               <div class="col">
                 <strong class="p-0 fs-5 text-dark">Theo hãng</strong>
                 <hr class="my-2" />
-                <a class="row px-3 nav-link py-1 text-dark">Dell</a>
-                <a class="row px-3 nav-link py-1 text-dark">Asus</a>
-                <a class="row px-3 nav-link py-1 text-dark">Lenovo</a>
-                <a class="row px-3 nav-link py-1 text-dark">Thinkpad</a>
-                <a class="row px-3 nav-link py-1 text-dark">HP</a>
-                <a class="row px-3 nav-link py-1 text-dark">MSI</a>
-                <a class="row px-3 nav-link py-1 text-dark">Acer</a>
-                <a class="row px-3 nav-link py-1 text-dark">Hãng khác</a>
+                <a class="row px-3 nav-link py-1 text-dark" v-for="company in company_list.data">
+                  {{ company.name }}
+                </a>
               </div>
               <div class="col">
                 <strong class="p-0 fs-5 text-dark">Theo nhu cầu</strong>
                 <hr class="my-2" />
-                <a class="row px-3 nav-link py-1 text-dark">Laptop Gaming</a>
-                <a class="row px-3 nav-link py-1 text-dark">Laptop văn phòng</a>
-                <a class="row px-3 nav-link py-1 text-dark">Laptop Đồ hoạ</a>
-                <a class="row px-3 nav-link py-1 text-dark"
-                  >Laptop doanh nhân</a
-                >
+                <a class="row px-3 nav-link py-1 text-dark" v-for="item in type_list.data">
+                  {{ item.name }}
+                </a>
               </div>
             </div>
           </div>
@@ -213,13 +205,14 @@
 <script>
 import { RouterLink, useRoute } from "vue-router";
 import { ref } from "vue";
+import { company_list,type_list } from "../data/filter";
 export default {
   setup() {
     const ishow = ref(0);
     const show_seachbar = ref(false);
     const route = useRoute();
     console.log(route.name);
-    return { ishow, show_seachbar };
+    return { ishow, show_seachbar,company_list,type_list };
   },
 };
 </script>

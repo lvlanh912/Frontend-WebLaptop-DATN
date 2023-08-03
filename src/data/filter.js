@@ -65,4 +65,84 @@ const cpu_list=reactive({
     }
 ]
 })
-   export {price_list,cpu_list}
+const Ram_list=reactive({
+    select:'',
+    data:[
+        {
+            name:'8GB',
+            value:'8'
+        },
+        {
+            name:'16GB',
+            value:'16'
+        },
+        {
+            name:'32GB',
+            value:'32'
+        },
+        {
+            name:'64GB',
+            value:'64'
+        }
+    ]
+})
+const type_list=reactive({
+    select:'',
+    data:[{
+        name:'Laptop văn phòng',
+        value:'vp'
+    },
+    {
+        name:'Laptop Gaming',
+        value:'gm'
+    },
+    {
+        name:'Laptop đồ hoạ',
+        value:'dh'
+    },
+    {
+        name:'Laptop doanh nhân',
+        value:'dn'
+    }
+]
+})
+const company_list=reactive({
+    select:'',
+    data:[
+        {
+            name:'DELL',
+            value:'dell'
+        },
+        {
+            name:'Asus',
+            value:'asus'
+        },
+        
+        {
+            name:'Lenovo',
+            value:'lenovo'
+        },
+        {
+            name:'Thinkpad',
+            value:'thinkpad'
+        },
+        {
+            name:'HP',
+            value:'hp'
+        },
+        {
+            name:'MSI',
+            value:'msi'
+        },
+        {
+            name:'Acer',
+            value:'acer'
+        },
+        {
+            name:'Hãng khác',
+            value:'other'
+        },
+
+    ]
+})
+   export {price_list,cpu_list,Ram_list,type_list,company_list}
