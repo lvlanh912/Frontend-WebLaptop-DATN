@@ -30,16 +30,16 @@
     <!-- menu-lọc -->
     <transition name="fade">
         <div v-if="isShowmodal" class="modal d-block">
-          <div class="modal-dialog w-100 shadow" style="max-width: 100%">
-            <div class="modal-content" style="width: 100vw">
+          <div class="modal-dialog w-100 shadow row justify-content-center" style="max-width: 100%">
+            <div class="model--content col-12 col-md-10 col-xl-6 px-3">
               <div class="modal-header text-center">
                 <h1 class="fs-4">Lọc sản phẩm</h1>
                 <button  @click="isShowmodal=!isShowmodal" type="button" class="btn btn-close"></button>
               </div>
               <div class="modal-body">
-                <span>Khoảng giá</span>
+                <strong>Khoảng giá</strong>
                 <hr />
-                <div class="row">
+                <div class="row ms-2">
                   <div
                     class="form-check col-12 col-sm-6"
                     v-for="price in price_list.data"
@@ -56,7 +56,7 @@
                 </div>
                 <strong>CPU</strong>
                 <hr class="m-1" />
-                <div class="row">
+                <div class="row ms-2">
                   <div
                     class="form-check col-12 col-sm-6"
                     v-for="cpu in cpu_list.data"
@@ -73,7 +73,7 @@
                 </div>
                 <strong>RAM</strong>
                 <hr class="m-1" />
-                <div class="row">
+                <div class="row ms-2">
                   <div
                     class="form-check col-12 col-sm-6"
                     v-for="ram in Ram_list.data"
@@ -90,7 +90,7 @@
                 </div>
                 <strong>Nhu cầu</strong>
                 <hr class="m-1"/>
-                <div class="row">
+                <div class="row ms-2">
                   <div
                     class="form-check col-12 col-sm-6"
                     v-for="type in type_list.data">
@@ -107,7 +107,7 @@
     
                 <strong>Hãng</strong>
                 <hr class="m-1"/>
-                <div class="row">
+                <div class="row ms-2">
                   <div
                     class="form-check col-12 col-sm-6"
                     v-for="company in company_list.data">
@@ -151,11 +151,22 @@ export default {
 .modal {
   background: #00000045;
 }
+.model--content{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: .3rem;
+  outline: 0;
+}
 .fade-enter-active{
     transition: all 1s ease;
 }
 .fade-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 
 .fade-enter-from{

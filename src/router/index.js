@@ -30,8 +30,13 @@ const router = createRouter({
     {
       path:'/lap-top',
       namevi:'Laptop',
-      name:'list-products',
+      name:'laptop',
       component :()=> import('../views/LaptopView.vue')
+    },
+    {
+      path:'/lap-top/:id?value=:value?',
+      name:'detail',
+      component:()=>import('../views/Detail.vue')
     }
   ]
 })

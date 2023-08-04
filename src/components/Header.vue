@@ -61,7 +61,10 @@
             @mouseenter="ishow = 1"
             @mouseleave="ishow = 0"
             href="#"
-            class="nav-link px-0 ms-4 fw-bold text-danger nav--item show-child"
+            :class="{
+              'nav-link px-0 ms-4 show-child fw-bold text-danger nav--item ': true,
+              active: $route.name == 'laptop',
+            }"
             >Laptop <i class="bi bi-caret-down-fill"></i>
           </a>
           <!-- drop-down laptop -->
@@ -147,7 +150,7 @@
                 <a class="row px-3 nav-link py-1 text-dark">Ổ cứng</a>
                 <a class="row px-3 nav-link py-1 text-dark">USB</a>
               </div>
-              <div class="col-8">
+              <div class="col col-8">
                 <a class="row px-3 nav-link py-1 text-dark">Bàn di chuột</a>
                 <a class="row px-3 nav-link py-1 text-dark">Cổng chuyển đổi</a>
               </div>
@@ -211,7 +214,6 @@ export default {
     const ishow = ref(0);
     const show_seachbar = ref(false);
     const route = useRoute();
-    console.log(route.name);
     return { ishow, show_seachbar,company_list,type_list };
   },
 };
@@ -298,6 +300,7 @@ export default {
   font-family: sans-serif;
   font-weight: 450;
   font-size: 18px;
+  cursor: pointer;
 }
 
 .col a:hover {
