@@ -47,7 +47,7 @@ import Forgotpassword from '../components/Forgotpassword.vue'
 import HangmoiveCom from '../components/Hangmoive-Com.vue'
 import FooterCom from '../components/Footer.vue'
 import News from '../components/home/news.vue'
-import list_laptop from '../data/data-sample/laptop'
+import list_laptop from '../data/data-sample/laptop.js'
 export default{
   components:{
     header_com:Header,
@@ -59,7 +59,8 @@ export default{
     News
   },
   setup(){
-    return list_laptop
+
+    return {list_laptop}
   }
 }
 </script>

@@ -34,9 +34,9 @@ const router = createRouter({
       component :()=> import('../views/LaptopView.vue')
     },
     {
-      path:'/lap-top/:id?value=:value?',
-      name:'detail',
-      component:()=>import('../views/Detail.vue')
+      path:'/lap-top/:id',
+      name:'laptop_detail',
+      component:()=>import('../views/Detail-Laptop.vue')
     }
   ]
 })

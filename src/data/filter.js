@@ -145,4 +145,4 @@ const company_list=reactive({
 
     ]
 })
-   export {price_list,cpu_list,Ram_list,type_list,company_list}
+ export {price_list,cpu_list,Ram_list,type_list,company_list}

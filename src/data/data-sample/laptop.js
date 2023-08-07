@@ -183,4 +183,10 @@ const list_laptop=[
         ]
     }
 ]
-export default {list_laptop}
+function Getbyid(id){
+    return list_laptop.find(function(e){
+        return e.id==id
+    })
+}
+export default list_laptop
+export {list_laptop,Getbyid}

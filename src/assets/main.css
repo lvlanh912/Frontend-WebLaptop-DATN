@@ -5,3 +5,9 @@ a{
 .justify{
     text-align: justify!important;
 }
+.text-yellow{
+    color: yellow !important;
+}
+.text-blue{
+    color: var(--product-price);
+}
