@@ -11,3 +11,27 @@ a{
 .text-blue{
     color: var(--product-price);
 }
+.bg-red{
+background-color: #FA5252!important;
+}
+.text-red{
+    color: #FA5252!important;
+}
+.bg-orange{
+    background-color: #FF8125!important;
+}
+.bg-blue{
+    background-color: #1988ec!important; ;
+}
+.border-blue{
+    border-color: #1988ec!important;
+}
+.border-pink{
+    border-color: #FA5252!important;
+}
+.bg-pink{
+    background-color: #f5219632;
+}
+.text-pink{
+    color: #FA5252!important;
+}
