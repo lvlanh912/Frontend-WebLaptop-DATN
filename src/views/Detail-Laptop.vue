@@ -1,5 +1,4 @@
 <template>
-  <h1>{{ route.params.id }}</h1>
   <div class="card">
     <!-- product name -->
     <span class="px-2 w-100 fw-bolder fs-3 ">
@@ -70,18 +69,32 @@
 </div>
 </div>
 </div>
-<comments/>
+<section class="row px-3">
+  <div class="col-8 px-2">
+    <comment/>
+  </div>
+  <div class="col-4 px-2">
+    <tintucmoi/>
+  </div>
+</section>
+<section class="row">
+  <sanphamtuongtu/>
+</section>
 
 </template>
 
 <script >
-import Comments from '../components/Comments.vue'
+import Comment from '../components/Comments.vue'
 import { useRoute } from 'vue-router'
 import {Getbyid} from '../data/data-sample/laptop.js'
 import { ref,computed } from 'vue'
+import Tintucmoi from '../components/Tintucmoi.vue'
+import Sanphamtuongtu from '../components/sanphamtuongtu.vue'
 export default{
   components:{
-    Comments
+    Comment,
+    Tintucmoi,
+    Sanphamtuongtu
   },
     setup(){
       const route= useRoute()

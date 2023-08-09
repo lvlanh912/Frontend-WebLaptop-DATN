@@ -35,3 +35,24 @@ background-color: #FA5252!important;
 .text-pink{
     color: #FA5252!important;
 }
+.max-line-1{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.max-line-2{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+            line-clamp: 2; 
+    -webkit-box-orient: vertical;
+}
+.max-line-3{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+            line-clamp: 3; 
+    -webkit-box-orient: vertical;
+}

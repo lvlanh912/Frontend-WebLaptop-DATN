@@ -52,7 +52,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card:hover .card-img-top{
   transition: all 0.2s linear;
   transform: translateY(-16px);
