@@ -35,6 +35,9 @@ background-color: #FA5252!important;
 .text-pink{
     color: #FA5252!important;
 }
+.text-green{
+    color: #0DB866!important;
+}
 .max-line-1{
     text-overflow: ellipsis;
     overflow: hidden;
@@ -55,4 +58,9 @@ background-color: #FA5252!important;
     -webkit-line-clamp: 3;
             line-clamp: 3; 
     -webkit-box-orient: vertical;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

@@ -1,8 +1,13 @@
 <template>
- <div class="d-flex list-item-slide position-relative py-3" >
-    <product @drag="onswipe"
-     v-for="laptop in list_laptop" :item="laptop"/>
-    <product  v-for="laptop in list_laptop" :item="laptop"/>
+ <div class="bg-white bg-white mt-3 border-2 rounded-2 px-3 py-2 w-100">
+    <strong class="fs-3 ps-3">Sản phẩm tương tự</strong>
+    <carousel :items-to-show="4" :wrap-around="false">
+        <slide v-for="laptop in list_laptop" :key="laptop" >
+            <div class="carousel__item py-3 ms-2">
+                <product :item="laptop" :showfull="true" />
+            </div>
+        </slide>
+  </carousel>
  </div>
 </template>
 
@@ -10,24 +15,17 @@
 import { ref,watch } from 'vue';
 import Product from './home/Product.vue'
 import list_laptop from '../data/data-sample/laptop.js';
-import newsVue from './home/news.vue';
+
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 export default {
     components:{
         Product,
         Carousel,
-        Slide,
-        Pagination,
-        Navigation,
+        Slide
     },
     setup(){
-        const curentscreen=ref(0)
-        function onswipe(e){
-          curentscreen.value= e
-        }
-       
-        return {list_laptop,onswipe,curentscreen}
+        return {list_laptop}
     }
 
 }
@@ -38,3 +36,4 @@ export default {
 overflow:scroll;
 }
 </style>
+

@@ -37,6 +37,11 @@ const router = createRouter({
       path:'/lap-top/:id',
       name:'laptop_detail',
       component:()=>import('../views/Detail-Laptop.vue')
+    },
+    {
+      path:'/cart',
+      name:'card',
+      component:()=>import('../views/Cart.vue')
     }
   ]
 })

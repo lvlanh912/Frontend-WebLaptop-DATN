@@ -1,5 +1,5 @@
 <template >
-  <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-2">
+  <div :class="{'col-12 col-sm-6 col-md-4 col-xl-3 p-2':!showfull,'col-12':showfull}">
    <div class="card text-center">
     <router-link :to="{name:'home'}">
       <img :src="item.image[0]" class="card-img-top" alt="...">
@@ -29,6 +29,7 @@
 import { computed,defineProps } from 'vue'
 export default {
   props: {
+    showfull:true,
     item: Object
   },
   setup(props){
