@@ -41,6 +41,7 @@ background-color: #FA5252!important;
 .text-green{
     color: #0DB866!important;
 }
+
 .max-line-1{
     text-overflow: ellipsis;
     overflow: hidden;

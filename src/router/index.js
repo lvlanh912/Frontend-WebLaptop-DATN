@@ -5,6 +5,16 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/Admin/HomeView.vue')
+    },
+    {
+      path: '/admin/dang-nhap',
+      name: 'admin_login',
+      component: () => import('../views/Admin/LoginView.vue')
+    },
+    {
       path: '/',
       name: 'home',
       namevi: 'Trang chủ',
