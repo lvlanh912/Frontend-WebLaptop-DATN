@@ -6,7 +6,18 @@
 	],
 	"settings": {
 		"css.styleSheets": [
+			"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css",
+			"I:/Onedriver/OneDrive - Viet-Hung Industrial University/Desktop/Vuejs3/vue-lab01/src/assets/main.css",
 			"https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+		],
+		"vue.autoInsert.dotValue": true,
+		"vue.inlayHints.missingProps": true,
+		"vue.server.petiteVue.supportHtmlFile": true,
+		"vue.splitEditors.layout.left": [
+
+			"script",
+			"scriptSetup",
+			"styles"
 		]
 	}
 }
