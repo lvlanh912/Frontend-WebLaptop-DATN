@@ -1,8 +1,8 @@
 import { Get_All_Account,Create_new_account, Get_List_Province, Get_List_districts, Get_List_wards } from "../CallAPI.js"
 import removeEmptyFields from "../removeEmptyFields.js"
-async function Get_list_accounts(page = 1, size = 5, keywords = '', sort = '') {
+async function Get_list_accounts(page = 1, size = 5,filterobj, sort = '') {
        try {
-              return await Get_All_Account(page, size, keywords, sort)
+              return await Get_All_Account(page, size, filterobj, sort)
        }
        catch (err) {
               throw err

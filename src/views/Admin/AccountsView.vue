@@ -40,7 +40,7 @@
           Bản ghi
         </div>
         <!-- Tìm kiếm/Lọc -->
-        <filter-form/>
+        <filter-form @filData="getFildata" @CancelFil="removeFil"/>
       </div>
       <div class="table-responsive">
         <table class="table table-inverse" style="width: 100%">
@@ -158,8 +158,7 @@ export default {
     const pagesize = ref(25);
     const listpagesize = ref([25, 50, 75, 100]);
     const totalpage = ref(1);
-    const timer = ref();
-    const keywords = ref("");
+    const filterObj = ref({});
     const sort = ref();
     const isShowForm = ref(false);
     const isShowInfor = ref(false);
@@ -195,14 +194,24 @@ export default {
         alert(error);
       }
     });
-
+    //lấy dữ liệu
     async function getData() {
       return await _accounts.Get_list_accounts(
         pageindex.value,
         pagesize.value,
-        keywords.value,
+        filterObj.value,
         sort.value
       );
+    }
+    //lọc dữ liệu
+   async function getFildata(value) {
+     filterObj.value=value
+     data.value=await getData()
+    }
+    //Huỷ lọc
+    async function removeFil(){
+      filterObj.value={}
+     data.value=await getData()
     }
     //thay đổi trang
     async function changepage(e) {
@@ -248,6 +257,8 @@ export default {
       ShowEdit,
       account_pick,
       ShowInfor,
+      getFildata,
+      removeFil
     };
   },
 };

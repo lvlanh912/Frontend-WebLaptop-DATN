@@ -6,10 +6,22 @@ class ResponseAPI{
   }
 }
 
-async function Get_All_Account(page, size,keywords,sort) {
+async function Get_All_Account(page, size,filterobj,sort) {
     try {
-      const response = await axios.get(`/users?pageIndex=${page}&pageSize=${size}&keywords=${keywords??''}&sort=${sort??''}`);
-
+      let query={
+        pageIndex: page,
+        pageSize: size,
+        keywords: filterobj.keywords,
+        startdate:filterobj.startDate,
+        endate:filterobj.endDate,
+        gender:filterobj.gender,
+        role:filterobj.role,
+        type:filterobj.seach_type,
+        sort:sort
+      }
+      const response = await axios.get(`/users`,{
+        params:query
+      });
     let data=new ResponseAPI()
       data = response.data;
       return data.result;
