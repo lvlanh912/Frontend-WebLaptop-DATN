@@ -12,6 +12,11 @@ const router = createRouter({
           path: 'quan-ly-tai-khoan',
           name:'user_manager',
           component: ()=>import('../views/Admin/AccountsView.vue')
+        },
+        {
+          path: 'quan-ly-ma-giam-gia',
+          name:'vouchers_manager',
+          component: ()=>import('../views/Admin/VouchersView.vue')
         }
       ],
       component: () => import('../views/Admin/HomeView.vue')

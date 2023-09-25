@@ -102,3 +102,14 @@
 .v-leave-to {
   opacity: 0;
 }
+.modal-backdrop {
+    background-color: #0000005b;
+  }
+  
+  .rounded-4 {
+    border-radius: 2rem !important;
+  }
+  .model-show{
+    overflow-x:hidden;
+    overflow-y: auto;
+  }

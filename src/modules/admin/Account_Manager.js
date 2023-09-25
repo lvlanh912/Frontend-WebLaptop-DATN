@@ -10,9 +10,8 @@ async function Get_list_accounts(page = 1, size = 5,filterobj, sort = '') {
 }
 
 async function add_account(account,image){
+       //xoá thuộc tính trống
        let datajson= JSON.stringify(removeEmptyFields(account))
-       console.log(datajson)
-       console.log(image)
        const formData = new FormData();
        formData.append('data',datajson)
        formData.append('images',image)

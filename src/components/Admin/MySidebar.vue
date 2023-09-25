@@ -23,9 +23,10 @@
         </router-link>
       </li>
       <li class="mb-1">
-        <p class="w-100 text-start btn btn-toggle align-items-center rounded " >
+        <router-link :to="{name:'vouchers_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='vouchers_manager'}">
+       
          <i class="bi bi-gift-fill text-pink me-2"></i> Voucher
-        </p>
+        </router-link>
         <div class="collapse" id="voucher-collapse" >
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="#" class=" ms-3 link-dark text-decoration-none rounded">Tạo mới</a></li>
