@@ -1,4 +1,4 @@
-import { Create_new_Voucher } from "../CallAPI";
+import { Create_new_Voucher,Get_all_voucher } from "../CallAPI";
 import removeEmptyFields from "../removeEmptyFields";
 
 function ValidateData(Voucher){
@@ -42,5 +42,18 @@ async function Add(Voucher){
         return result
     }
 }
+async function GetAll(page=1,size=10,filterobj,sort){
+    try{
+        
+        return await Get_all_voucher(page,size,filterobj,sort)
+    }
+    catch(err){
+        Swal.fire({
+            icon:"error",
+            title:"Có lỗi xảy ra",
+            text:err.message
+        })
+    }
+}
 
-export {Add,ValidateData}
+export {GetAll,Add,ValidateData}

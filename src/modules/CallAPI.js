@@ -75,6 +75,33 @@ async function Create_new_account(payload) {
   }
 }
 //Voucher
+
+//Get
+async function Get_all_voucher(page,size,filterobj,sort){
+  try{
+    let query = {
+      pageindex: page,
+      pagesize: size,
+      keywords: filterobj.keywords,
+      createTimeStart: filterobj.createTimeStart,
+      createTimeEnd: filterobj.createTimeEnd,
+      sort: sort,
+    }
+    let response=await axios.get('/vouchers',{
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+  
+}
+
+
+//Create
 async function Create_new_Voucher(payload) {
   try {
     const response = await axios.post(`vouchers`, payload,{
@@ -92,5 +119,6 @@ export {
   Get_List_districts,
   Get_List_wards,
   Create_new_account,
-  Create_new_Voucher
+  Get_all_voucher,
+  Create_new_Voucher,
 };

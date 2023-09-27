@@ -4,7 +4,7 @@
       <div class="modal-content rounded-4">
         <div class="modal-header">
           <h5 class="modal-title text-blue">Tạo mã giảm giá mới</h5>
-          <button type="button" class="btn-close"></button>
+          <button @click="closeThis" type="button" class="btn-close"></button>
         </div>
         <form>
           <div class="modal-body">
@@ -80,7 +80,7 @@
           </div>
         </form>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary">Huỷ</button>
+          <button @click="closeThis" type="button" class="btn btn-secondary">Huỷ</button>
           <button @click="onSubmit" type="button" class="btn btn-primary">Xác nhận</button>
         </div>
       </div>
@@ -94,12 +94,15 @@ import { reactive, ref } from 'vue';
 import { Add } from '../../../modules/admin/Voucher_Manager.js'
 
 export default {
-  setup() {
+  setup(props,{emit}) {
     const voucher = reactive(new Voucher())
     const result = ref()
+    function closeThis(){
+      emit("closeAdd")
+    }
     async function onSubmit() {
       result.value = await Add(voucher)
-      //dữ liệu chưa valid
+      //dữ liệu chưa valid hoặc lỗi trả từ bên server hoặc mất mạng :)))
       if (!result.value.success)
         Swal.fire({
           icon: "warning",
@@ -110,11 +113,10 @@ export default {
       Swal.fire({
           icon: "success",
           title: "Thêm thành công"
-
         })
      }
     }
-    return { voucher, onSubmit }
+    return { voucher, onSubmit,closeThis }
   }
 };
 </script>
