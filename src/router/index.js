@@ -11,11 +11,13 @@ const router = createRouter({
         {
           path: 'quan-ly-tai-khoan',
           name:'user_manager',
+          meta: { title: 'Quản lý tài khoản' },
           component: ()=>import('../views/Admin/AccountsView.vue')
         },
         {
           path: 'quan-ly-ma-giam-gia',
           name:'vouchers_manager',
+          meta: { title: 'Quản lý Voucher' },
           component: ()=>import('../views/Admin/VouchersView.vue')
         }
       ],
@@ -24,6 +26,7 @@ const router = createRouter({
     {
       path: '/admin/dang-nhap',
       name: 'admin_login',
+      meta: { title: 'Đăng nhập quản trị viên' },
       component: () => import('../views/Admin/LoginView.vue')
     },
     {
@@ -68,5 +71,10 @@ const router = createRouter({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  document.title = to.meta.title??"Index";
+  next();
+});
 
 export default router
