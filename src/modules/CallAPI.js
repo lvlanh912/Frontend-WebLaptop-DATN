@@ -4,7 +4,8 @@ class ResponseAPI {
     (this.Message = "Success"), (this.Result = {});
   }
 }
-
+//Account
+//Get
 async function Get_All_Account(page, size, filterobj, sort) {
   try {
     let query = {
@@ -28,6 +29,31 @@ async function Get_All_Account(page, size, filterobj, sort) {
     throw err;
   }
 }
+//thêm
+async function Create_new_account(payload) {
+  try {
+    const response = await axios.post(`users`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data.Message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Sửa
+async function Edit_Account(id,payload){
+  try {
+    const response = await axios.put(`/users/${id}`,payload,{
+      headers:{"Content-Type":"multipart/form-data"}
+    });
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 async function Get_List_Province() {
   try {
     const response = await axios.get(`/address/provinces`);
@@ -64,16 +90,7 @@ async function Get_List_wards(districtCode) {
     throw err;
   }
 }
-async function Create_new_account(payload) {
-  try {
-    const response = await axios.post(`users`, payload, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return response.data.Message;
-  } catch (err) {
-    throw err;
-  }
-}
+
 //Voucher
 
 //Get
@@ -115,10 +132,12 @@ async function Create_new_Voucher(payload) {
 
 export {
   Get_All_Account,
+  Edit_Account,
   Get_List_Province,
   Get_List_districts,
   Get_List_wards,
   Create_new_account,
   Get_all_voucher,
   Create_new_Voucher,
+  
 };

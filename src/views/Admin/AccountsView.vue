@@ -35,7 +35,7 @@
             class="pt-0 ms-2 form-select form-select-sm mt-0 mb-2 pb-0 me-3"
             style="max-width: 100px;height: 25px !important;"
           >
-            <option v-for="option in listpagesize">{{ option }}</option>
+            <option v-for="(option,index) in listpagesize"  :key="index">{{ option }}</option>
           </select>
           Bản ghi
         </div>
@@ -120,7 +120,7 @@
             ></a>
           </li>
           <li
-            v-for="n in totalpage"
+            v-for="(n,index) in totalpage" :key="index"
             :class="{ 'page-item': true, active: pageindex == n }"
           >
             <a @click="changepage(n)" class="page-link" href="#!">{{ n }}</a>

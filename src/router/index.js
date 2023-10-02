@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store, {} from '../Store.js'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -71,10 +72,13 @@ const router = createRouter({
     }
   ]
 })
+
+
+
 router.beforeEach((to, from, next) => {
-  console.log(to);
-  document.title = to.meta.title??"Index";
-  next();
+    document.title = to.meta.title??"Index";
+    next()
+  
 });
 
 export default router

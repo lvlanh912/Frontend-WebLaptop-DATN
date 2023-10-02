@@ -1,4 +1,4 @@
-import { Get_All_Account,Create_new_account, Get_List_Province, Get_List_districts, Get_List_wards } from "../CallAPI.js"
+import { Get_All_Account,Create_new_account, Get_List_Province, Get_List_districts, Get_List_wards,Edit_account } from "../CallAPI.js"
 import removeEmptyFields from "../removeEmptyFields.js"
 async function Get_list_accounts(page = 1, size = 5,filterobj, sort = '') {
        try {
@@ -17,6 +17,14 @@ async function add_account(account,image){
        formData.append('images',image)
       return await Create_new_account(formData)
 }
+async function Edit(account,image){
+       //xoá thuộc tính trống
+       let datajson= JSON.stringify(removeEmptyFields(account))
+       const formData = new FormData();
+       formData.append('data',datajson)
+       formData.append('images',image)
+      return await Edit_account(formData)
+}
 
 function validateData_Create(account){
 var a=[
@@ -29,5 +37,5 @@ var a=[
       })
       return true
 }
-export {validateData_Create,add_account,
+export {validateData_Create,add_account,Edit,
         Get_list_accounts, Get_List_Province, Get_List_districts, Get_List_wards, }

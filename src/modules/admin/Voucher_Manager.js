@@ -42,10 +42,21 @@ async function Add(Voucher){
         return result
     }
 }
+//Đổi định dạng ngày tháng
+function convertdatetime(item){
+    const _startAt = new Date(item.startAt);
+    const _endAt=new Date(item.endAt)
+  return {
+    ...item, // Giữ nguyên các thuộc tính khác
+    startAt: `${_startAt.toLocaleDateString()} ${_startAt.toLocaleTimeString()}`,
+    endAt: `${_endAt.toLocaleDateString()} ${_endAt.toLocaleTimeString()}`
+  };
+}
 async function GetAll(page=1,size=10,filterobj,sort){
     try{
-        
-        return await Get_all_voucher(page,size,filterobj,sort)
+        let data= await Get_all_voucher(page,size,filterobj,sort)
+        data.items= data.items.map(convertdatetime)
+        return data
     }
     catch(err){
         Swal.fire({
@@ -55,5 +66,6 @@ async function GetAll(page=1,size=10,filterobj,sort){
         })
     }
 }
+
 
 export {GetAll,Add,ValidateData}

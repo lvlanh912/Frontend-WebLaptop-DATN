@@ -1,7 +1,7 @@
 {
   "recommendations": [
-    "vue.volar",
     "vue.vscode-typescript-vue-plugin",
-    "zignd.html-css-class-completion"
+    "zignd.html-css-class-completion",
+    "christian-kohler.path-intellisense"
   ]
 }

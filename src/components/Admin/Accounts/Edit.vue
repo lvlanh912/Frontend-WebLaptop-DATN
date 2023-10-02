@@ -56,7 +56,7 @@
                             </div>
                             <div class="d-flex justify-content-center justify-content-md-end">
                                 <button @click="closeThis" class="btn btn-danger px-2 me-2"><strong>Huỷ</strong></button>
-                                <button class="btn btn-success px-4"><strong>Lưu lại</strong></button>
+                                <button @click="onSave" class="btn btn-success px-4"><strong>Lưu lại</strong></button>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,8 @@
 
 <script>
 import { computed } from 'vue'
-
+import { Edit } from '../../../modules/admin/Account_Manager'
+import Swal from 'sweetalert2'
 export default {
     props: {
         account: {
@@ -76,8 +77,8 @@ export default {
         },
     },
     setup(props, { emit }) {
-        props.account.Fullname='Lương Văn Lanh'
         const account_payload=props.account
+        const image_upload=ref();
         const image_profile = computed(() => {
             return backendHost + '/images/avatar/' + props.account.profile_image
         })
@@ -88,7 +89,24 @@ export default {
         function closeThis() {
             emit('closeEdit')
         }
-        return { image_profile, closeThis, gender,account_payload}
+
+        const onSave= async()=>{
+            try{
+                await  Edit(account_payload,image_profile.value)
+                Swal.fire({
+                    icon:"success",
+                    title:"Thành công"
+                })
+            }
+            catch(err){
+                Swal.fire({
+                    icon:"error",
+                    title:"Thất Bại",
+                    text:err.message
+                })
+            }
+        }
+        return { image_profile, closeThis, gender,account_payload,onSave}
     }
 
 }

@@ -18,6 +18,16 @@
 			"script",
 			"scriptSetup",
 			"styles"
+		],
+		"typescript.tsdk": "node_modules/typescript/lib"
+	},
+	"extensions": {
+		"recommendations": [
+			"christian-kohler.path-intellisense"
 		]
-	}
+	},
+	"emmet.includeLanguages": {
+		"vue-html": "html",
+		"vue": "html"
+}
 }

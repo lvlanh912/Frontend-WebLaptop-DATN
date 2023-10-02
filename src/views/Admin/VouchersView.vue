@@ -1,5 +1,6 @@
 <template>
   <voucher-create v-if="showCreateForm" @closeAdd="showCreateForm = !showCreateForm" />
+  <voucher-edit v-if="showEditForm" @CloseEdit="showEditForm = !showEditForm" :Voucher="voucher_Selected" />
   <div class="text-end">
     <button @click="showCreateForm = !showCreateForm" class="btn btn-primary">
       Tạo mới
@@ -17,7 +18,7 @@
         Hiển thị
         <select class="pt-0 ms-2 form-select form-select-sm mt-0 mb-2 pb-0 me-3"
           style="max-width: 100px; height: 25px !important">
-          <option v-for="option in listpagesize">{{ option }}</option>
+          <option v-for="(option,index) in listpagesize" :key="index">{{ option }}</option>
         </select>
         Bản ghi
       </div>
@@ -52,17 +53,17 @@
         </thead>
 
         <tbody>
-          <tr v-for="item in data.items">
+          <tr v-for="(item,index) in data.items" :key="index">
             <td>{{ item.code }}</td>
-            <td>{{ item.createAt }}</td>
-            <td></td>
-            <td></td>
+            <td>{{ item.startAt }}</td>
+            <td>{{ item.endAt }}</td>
+            <td>{{ item.isDisable }}</td>
             <td>
               <div class="d-flex">
                 <a class="ms-2">
                   <i class="bi bi-info-circle text-success fs-5"></i>
                 </a>
-                <a class="ms-2">
+                <a @click="onEdit(item)" class="ms-2">
                   <i class="bi bi-pencil-fill text-blue fs-5"></i>
                 </a>
                 <a class="ms-2">
@@ -80,7 +81,7 @@
         <li v-if="pageindex > 1" @click="changepage(--pageindex)" class="page-item">
           <a class="page-link" href="#!"><span>«</span><span class="sr-only"></span></a>
         </li>
-        <li v-for="n in totalpage" :class="{ 'page-item': true, active: pageindex == n }">
+        <li v-for="n in totalpage" :key="n" :class="{ 'page-item': true, active: pageindex == n }">
           <a @click="changepage(n)" class="page-link" href="#!">{{ n }}</a>
         </li>
         <li v-if="pageindex < totalpage" class="page-item">
@@ -92,15 +93,19 @@
 </template>
 
 <script>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, computed } from "vue";
 import voucherCreate from "../../components/Admin/Vouchers/Create.vue";
+import voucherEdit from "../../components/Admin/Vouchers/Edit.vue"
 import { GetAll } from "../../modules/admin/Voucher_Manager.js";
 export default {
   components: {
     voucherCreate,
+    voucherEdit,
   },
   setup() {
     const showCreateForm = ref(false);
+    const showEditForm= ref(false)
+    const voucher_Selected=ref({})
     const loading = ref(false);
     const listpagesize = [25, 50, 75, 100];
     const totalpage = ref(0);
@@ -113,13 +118,17 @@ export default {
       createTimeEnd: null,
     });
     const sort = ref();
+    const onEdit=(e)=>{
+     voucher_Selected.value=e
+     showEditForm.value=true
+    }
     onMounted(async () => {
       await Getdata();
       console.log(data.value);
     });
 
     //lấy dữ liệu
-    async function Getdata() {
+    const Getdata=async ()=> {
       data.value = await GetAll(
         pageindex.value,
         pagesize.value,
@@ -130,11 +139,14 @@ export default {
     }
     return {
       showCreateForm,
+      showEditForm,
+      onEdit,
+      voucher_Selected,
       loading,
       listpagesize,
       totalpage,
       pageindex,
-      data
+      data,
     };
   },
 };

@@ -5,7 +5,7 @@ import {createStore} from 'vuex'
 	return{
         user:{
 			islogin:true,
-			isAdmin:true
+			isAdmin:false
 		},
 		count:0,
 		data:null
