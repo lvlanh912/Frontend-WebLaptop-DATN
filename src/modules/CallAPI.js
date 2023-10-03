@@ -43,6 +43,7 @@ async function Create_new_account(payload) {
 //Sửa
 async function Edit_Account(id,payload){
   try {
+    console.log(payload)
     const response = await axios.put(`/users/${id}`,payload,{
       headers:{"Content-Type":"multipart/form-data"}
     });
@@ -51,6 +52,17 @@ async function Edit_Account(id,payload){
     return data.result;
   } catch (err) {
     throw err;
+  }
+}
+//Xoá Account
+export async function Delete_Account(id){
+  try {
+    const response= await axios.delete(`/users/${id}`)
+    return response.data.result
+  } 
+  catch (err) {
+    throw err
+    
   }
 }
 
@@ -119,7 +131,7 @@ async function Get_all_voucher(page,size,filterobj,sort){
 
 
 //Create
-async function Create_new_Voucher(payload) {
+export async function Create_new_Voucher(payload) {
   try {
     const response = await axios.post(`vouchers`, payload,{
       headers:{"Content-Type":"application/json"}
@@ -137,7 +149,6 @@ export {
   Get_List_districts,
   Get_List_wards,
   Create_new_account,
-  Get_all_voucher,
-  Create_new_Voucher,
+  Get_all_voucher
   
 };

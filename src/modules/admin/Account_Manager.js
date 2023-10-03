@@ -1,4 +1,4 @@
-import { Get_All_Account,Create_new_account, Get_List_Province, Get_List_districts, Get_List_wards,Edit_account } from "../CallAPI.js"
+import { Get_All_Account,Create_new_account,Edit_Account,Delete_Account, Get_List_Province, Get_List_districts, Get_List_wards, } from "../CallAPI.js"
 import removeEmptyFields from "../removeEmptyFields.js"
 async function Get_list_accounts(page = 1, size = 5,filterobj, sort = '') {
        try {
@@ -23,7 +23,25 @@ async function Edit(account,image){
        const formData = new FormData();
        formData.append('data',datajson)
        formData.append('images',image)
-      return await Edit_account(formData)
+      return await Edit_Account(account.id,formData)
+}
+//xoá tài khoản
+async function Delete(id){
+       try {
+              await Delete_Account(id);
+              Swal.fire({
+                     icon:"success",
+                     title:"Đã xoá"
+                   })
+              
+       } 
+       catch (err) {
+              Swal.fire({
+                     icon:"error",
+                     title:"Thất bại",
+                     text:err.message
+                   })
+       }
 }
 
 function validateData_Create(account){
@@ -38,4 +56,4 @@ var a=[
       return true
 }
 export {validateData_Create,add_account,Edit,
-        Get_list_accounts, Get_List_Province, Get_List_districts, Get_List_wards, }
+        Get_list_accounts,Delete, Get_List_Province, Get_List_districts, Get_List_wards, }

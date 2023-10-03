@@ -33,6 +33,7 @@
                 <div class="form-group">
                   <label class="form-label">Giá trị</label>
                   <input
+                    v-model="voucher.value"
                     type="number"
                     class="form-control"
                     placeholder="Nhập giá trị"
@@ -45,6 +46,7 @@
                     >Áp dụng đơn hàng tối thiểu từ (vnđ)</label
                   >
                   <input
+                    v-model="voucher.minApply"
                     class="form-control d-inline"
                     type="number"
                   />
@@ -54,6 +56,7 @@
                 <div class="form-group">
                   <label class="form-label">Giảm tối đa (vnđ)</label>
                   <input
+                    v-model="voucher.maxReduce"
                     class="form-control d-inline"
                     type="number"
                   />
@@ -63,8 +66,10 @@
                 <div class="form-group">
                   <label class="form-label">Ngày bắt đầu có hiệu lực</label>
                   <input
+                    v-model="voucher.startAt"
                     class="form-control"
-                    type="datetime-local"
+                    type="datetime"
+                    @keydown="changeDate"
                     step="1"
                   />
                 </div>
@@ -73,8 +78,10 @@
                 <div class="form-group">
                   <label class="form-label">Ngày kết thúc</label>
                   <input
+                    v-model="voucher.endAt"
                     class="form-control"
-                    type="datetime-local"
+                    type="datetime"
+                    @keydown="changeDate"
                     step="1"
                   />
                 </div>
@@ -83,6 +90,7 @@
                 <div class="form-group">
                   <label class="form-label">Số lượng </label>
                   <input
+                    v-model="voucher.quantity"
                     class="form-control"
                     type="number"
                   />
@@ -91,15 +99,16 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label class="form-label">Hiệu lực với </label>
-                  <select class="form-select">
-                    <option value="all">Toàn bộ sản phẩm</option>
-                    <option value="only">Sản phẩm cố định</option>
+                  <select class="form-select" v-model="typeApply">
+                    <option :value="false">Toàn bộ sản phẩm</option>
+                    <option :value="true">Sản phẩm cố định</option>
                   </select>
                 </div>
               </div>
               <div class="col">
                 <div class="form-floating">
                   <textarea
+                  v-model="listproducts"
                     class="form-control"
                     placeholder="Nếu có nhiều sản phẩm thì ngăn cách nhau bởi dấu ;"
                   ></textarea>
@@ -113,9 +122,7 @@
           <button @click="closeThis" type="button" class="btn btn-secondary">
             Huỷ
           </button>
-          <button  type="button" class="btn btn-primary">
-            Xác nhận
-          </button>
+          <button type="button" class="btn btn-primary">Xác nhận</button>
         </div>
       </div>
     </div>
@@ -123,21 +130,24 @@
 </template>
 
 <script>
-import {reactive, ref} from 'vue'
+import { computed, reactive, ref } from "vue";
 export default {
-    props:{
-        Voucher:{
-            require:true
-        }
+  props: {
+    Voucher: {
+      require: true,
     },
-  setup(props,{emit}) {
-    const closeThis=()=>emit("CloseEdit")
-    const voucher = reactive( props.Voucher)
-    
-    return {closeThis,voucher}
+  },
+  setup(props, { emit }) {
+    const closeThis = () => emit("CloseEdit");
+    const voucher = reactive(props.Voucher);
+    const typeApply = ref(voucher.products != null);
+    const listproducts=ref(voucher.products!=null?voucher.products.join('\n'):[])
+    const changeDate = (e) => {
+      if (e.target.value == "") e.target.type = "datetime-local";
+    };
+    return { closeThis, voucher, typeApply,listproducts, changeDate };
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

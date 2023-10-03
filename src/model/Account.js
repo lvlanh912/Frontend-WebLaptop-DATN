@@ -1,6 +1,6 @@
 class Account{
     constructor(){
-        this._id=null,
+        this.id=null,
         this.username=null,
         this.password=null,
         this.fullname=null,

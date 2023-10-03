@@ -19,7 +19,7 @@
                                         alt="user image">
                                     </div>
                                     <div class="card-body">
-                                        <h4 class="py-2 text-dark">{{ account.Fullname }}</h4>
+                                        <h4 class="py-2 text-dark">{{ account.fullname }}</h4>
                                         <strong>Tài khoản {{ Roles }}</strong>
                                     </div>
                                 </div>

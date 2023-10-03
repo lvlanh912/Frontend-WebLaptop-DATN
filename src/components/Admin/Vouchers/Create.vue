@@ -71,7 +71,7 @@
               </div>
               <div class="col">
                 <div class="form-floating">
-                  <textarea v-model="voucher.products" class="form-control"
+                  <textarea v-model="listproducts" class="form-control"
                     placeholder="Nếu có nhiều sản phẩm thì ngăn cách nhau bởi dấu ;"></textarea>
                   <label>Sản phẩm áp dụng</label>
                 </div>
@@ -97,10 +97,10 @@ export default {
   setup(props,{emit}) {
     const voucher = reactive(new Voucher())
     const result = ref()
-    function closeThis(){
-      emit("closeAdd")
-    }
+    const listproducts=ref('')
+    const closeThis=()=>emit("closeAdd")
     async function onSubmit() {
+      voucher.products=listproducts.value.split('\n')
       result.value = await Add(voucher)
       //dữ liệu chưa valid hoặc lỗi trả từ bên server hoặc mất mạng :)))
       if (!result.value.success)
@@ -116,7 +116,7 @@ export default {
         })
      }
     }
-    return { voucher, onSubmit,closeThis }
+    return { voucher,listproducts, onSubmit,closeThis }
   }
 };
 </script>

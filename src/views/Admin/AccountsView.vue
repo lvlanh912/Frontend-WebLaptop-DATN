@@ -2,17 +2,11 @@
   <section class="w-100 position-relative" style="width: 100vw">
     <Teleport :to="'body'">
       <Create v-if="isShowForm" @closeModal="isShowForm = false" />
-      <Infor
-        v-if="isShowInfor"
-        :account="account_pick"
-        @closeInfor="isShowInfor = false"
-        @openEdit="isShowEdit=true;isShowInfor=false"
-      />
-      <Edit :account="account_pick"
-      v-if="isShowEdit" 
-      @closeEdit="isShowEdit=false" />
-
-     
+      <Infor v-if="isShowInfor" :account="account_pick" @closeInfor="isShowInfor = false" @openEdit="
+        isShowEdit = true;
+      isShowInfor = false;
+      " />
+      <Edit :account="account_pick" v-if="isShowEdit" @closeEdit="isShowEdit = false" @change="UpdateOne" />
     </Teleport>
     <div class="text-end">
       <button @click="isShowForm = !isShowForm" class="btn btn-primary">
@@ -27,20 +21,19 @@
     </div>
     <div v-else class="card mt-4 rounded-3 p-3">
       <div class="row mb-2">
-        <div class=" col-12 col-md-5 d-flex">
+        <div class="col-12 col-md-5 d-flex">
           Hiển thị
-          <select
-            @change="changepagesize"
-            v-model="pagesize"
+          <select @change="changepagesize" v-model="pagesize"
             class="pt-0 ms-2 form-select form-select-sm mt-0 mb-2 pb-0 me-3"
-            style="max-width: 100px;height: 25px !important;"
-          >
-            <option v-for="(option,index) in listpagesize"  :key="index">{{ option }}</option>
+            style="max-width: 100px; height: 25px !important">
+            <option v-for="(option, index) in listpagesize" :key="index">
+              {{ option }}
+            </option>
           </select>
           Bản ghi
         </div>
         <!-- Tìm kiếm/Lọc -->
-        <filter-form @filData="getFildata" @CancelFil="removeFil"/>
+        <filter-form @filData="getFildata" @CancelFil="removeFil" />
       </div>
       <div class="table-responsive">
         <table class="table table-inverse" style="width: 100%">
@@ -49,34 +42,26 @@
               <th class="fw-bold bg-light">Họ tên</th>
               <th @click="sortbyusername" class="fw-bold bg-light">
                 Username
-                <i
-                  :class="{
-                    'bi bi-arrow-down': true,
-                    'text-black-50': sort == 'username',
-                  }"
-                ></i>
-                <i
-                  :class="{
-                    'bi bi-arrow-up': true,
-                    'text-black-50': sort == 'username_desc',
-                  }"
-                ></i>
+                <i :class="{
+                  'bi bi-arrow-down': true,
+                  'text-black-50': sort == 'username',
+                }"></i>
+                <i :class="{
+                  'bi bi-arrow-up': true,
+                  'text-black-50': sort == 'username_desc',
+                }"></i>
               </th>
               <th class="fw-bold bg-light">Email</th>
               <th @click="sortbydate" class="fw-bold bg-light">
                 Ngày tham gia
-                <i
-                  :class="{
-                    'bi bi-arrow-down': true,
-                    'text-black-50': sort == 'date_desc',
-                  }"
-                ></i>
-                <i
-                  :class="{
-                    'bi bi-arrow-up': true,
-                    'text-black-50': sort == 'date',
-                  }"
-                ></i>
+                <i :class="{
+                  'bi bi-arrow-down': true,
+                  'text-black-50': sort == 'date_desc',
+                }"></i>
+                <i :class="{
+                  'bi bi-arrow-up': true,
+                  'text-black-50': sort == 'date',
+                }"></i>
               </th>
               <th class="fw-bold bg-light">Giới tính</th>
               <th class="fw-bold bg-light">Tuỳ chọn</th>
@@ -98,7 +83,7 @@
                   <a class="ms-2" @click="ShowEdit(Account)">
                     <i class="bi bi-pencil-fill text-blue fs-5"></i>
                   </a>
-                  <a class="ms-2">
+                  <a class="ms-2" @click="OnDelete(Account.id)">
                     <i class="bi bi-trash2-fill text-red fs-5"></i>
                   </a>
                 </div>
@@ -110,29 +95,14 @@
       <hr class="mb-0" />
       <nav class="d-flex justify-content-end pt-2">
         <ul class="pagination">
-          <li
-            v-if="pageindex > 1"
-            @click="changepage(--pageindex)"
-            class="page-item"
-          >
-            <a class="page-link" href="#!"
-              ><span>«</span><span class="sr-only"></span
-            ></a>
+          <li v-if="pageindex > 1" @click="changepage(--pageindex)" class="page-item">
+            <a class="page-link" href="#!"><span>«</span><span class="sr-only"></span></a>
           </li>
-          <li
-            v-for="(n,index) in totalpage" :key="index"
-            :class="{ 'page-item': true, active: pageindex == n }"
-          >
+          <li v-for="(n, index) in totalpage" :key="index" :class="{ 'page-item': true, active: pageindex == n }">
             <a @click="changepage(n)" class="page-link" href="#!">{{ n }}</a>
           </li>
-          <li
-            v-if="pageindex < totalpage"
-            @click="changepage(++pageindex)"
-            class="page-item"
-          >
-            <a class="page-link" href="#!"
-              ><span>»</span><span class="sr-only"></span
-            ></a>
+          <li v-if="pageindex < totalpage" @click="changepage(++pageindex)" class="page-item">
+            <a class="page-link" href="#!"><span>»</span><span class="sr-only"></span></a>
           </li>
         </ul>
       </nav>
@@ -148,8 +118,9 @@ import Create from "../../components/Admin/Accounts/Create.vue";
 import Infor from "../../components/Admin/Accounts/Infor.vue";
 import Edit from "../../components/Admin/Accounts/Edit.vue";
 import FilterForm from "../../components/Admin/Accounts/FilterForm.vue";
+import Swal from 'sweetalert2';
 export default {
-  components: { Create, Infor,Edit,FilterForm },
+  components: { Create, Infor, Edit, FilterForm },
   setup() {
     console.log(backendHost);
     const data = ref({ items: [] });
@@ -162,19 +133,19 @@ export default {
     const sort = ref();
     const isShowForm = ref(false);
     const isShowInfor = ref(false);
-    const isShowEdit  = ref(false)
+    const isShowEdit = ref(false);
     const account_pick = ref();
-    async function sortbyusername() {
+    const sortbyusername = async () => {
       if (sort.value == "username") sort.value = "username_desc";
       else sort.value = "username";
       data.value = await getData();
-    }
-    async function sortbydate() {
+    };
+    const sortbydate = async () => {
       if (sort.value == "date") sort.value = "date_desc";
       else sort.value = "date";
       data.value = await getData();
-    }
-    function gettime(time) {
+    };
+    const gettime = (time) => {
       let datetime = new Date(time);
       return (
         datetime.getDay() +
@@ -183,7 +154,7 @@ export default {
         "-" +
         datetime.getFullYear()
       );
-    }
+    };
     onBeforeMount(async () => {
       try {
         data.value = await getData();
@@ -195,48 +166,75 @@ export default {
       }
     });
     //lấy dữ liệu
-    async function getData() {
+    const getData = async () => {
       return await _accounts.Get_list_accounts(
         pageindex.value,
         pagesize.value,
         filterObj.value,
         sort.value
       );
-    }
+    };
     //lọc dữ liệu
-   async function getFildata(value) {
-     filterObj.value=value
-     data.value=await getData()
-    }
+    const getFildata = async (value) => {
+      filterObj.value = value;
+      data.value = await getData();
+    };
     //Huỷ lọc
-    async function removeFil(){
-      filterObj.value={}
-     data.value=await getData()
-    }
+    const removeFil = async () => {
+      filterObj.value = {};
+      data.value = await getData();
+    };
     //thay đổi trang
-    async function changepage(e) {
+    const changepage = async (e) => {
       loading.value = true;
       pageindex.value = e;
       data.value = await getData();
       loading.value = false;
-    }
+    };
     //hiển thị thông tin người dùng
-    function ShowInfor(e) {
+    const ShowInfor = (e) => {
       isShowInfor.value = true;
       account_pick.value = e;
-    }
+    };
     //hiển thị form chỉnh sửa
-    function ShowEdit(e) {
+    const ShowEdit = (e) => {
       isShowEdit.value = true;
       account_pick.value = e;
-    }
+    };
     //thay đổi số lượng hiển thị
-    async function changepagesize(e) {
+    const changepagesize = async (e) => {
       pageindex.value = 1;
       pagesize.value = e.target.value;
       data.value = await getData();
       totalpage.value = data.value.totalPages;
+    };
+    //Thay đổi dữ liệu trong danh sách vừa thực hiện sửa đổi ở com child
+    const UpdateOne = (e) => {
+      console.log("chạy");
+      data.value.items = data.value.items.map((item) => {
+        if (item.id == e.id) {
+          console.log(data.value);
+          //dừng tìm
+          return e;
+        }
+        return item;
+      });
+    };
+
+    //Xoá tài khoản khỏi CSDL
+    const OnDelete = async (id) => {
+      await _accounts.Delete(id)
+      data.value.items.forEach((item, index) => {
+        if (item.id == id) {
+          //xoá phần tử
+          data.value.items.splice(index, 1)
+          return;
+        }
+      })
     }
+
+
+
     return {
       data,
       Account,
@@ -258,7 +256,9 @@ export default {
       account_pick,
       ShowInfor,
       getFildata,
-      removeFil
+      removeFil,
+      UpdateOne,
+      OnDelete,
     };
   },
 };
