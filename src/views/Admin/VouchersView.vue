@@ -18,7 +18,9 @@
         Hiển thị
         <select class="pt-0 ms-2 form-select form-select-sm mt-0 mb-2 pb-0 me-3"
           style="max-width: 100px; height: 25px !important">
-          <option v-for="(option,index) in listpagesize" :key="index">{{ option }}</option>
+          <option v-for="(option, index) in listpagesize" :key="index">
+            {{ option }}
+          </option>
         </select>
         Bản ghi
       </div>
@@ -29,6 +31,15 @@
         <thead>
           <tr>
             <th class="fw-bold bg-light">Mã code</th>
+            <th class="fw-bold bg-light">
+              Ngày tạo
+              <i :class="{
+                'bi bi-arrow-down': true,
+              }"></i>
+              <i :class="{
+                'bi bi-arrow-up': true,
+              }"></i>
+            </th>
             <th class="fw-bold bg-light">
               Ngày bắt đầu
               <i :class="{
@@ -53,11 +64,18 @@
         </thead>
 
         <tbody>
-          <tr v-for="(item,index) in data.items" :key="index">
+          <tr v-for="(item, index) in data.items" :key="index">
             <td>{{ item.code }}</td>
+            <td>{{ item.createAt }}</td>
             <td>{{ item.startAt }}</td>
             <td>{{ item.endAt }}</td>
-            <td>{{ item.isDisable }}</td>
+            <td class="ms-3 ps-2">
+              <div :class="{
+                'bi-circle-fill': true,
+                'text-green': item.active,
+                'text-red': !item.active,
+              }"></div>
+            </td>
             <td>
               <div class="d-flex">
                 <a class="ms-2">
@@ -95,7 +113,7 @@
 <script>
 import { ref, onMounted, reactive, computed } from "vue";
 import voucherCreate from "../../components/Admin/Vouchers/Create.vue";
-import voucherEdit from "../../components/Admin/Vouchers/Edit.vue"
+import voucherEdit from "../../components/Admin/Vouchers/Edit.vue";
 import { GetAll } from "../../modules/admin/Voucher_Manager.js";
 export default {
   components: {
@@ -104,8 +122,8 @@ export default {
   },
   setup() {
     const showCreateForm = ref(false);
-    const showEditForm= ref(false)
-    const voucher_Selected=ref({})
+    const showEditForm = ref(false);
+    const voucher_Selected = ref({});
     const loading = ref(false);
     const listpagesize = [25, 50, 75, 100];
     const totalpage = ref(0);
@@ -118,17 +136,17 @@ export default {
       createTimeEnd: null,
     });
     const sort = ref();
-    const onEdit=(e)=>{
-     voucher_Selected.value=e
-     showEditForm.value=true
-    }
+    const onEdit = (e) => {
+      voucher_Selected.value = e;
+      showEditForm.value = true;
+    };
     onMounted(async () => {
       await Getdata();
       console.log(data.value);
     });
 
     //lấy dữ liệu
-    const Getdata=async ()=> {
+    const Getdata = async () => {
       data.value = await GetAll(
         pageindex.value,
         pagesize.value,
@@ -136,7 +154,7 @@ export default {
         sort.value
       );
       totalpage.value = data.value.pagesize;
-    }
+    };
     return {
       showCreateForm,
       showEditForm,

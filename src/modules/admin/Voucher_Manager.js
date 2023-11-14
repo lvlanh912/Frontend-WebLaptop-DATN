@@ -46,8 +46,10 @@ async function Add(Voucher){
 function convertdatetime(item){
     const _startAt = new Date(item.startAt);
     const _endAt=new Date(item.endAt)
+    const _CreateAt=new Date(item.createAt)
   return {
     ...item, // Giữ nguyên các thuộc tính khác
+    createAt:`${_CreateAt.toLocaleDateString()} ${_CreateAt.toLocaleTimeString()}`,
     startAt: `${_startAt.toLocaleDateString()} ${_startAt.toLocaleTimeString()}`,
     endAt: `${_endAt.toLocaleDateString()} ${_endAt.toLocaleTimeString()}`
   };

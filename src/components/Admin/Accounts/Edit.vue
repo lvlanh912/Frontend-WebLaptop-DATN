@@ -38,14 +38,14 @@
                 class="px-4 d-flex flex-column justify-content-center align-content-center"
               >
                 <p class="text-darker pt-2 mb-0">Quyền truy cập</p>
-                <select v-model="account_payload.roles">
-                  <option value="0" :selected="account_payload.roles == 0">
+                <select v-model="account_payload.role">
+                  <option value="0" :selected="account_payload.role == 0">
                     0 (vô hiệu hoá)
                   </option>
-                  <option value="1" :selected="account_payload.roles == 1">
+                  <option value="1" :selected="account_payload.role == 1">
                     1 (người dùng bình thường)
                   </option>
-                  <option value="2" :selected="account_payload.roles == 2">
+                  <option value="2" :selected="account_payload.role == 2">
                     2 (quản trị viên)
                   </option>
                 </select>
@@ -123,9 +123,8 @@ export default {
   },
   setup(props, { emit }) {
     const account_payload = props.account
-    const image_profile = computed(() => {
-      return backendHost + "/images/avatar/" + props.account.profile_image;
-    });
+    const image_profile= props.account.profileImage? backendHost+`/images/avatar/${props.account.profileImage}`:backendHost+'/images/avatar/'+'null_avatar.png'
+
     const gender = computed(() => {
       return props.account.Sex ? "Nam" : "Nữ";
     });
@@ -145,7 +144,7 @@ export default {
         Swal.fire({
           icon: "error",
           title: "Thất Bại",
-          text: err.message,
+          text: err.response.data.message??err.message,
         });
       }
     };

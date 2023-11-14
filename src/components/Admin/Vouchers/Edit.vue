@@ -108,9 +108,9 @@
               <div class="col">
                 <div class="form-floating">
                   <textarea
-                  v-model="listproducts"
+                    v-model="listproducts"
                     class="form-control"
-                    placeholder="Nếu có nhiều sản phẩm thì ngăn cách nhau bởi dấu ;"
+                    placeholder="Nếu có nhiều sản phẩm thì ngăn cách nhau bởi xuống dòng"
                   ></textarea>
                   <label>Sản phẩm áp dụng</label>
                 </div>

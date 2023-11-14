@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="card-body">
                                         <h4 class="py-2 text-dark">{{ account.fullname }}</h4>
-                                        <strong>Tài khoản {{ Roles }}</strong>
+                                        <strong>Tài khoản {{ Role }}</strong>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between  px-4">
@@ -72,17 +72,15 @@ export default {
     },
   },
   setup(props,{emit}){
-    const image_profile= computed(()=>{
-        if(props.account.profile_image!=null)
-        return backendHost+'/images/avatar/'+props.account.profile_image
-        return backendHost+'/images/avatar/'+'null_avatar.png'
-    })
+
+    //avatar tài khoản
+    const image_profile= props.account.profileImage? backendHost+`/images/avatar/${props.account.profileImage}`:backendHost+'/images/avatar/'+'null_avatar.png'
     const gender=computed(()=>{
-        return props.account.Sex?'Nam':'Nữ'
+        return props.account.sex?'Nam':'Nữ'
     })
     //Quyền của tài khoản
-    const Roles=computed(()=>{
-        switch(props.account.roles){
+    const Role=computed(()=>{
+        switch(props.account.role){
             case 0:
                 return "Đã bị khoá"
             case 1:
@@ -115,7 +113,7 @@ export default {
     function onEdit(){
         emit('openEdit')
     }
-    return {image_profile,gender,Roles,closeInfor,CreateAt,onEdit}
+    return {image_profile,gender,Role,closeInfor,CreateAt,onEdit}
   }
 
 }

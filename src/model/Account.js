@@ -5,13 +5,13 @@ class Account{
         this.password=null,
         this.fullname=null,
         this.address=null,
-        this.wardID=null,
+        this.WardId=null,
         this.phone=null,
         this.email=null,
-        this.profile_image=null,
+        this.ProfileImage=null,
         this.createAt=null,
         this.sex=null
-        this.roles=null
+        this.role=null
     }
 }
 

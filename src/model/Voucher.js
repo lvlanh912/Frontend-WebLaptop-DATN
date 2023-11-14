@@ -11,7 +11,7 @@ class Voucher{
         this.createAt=null,
         this.startAt=null,
         this.endAt=null
-        this.isDisable=null
+        this.active=null
     }
 }
 

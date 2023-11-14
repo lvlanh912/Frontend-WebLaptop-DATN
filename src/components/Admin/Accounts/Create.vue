@@ -85,7 +85,7 @@
               <div class="col-lg-6">
                 <div class="form-group mb-4">
                   <label>Xã, Phường</label>
-                  <select class="form-select" v-model="account.wardID">
+                  <select class="form-select" v-model="account.WardId">
                     <option v-for="ward in wards" :key="ward.id" :value="ward.id">
                       {{ ward.name }}
                     </option>
@@ -126,13 +126,13 @@ export default {
     const provinces = ref([]);
     const districts = ref([]);
     const wards = ref([]);
-    const profile_image = ref();
+    const ProfileImage = ref();
     async function get_districts() {
       wards.value = [];
       districts.value = await Get_List_districts(chosen_provices.value);
     }
     function uploadfile(e) {
-      profile_image.value = e.target.files[0];
+      ProfileImage.value = e.target.files[0];
     }
     async function get_wards() {
       wards.value = await Get_List_wards(chosen_district.value);
@@ -149,8 +149,7 @@ export default {
         alert("data invalid");
       } else {
         try {
-          console.log(account)
-          await add_account(account, profile_image.value);
+          await add_account(account, ProfileImage.value);
           Swal.fire({
             icon: "success",
             title: "Thành công",
