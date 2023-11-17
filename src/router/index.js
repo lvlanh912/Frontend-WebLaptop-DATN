@@ -10,6 +10,12 @@ const router = createRouter({
       name: 'admin',
       children:[
         {
+          path: 'quan-ly-don-hang',
+          name:'orders_manager',
+          meta: { title: 'Quản lý đơn hàng' },
+          component: ()=>import('../views/Admin/OrdersView.vue')
+        },
+        {
           path: 'quan-ly-tai-khoan',
           name:'user_manager',
           meta: { title: 'Quản lý tài khoản' },
@@ -20,6 +26,48 @@ const router = createRouter({
           name:'vouchers_manager',
           meta: { title: 'Quản lý Voucher' },
           component: ()=>import('../views/Admin/VouchersView.vue')
+        },
+        {
+          path: 'quan-ly-san-pham',
+          name:'products_manager',
+          meta: { title: 'Quản lý sản phẩm' },
+          component: ()=>import('../views/Admin/ProductsView.vue')
+        },
+        {
+          path: 'quan-ly-danh-muc-san-pham',
+          name:'categories_manager',
+          meta: { title: 'Quản lý danh mục sản phẩm' },
+          component: ()=>import('../views/Admin/CategoriesView.vue')
+        },
+        {
+          path: 'quan-ly-cong-thanh-toan',
+          name:'payments_manager',
+          meta: { title: 'Quản lý phương thức thanh toán' },
+          component: ()=>import('../views/Admin/PaymentsView.vue')
+        },
+        {
+          path: 'cham-soc-khach-hang',
+          name:'chats_manager',
+          meta: { title: 'Quản lý chat' },
+          component: ()=>import('../views/Admin/ChatsView.vue')
+        },
+        {
+          path: 'thong-ke',
+          name:'statistics_manager',
+          meta: { title: 'Thống kê' },
+          component: ()=>import('../views/Admin/StatisticsView.vue')
+        },
+        {
+          path: 'quan-ly-tin-tuc',
+          name:'news_manager',
+          meta: { title: 'Quản lý tin tức' },
+          component: ()=>import('../views/Admin/NewsView.vue')
+        },
+        {
+          path: 'quan-ly-danh-gia',
+          name:'comments_manager',
+          meta: { title: 'Quản lý đánh giá' },
+          component: ()=>import('../views/Admin/CommentsView.vue')
         }
       ],
       component: () => import('../views/Admin/HomeView.vue')

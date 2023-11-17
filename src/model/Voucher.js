@@ -6,7 +6,7 @@ class Voucher{
         this.value=null,
         this.isValue=true,
         this.maxReduce=null,
-        this.products=[],
+        this.products=null,
         this.quantity=null,
         this.createAt=null,
         this.startAt=null,

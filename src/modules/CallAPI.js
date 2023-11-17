@@ -6,7 +6,7 @@ class ResponseAPI {
 }
 //Account
 //Get
-async function Get_All_Account(page, size, filterobj, sort) {
+export async function Get_All_Account(page, size, filterobj, sort) {
   try {
     let query = {
       pageIndex: page,
@@ -29,8 +29,8 @@ async function Get_All_Account(page, size, filterobj, sort) {
     throw err;
   }
 }
-//thêm
-async function Create_new_account(payload) {
+//Add
+export async function Create_new_account(payload) {
   try {
     const response = await axios.post(`users`, payload, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -40,8 +40,8 @@ async function Create_new_account(payload) {
     throw err;
   }
 }
-//Sửa
-async function Edit_Account(id,payload){
+//Update
+export async function Edit_Account(id,payload){
   try {
     console.log(payload)
     const response = await axios.put(`/users/${id}`,payload,{
@@ -54,7 +54,7 @@ async function Edit_Account(id,payload){
     throw err;
   }
 }
-//Xoá Account
+//Delete
 export async function Delete_Account(id){
   try {
     const response= await axios.delete(`/users/${id}`)
@@ -66,7 +66,8 @@ export async function Delete_Account(id){
   }
 }
 
-async function Get_List_Province() {
+//bộ select địa chỉ
+export async function Get_List_Province() {
   try {
     const response = await axios.get(`/address/provinces`);
     let data = new ResponseAPI();
@@ -76,8 +77,7 @@ async function Get_List_Province() {
     throw err;
   }
 }
-
-async function Get_List_districts(provinceCode) {
+export async function Get_List_districts(provinceCode) {
   try {
     const response = await axios.get(
       `/address/districts?ProvinceCode=${provinceCode}`
@@ -89,8 +89,7 @@ async function Get_List_districts(provinceCode) {
     throw err;
   }
 }
-
-async function Get_List_wards(districtCode) {
+export async function Get_List_wards(districtCode) {
   try {
     const response = await axios.get(
       `address/wards?DistrictCode=${districtCode}`
@@ -106,7 +105,7 @@ async function Get_List_wards(districtCode) {
 //Voucher
 
 //Get
-async function Get_all_voucher(page,size,filterobj,sort){
+export async function Get_all_voucher(page,size,filterobj,sort){
   try{
     let query = {
       pageindex: page,
@@ -114,8 +113,9 @@ async function Get_all_voucher(page,size,filterobj,sort){
       keywords: filterobj.keywords,
       createTimeStart: filterobj.createTimeStart,
       createTimeEnd: filterobj.createTimeEnd,
+      active: filterobj.active,
       sort: sort,
-    }
+  }
     let response=await axios.get('/vouchers',{
       params:query
     })
@@ -128,8 +128,6 @@ async function Get_all_voucher(page,size,filterobj,sort){
   }
   
 }
-
-
 //Create
 export async function Create_new_Voucher(payload) {
   try {
@@ -141,14 +139,72 @@ export async function Create_new_Voucher(payload) {
     throw err;
   }
 }
+//Update
+export async function Edit_Voucher(payload,id) {
+  try {
+    const response = await axios.put(`vouchers/${id}`, payload,{
+      headers:{"Content-Type":"application/json"}
+    });
+    return response.data.message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Delete
+export async function Delete_Voucher(id){
+  try {
+    const response= await axios.delete(`/vouchers/${id}`)
+    return response.data.result
+  } 
+  catch (err) {
+    throw err
+  }
+}
 
-export {
-  Get_All_Account,
-  Edit_Account,
-  Get_List_Province,
-  Get_List_districts,
-  Get_List_wards,
-  Create_new_account,
-  Get_all_voucher
+//Phương thức thanh toán
+
+export async function Get_all_Payment(){
+  try{
+    let response=await axios.get('/payments',{
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
   
-};
+}
+//Create
+export async function Create_new_Payment(payload) {
+  try {
+    const response = await axios.post(`payments`, payload,{
+      headers:{"Content-Type":"application/json"}
+    });
+    return response.data.message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Update
+export async function Edit_Payment(payload,id) {
+  try {
+    const response = await axios.put(`payments/${id}`, payload,{
+      headers:{"Content-Type":"application/json"}
+    });
+    return response.data.message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Delete
+export async function Delete_Payment(id){
+  try {
+    const response= await axios.delete(`/payments/${id}`)
+    return response.data.result
+  } 
+  catch (err) {
+    throw err
+  }
+}
