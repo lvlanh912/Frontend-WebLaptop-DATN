@@ -1,19 +1,14 @@
 <template>
   <section class="w-100 position-relative" style="width: 100vw">
     <Teleport :to="'body'">
-      <Create v-if="isShowForm" @closeModal="isShowForm = false" />
-
-      <Infor v-if="isShowInfor" :account="account_pick" @closeInfor="isShowInfor = false" @openEdit="
-        isShowEdit = true;
-
-      isShowInfor = false;
-      " />
-
-      <Edit :account="account_pick" v-if="isShowEdit" @closeEdit="isShowEdit = false" @change="UpdateOne" />
+      <Create v-if="isShowCreate" @CloseEdit="isShowCreate = false" @reloadData="Getdata" :ParentCategory="Current_Category"  />
+      <Edit :category="category_pick" v-if="isShowEdit" @closeEdit="isShowEdit = false" @reload="Getdata" />
     </Teleport>
 
-    <div class="text-end">
-      <button @click="isShowForm = !isShowForm" class="btn btn-primary">
+    <div class="d-flex justify-content-between text-end">
+      <div class=" align-self-center">
+        <strong class="form-label text-blue fw-bolder fs-4">{{ Current_Category==null?'Danh sách danh mục gốc':"Danh sách danh mục con của: "+Current_Category.name }}</strong></div>
+      <button @click="isShowCreate = !isShowCreate" class="btn btn-primary">
         Tạo mới
       </button>
     </div>
@@ -30,7 +25,6 @@
       <div class="row mb-2">
         <div class="col-12 col-md-5 d-flex">
           Hiển thị
-
           <select @change="changepagesize" v-model="pagesize"
             class="pt-0 ms-2 form-select form-select-sm mt-0 mb-2 pb-0 me-3"
             style="max-width: 100px; height: 25px !important">
@@ -50,71 +44,42 @@
         <table class="table table-inverse" style="width: 100%">
           <thead>
             <tr>
-              <th class="fw-bold bg-light">Họ tên</th>
-
-              <th @click="sortbyusername" class="fw-bold bg-light">
-                Username
-
+              <th class="fw-bold bg-light">ID</th>
+              <th @click="sortbyName" class="fw-bold bg-light">
+                Tên danh mục
                 <i :class="{
                   'bi bi-arrow-down': true,
 
-                  'text-black-50': sort == 'username',
+                  'text-black-50': sort == 'name',
                 }"></i>
 
                 <i :class="{
                   'bi bi-arrow-up': true,
 
-                  'text-black-50': sort == 'username_desc',
+                  'text-black-50': sort == 'name_desc',
                 }"></i>
               </th>
-
-              <th class="fw-bold bg-light">Email</th>
-
-              <th @click="sortbydate" class="fw-bold bg-light">
-                Ngày tham gia
-
-                <i :class="{
-                  'bi bi-arrow-down': true,
-
-                  'text-black-50': sort == 'date_desc',
-                }"></i>
-
-                <i :class="{
-                  'bi bi-arrow-up': true,
-
-                  'text-black-50': sort == 'date',
-                }"></i>
-              </th>
-
-              <th class="fw-bold bg-light">Giới tính</th>
 
               <th class="fw-bold bg-light">Tuỳ chọn</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr v-for="Account in data.items" :key="Account.Id">
-              <td>{{ Account.fullname }}</td>
+            <tr v-for="Category in data.items" :key="Category.Id">
+              <td>
+                <router-link class=" link-opacity-10 text-decoration-none" :to="{name:'categories_manager',params:{id:Category.id}}">
+                {{ Category.id }}
+              </router-link>
+               </td>
 
-              <td>{{ Account.username }}</td>
-
-              <td>{{ Account.email }}</td>
-
-              <td>{{ gettime(Account.createAt) }}</td>
-
-              <td>{{ Account.sex === true ? "Nam" : "Nữ" }}</td>
+              <td>{{ Category.name }}</td>
 
               <td>
                 <div class="d-flex">
-                  <a class="ms-2" @click="ShowInfor(Account)">
-                    <i class="bi bi-info-circle text-success fs-5"></i>
-                  </a>
-
-                  <a class="ms-2" @click="ShowEdit(Account)">
+                  <a class="ms-2" @click="ShowEdit(Category)">
                     <i class="bi bi-pencil-fill text-blue fs-5"></i>
                   </a>
-
-                  <a class="ms-2" @click="OnDelete(Account.id)">
+                  <a class="ms-2" @click="OnDelete(Category.id)">
                     <i class="bi bi-trash2-fill text-red fs-5"></i>
                   </a>
                 </div>
@@ -146,17 +111,24 @@
 </template>
 
 <script>
-import { onBeforeMount, onMounted, reactive, ref } from "vue";
-import * as _accounts from "../../modules/admin/Account_Manager.js";
-import Account from "../../model/Account.js";
-import Create from "../../components/Admin/Accounts/Create.vue";
-import Infor from "../../components/Admin/Accounts/Infor.vue";
-import Edit from "../../components/Admin/Accounts/Edit.vue";
-import FilterForm from "../../components/Admin/Accounts/FilterForm.vue";
+import { onBeforeMount, onMounted, onUpdated, reactive, ref } from "vue";
+import { GetAll,GetbyId,Delete } from "../../modules/admin/Category_Manager.js";
+import Category from "../../model/Category.js";
+import Create from "../../components/Admin/Categories/Create.vue";
+import Edit from "../../components/Admin/Categories/Edit.vue";
+import FilterForm from "../../components/Admin/Categories/FilterForm.vue";
+import {  onBeforeRouteUpdate } from 'vue-router';
 export default {
-  components: { Create, Infor, Edit, FilterForm },
-  setup() {
+  components: { Create, Edit, FilterForm },
+  props:{
+    id:{
+      require:false,
+      default:null
+    }
+  },
+  setup(props) {
     const data = ref({ items: [] });
+    const ParentCategoryId=ref(props.id)
     const loading = ref(true);
     const pageindex = ref(1);
     const pagesize = ref(25);
@@ -164,33 +136,17 @@ export default {
     const totalpage = ref(1);
     const filterObj = ref({});
     const sort = ref();
-    const isShowForm = ref(false);
-    const isShowInfor = ref(false);
+    const isShowCreate = ref(false);
     const isShowEdit = ref(false);
-    const account_pick = ref();
-    const sortbyusername = async () => {
-      if (sort.value == "username") sort.value = "username_desc";
-      else sort.value = "username";
-      data.value = await Getdata();
-    };
-    const sortbydate = async () => {
-      if (sort.value == "date") sort.value = "date_desc";
-      else sort.value = "date";
-      data.value = await Getdata();
-    };
-    const gettime = (time) => {
-      let datetime = new Date(time);
-      return (
-        datetime.getDay() +
-        "-" +
-        datetime.getMonth() +
-        "-" +
-        datetime.getFullYear()
-      );
-    };
+    const category_pick = ref();
+    const Current_Category=ref(null)
     onBeforeMount(async () => {
       try {
-        data.value = await Getdata();
+        if(ParentCategoryId.value==''||ParentCategoryId.value==null)
+          ParentCategoryId.value=null
+        else
+        Current_Category.value=await GetbyId(ParentCategoryId.value).then(e=>e)
+        await Getdata();
         totalpage.value = data.value.totalPages;
         loading.value = false;
       } catch (error) {
@@ -198,66 +154,75 @@ export default {
         alert(error);
       }
     });
+    onBeforeRouteUpdate(async(to,from,next)=>{
+      if(to.params.id!=''){
+        ParentCategoryId.value=to.params.id
+        Current_Category.value= await GetbyId(ParentCategoryId.value)
+      }
+      else{
+        ParentCategoryId.value=null
+        Current_Category.value=null
+      }
+       
+      await Getdata()
+      next()
+    })
     //lấy dữ liệu
     const Getdata = async () => {
-      return await _accounts.Get_list_accounts(
+      data.value = await GetAll(
+        ParentCategoryId.value,
         pageindex.value,
         pagesize.value,
         filterObj.value,
         sort.value
       );
     };
+    //sắp xếp
+    const sortbyName = async () => {
+      sort.value == "name_desc"
+        ? (sort.value = "name")
+        : (sort.value = "name_desc");
+      await Getdata();
+    };
     //lọc dữ liệu
     const getFildata = async (value) => {
       filterObj.value = value;
-      data.value = await Getdata();
+      await Getdata();
     };
     //Huỷ lọc
     const removeFil = async () => {
       filterObj.value = {};
-      data.value = await Getdata();
+      await Getdata();
     };
     //thay đổi trang
     const changepage = async (e) => {
       loading.value = true;
       pageindex.value = e;
-      data.value = await Getdata();
+      await Getdata();
       loading.value = false;
     };
     //hiển thị thông tin người dùng
     const ShowInfor = (e) => {
       isShowInfor.value = true;
-      account_pick.value = e;
+      category_pick.value = e;
     };
     //hiển thị form chỉnh sửa
     const ShowEdit = (e) => {
       isShowEdit.value = true;
-      account_pick.value = e;
+      category_pick.value = e;
     };
     //thay đổi số lượng hiển thị
     const changepagesize = async (e) => {
       pageindex.value = 1;
       pagesize.value = e.target.value;
-      data.value = await Getdata();
+      await Getdata();
       totalpage.value = data.value.totalPages;
     };
-    //Thay đổi dữ liệu trong danh sách vừa thực hiện sửa đổi ở com child
-    const UpdateOne = (e) => {
-      data.value.items = data.value.items.map((item) => {
-        if (item.id == e.id) {
-          console.log(data.value);
-          //dừng tìm
-          return e;
-        }
-        return item;
-      });
-    };
-
-    //Xoá tài khoản khỏi CSDL
+    //Xoá danh mục khỏi CSDL
     const OnDelete = (id) => {
       Swal.fire({
         title: "Bạn chắc chứ?",
-        text: "Thao tác này sẽ xoá hoàn toàn tài khoản!",
+        text: "Thao tác này sẽ xoá hoàn toàn danh mục!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -266,7 +231,7 @@ export default {
       }).then(async (result) => {
         console.log(id);
         if (result.isConfirmed) {
-          await _accounts.Delete(id);
+          await Delete(id);
           //xoá phần tử trong danh sách
           data.value.items.forEach((item, index) => {
             if (item.id == id) {
@@ -280,28 +245,26 @@ export default {
 
     return {
       data,
-      Account,
+      Category,
+      sortbyName,
       pagesize,
       listpagesize,
+      Getdata,
       changepage,
       changepagesize,
       pageindex,
       totalpage,
-      isShowForm,
+      isShowCreate,
       sort,
       loading,
-      gettime,
-      sortbyusername,
-      sortbydate,
-      isShowInfor,
       isShowEdit,
       ShowEdit,
-      account_pick,
+      category_pick,
       ShowInfor,
       getFildata,
       removeFil,
-      UpdateOne,
       OnDelete,
+      Current_Category,
     };
   },
 };

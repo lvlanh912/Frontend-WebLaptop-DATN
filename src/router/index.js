@@ -34,10 +34,11 @@ const router = createRouter({
           component: ()=>import('../views/Admin/ProductsView.vue')
         },
         {
-          path: 'quan-ly-danh-muc-san-pham',
+          path: 'quan-ly-danh-muc-san-pham/:id?',
           name:'categories_manager',
           meta: { title: 'Quản lý danh mục sản phẩm' },
-          component: ()=>import('../views/Admin/CategoriesView.vue')
+          component: ()=>import('../views/Admin/CategoriesView.vue'),
+          props:true
         },
         {
           path: 'quan-ly-cong-thanh-toan',

@@ -66,6 +66,7 @@ export async function Delete_Account(id){
   }
 }
 
+
 //bộ select địa chỉ
 export async function Get_List_Province() {
   try {
@@ -103,7 +104,6 @@ export async function Get_List_wards(districtCode) {
 }
 
 //Voucher
-
 //Get
 export async function Get_all_voucher(page,size,filterobj,sort){
   try{
@@ -162,7 +162,7 @@ export async function Delete_Voucher(id){
 }
 
 //Phương thức thanh toán
-
+//Get
 export async function Get_all_Payment(){
   try{
     let response=await axios.get('/payments',{
@@ -202,6 +202,132 @@ export async function Edit_Payment(payload,id) {
 export async function Delete_Payment(id){
   try {
     const response= await axios.delete(`/payments/${id}`)
+    return response.data.result
+  } 
+  catch (err) {
+    throw err
+  }
+}
+
+//News
+
+//Get
+export async function Get_all_News(page,size,filterobj,sort){
+  try{
+    let query = {
+      pageindex: page,
+      pagesize: size,
+      keywords: filterobj.keywords,
+      startdate: filterobj.createTimeStart,
+      enddate: filterobj.createTimeEnd,
+      sort: sort,
+  }
+    let response=await axios.get('/news',{
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+  
+}
+//Create
+export async function Create_News(payload) {
+  try {
+    const response = await axios.post(`news`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data.Message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Update
+export async function Edit_News(payload,id) {
+  try {
+    const response = await axios.put(`news/${id}`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data.Message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Delete
+export async function Delete_News(id){
+  try {
+    const response= await axios.delete(`/news/${id}`)
+    return response.data.result
+  } 
+  catch (err) {
+    throw err
+  }
+}
+//Category
+//Get
+export async function Get_all_Category(ParentCategoryId,page,size,filterobj,sort){
+  try{
+    let query = {
+      pageindex: page,
+      pagesize: size,
+      keywords: filterobj.keywords,
+      sort: sort,
+  }
+    let response=await axios.get(ParentCategoryId!=null?`/categories/${ParentCategoryId}`:'/categories',{
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+  
+}
+//Create
+export async function Create_new_Category(payload) {
+  try {
+    const response = await axios.post(`categories`, payload,{
+      headers:{"Content-Type":"application/json"}
+    });
+    return response.data.message;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function Get_Category_by_id(CategoryId){
+  try{
+    if(CategoryId==undefined)
+    return
+    let response=await axios.get(`/categories/getbyId?id=${CategoryId}`)
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+}
+//Update
+export async function Edit_Category(payload,id) {
+  try {
+    const response = await axios.put(`categories/${id}`, payload,{
+      headers:{"Content-Type":"application/json"}
+    });
+    return response.data.message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Delete
+export async function Delete_Category(id){
+  try {
+    const response= await axios.delete(`/categories/${id}`)
     return response.data.result
   } 
   catch (err) {

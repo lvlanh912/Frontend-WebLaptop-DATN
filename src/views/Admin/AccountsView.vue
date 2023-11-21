@@ -1,7 +1,7 @@
 <template>
   <section class="w-100 position-relative" style="width: 100vw">
     <Teleport :to="'body'">
-      <Create v-if="isShowForm" @closeModal="isShowForm = false" />
+      <Create v-if="isShowCreate" @closeModal="isShowCreate = false" />
 
       <Infor v-if="isShowInfor" :account="account_pick" @closeInfor="isShowInfor = false" @openEdit="
         isShowEdit = true;
@@ -13,7 +13,7 @@
     </Teleport>
 
     <div class="text-end">
-      <button @click="isShowForm = !isShowForm" class="btn btn-primary">
+      <button @click="isShowCreate = !isShowCreate" class="btn btn-primary">
         Tạo mới
       </button>
     </div>
@@ -164,7 +164,7 @@ export default {
     const totalpage = ref(1);
     const filterObj = ref({});
     const sort = ref();
-    const isShowForm = ref(false);
+    const isShowCreate = ref(false);
     const isShowInfor = ref(false);
     const isShowEdit = ref(false);
     const account_pick = ref();
@@ -287,7 +287,7 @@ export default {
       changepagesize,
       pageindex,
       totalpage,
-      isShowForm,
+      isShowCreate,
       sort,
       loading,
       gettime,

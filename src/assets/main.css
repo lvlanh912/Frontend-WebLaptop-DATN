@@ -64,6 +64,9 @@
      color: var(--body-color) !important;
  }
 
+ .no-wrap{
+    white-space: nowrap!important;
+ }
  .max-line-1 {
      text-overflow: ellipsis;
      overflow: hidden;

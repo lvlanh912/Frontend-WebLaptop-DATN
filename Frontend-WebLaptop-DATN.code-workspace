@@ -20,7 +20,9 @@
 			"styles"
 		],
 		"typescript.tsdk": "node_modules/typescript/lib",
-		"prettier.htmlWhitespaceSensitivity": "strict"
+		"prettier.htmlWhitespaceSensitivity": "strict",
+		"vetur.validation.interpolation": false,
+		"typescript.validate.enable": false
 	},
 	"extensions": {
 		"recommendations": [

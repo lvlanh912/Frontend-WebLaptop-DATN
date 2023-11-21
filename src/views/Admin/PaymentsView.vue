@@ -1,12 +1,12 @@
 <template>
   <section class="w-100 position-relative" style="width: 100vw">
     <Teleport :to="'body'">
-      <Create v-if="isShowForm" @closeCreate="isShowForm = false" @reload="Getdata" />
+      <Create v-if="isShowCreate" @closeCreate="isShowCreate = false" @reload="Getdata" />
       <Edit :payment="payment_pick" v-if="isShowEdit" @closeEdit="isShowEdit = false" @reload="Getdata"/>
     </Teleport>
 
     <div class="text-end">
-      <button @click="isShowForm = !isShowForm" class="btn btn-primary">
+      <button @click="isShowCreate = !isShowCreate" class="btn btn-primary">
         Tạo mới
       </button>
     </div>
@@ -77,7 +77,7 @@ export default {
   setup() {
     const data = ref({ items: [] });
     const loading = ref(true);
-    const isShowForm = ref(false);
+    const isShowCreate = ref(false);
     const isShowEdit = ref(false);
     const payment_pick = ref();
    
@@ -133,7 +133,7 @@ export default {
       Getdata,
       data,
       Payment,
-      isShowForm,
+      isShowCreate,
       loading,
       isShowEdit,
       onEdit,
