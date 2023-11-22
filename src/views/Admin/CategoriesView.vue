@@ -222,23 +222,16 @@ export default {
     const OnDelete = (id) => {
       Swal.fire({
         title: "Bạn chắc chứ?",
-        text: "Thao tác này sẽ xoá hoàn toàn danh mục!",
+        text: "Thao tác này sẽ xoá hoàn toàn danh mục!, các danh mục con của danh mục này sẽ trở thành danh mục gốc",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Xoá!",
       }).then(async (result) => {
-        console.log(id);
         if (result.isConfirmed) {
           await Delete(id);
-          //xoá phần tử trong danh sách
-          data.value.items.forEach((item, index) => {
-            if (item.id == id) {
-              data.value.items.splice(index, 1);
-              return;
-            }
-          });
+          await Getdata();
         }
       });
     };

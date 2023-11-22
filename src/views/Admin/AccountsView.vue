@@ -1,7 +1,7 @@
 <template>
   <section class="w-100 position-relative" style="width: 100vw">
     <Teleport :to="'body'">
-      <Create v-if="isShowCreate" @closeModal="isShowCreate = false" />
+      <Create v-if="isShowCreate" @clodeEdit="isShowCreate = false" />
 
       <Infor v-if="isShowInfor" :account="account_pick" @closeInfor="isShowInfor = false" @openEdit="
         isShowEdit = true;

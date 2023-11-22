@@ -40,6 +40,7 @@ async function Add(Category) {
     return result;
   }
 }
+
 async function Edit(Category) {
   let result = {
     success: false,

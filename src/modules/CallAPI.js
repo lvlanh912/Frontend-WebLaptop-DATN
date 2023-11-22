@@ -65,8 +65,6 @@ export async function Delete_Account(id){
     
   }
 }
-
-
 //bộ select địa chỉ
 export async function Get_List_Province() {
   try {
@@ -102,7 +100,6 @@ export async function Get_List_wards(districtCode) {
     throw err;
   }
 }
-
 //Voucher
 //Get
 export async function Get_all_voucher(page,size,filterobj,sort){
@@ -288,6 +285,24 @@ export async function Get_all_Category(ParentCategoryId,page,size,filterobj,sort
   }
   
 }
+export async function FindCategoryByName(name){
+  try{
+    let query = {
+      name: name
+  }
+    let response=await axios.get(`/categories/getbyname`,
+    {
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+  
+}
 //Create
 export async function Create_new_Category(payload) {
   try {
@@ -299,7 +314,6 @@ export async function Create_new_Category(payload) {
     throw err;
   }
 }
-
 export async function Get_Category_by_id(CategoryId){
   try{
     if(CategoryId==undefined)
@@ -333,4 +347,31 @@ export async function Delete_Category(id){
   catch (err) {
     throw err
   }
+}
+//Product
+//Get
+export async function Get_all_Product(page,size,filterobj,sort){
+  try{
+    let query = {
+      pageindex: page,
+      pagesize: size,
+      keywords: filterobj.keywords,
+      category:filterobj.category,
+      brand:filterobj.brand,
+      min:filterobj.min,
+      max:filterobj.max,
+      sort: sort,
+  }
+    let response=await axios.get(`/products`,
+    {
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+  
 }
