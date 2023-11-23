@@ -1,14 +1,23 @@
-import {  Get_all_Product,FindCategoryByName } from "../CallAPI";
+import {  Get_all_Product,FindCategoryByName,Create_new_Product,Get_Category_by_id,Edit_Product,Delete_Product} from "../CallAPI";
 import removeEmptyFields from "../removeEmptyFields";
-
-function validateData(Product) {
-  if (Product.name == null || Product.name == "")
-    return "Tên không được để trống";
-}
-function validateId(id){
-    if(id.trim().length!=24)
-    return 'Dữ liệu đã nhập không phải định dạng ID hợp lệ';
-}
+import TemplateSpeacial from "./Template_Speacial_Product.js"
+import axios from 'axios'
+function ValidateData(Product,Images) {
+  if(Images.length==0)
+    return "Phải có ít nhất 1 ảnh sản phẩm"
+  if (Product.productName == null || Product.productName == "")
+    return "Tên sản phẩm không được để trống";
+  if(Product.price==null||Product.price==0||Product.price=="")
+    return "Giá sản phẩm không được để trống và lớn hơn 0"
+  if(Product.maxPrice==null||Product.maxPrice==0||Product.maxPrice=="")
+    return "Giá sản phẩm tối đa không được để trống và lớn hơn 0"
+  if(Product.maxPrice<=Product.price)
+    return "Giá sản phẩm tối đa phải lớn hơn giá sản phẩm"
+  if(Product.weight==''||Product.weight==null)
+   return "Cân nặng không được để trống"
+  if(Product.brandName==''||Product.brandName==null)
+    return "Vui lòng nhập thương hiệu"
+} 
 
 async function GetbyId(id){
     try{
@@ -35,40 +44,44 @@ async function FindCategory(name) {
     });
   }
 }
+async function GetListCategoryByListid(listId){
+  const result=[]
+  for(let i=0;i<listId.length;i++){
+    result.push(await Get_Category_by_id(listId[i]))
+  }
+   
+  return result
+}
+async function LinkImagetoFile(link){
+  const response= await axios.get(link,{
+    responseType: 'arraybuffer'
+  })
+  const blob = new Blob([response.data], { type: 'image/jpeg' });
+  return new File([blob], link, { type: 'image/jpeg' });
+}
 //Add
-async function Add(account, Listimage) {
-  if(Listimage.length<=0||Listimage==null||Listimage==undefined)
-    throw new Error("Phải có ít nhất 1 ảnh sản phẩm")
+async function Add(product, Listimage) {
     //xoá thuộc tính trống
-    let datajson = JSON.stringify(removeEmptyFields(account));
+    let datajson = JSON.stringify(removeEmptyFields(product));
     const formData = new FormData();
     formData.append("data", datajson);
     Listimage.forEach(element => {
       formData.append("images", element);
     });
     
-    return await Create_new_account(formData);
+    return await Create_new_Product(formData);
   }
-async function Edit(Product) {
-  let result = {
-    success: false,
-    data: {},
-  };
-  try {
-    let dataValid = validateData(Product);
-    const id=Product.id
-    if (dataValid === undefined) {
-      result.success = true;
-      let payload = JSON.stringify(removeEmptyFields(Product));
-      result.data = await Edit_Product(payload,id);
-    } 
-    else result.data = dataValid;
-  } catch (ex) {
-    result.success = false;
-    result.data = ex.message;
-  } finally {
-    return result;
-  }
+//Edit
+async function Edit(product,Listimage) {
+  //xoá thuộc tính trống
+  product.images=[]
+  let datajson = JSON.stringify(removeEmptyFields(product));
+  const formData = new FormData();
+  formData.append("data", datajson);
+  Listimage.forEach(element => {
+    formData.append("images", element);
+  });
+  return await Edit_Product(product.id,formData);
 }
 async function GetAll(page = 1, size = 25, filterobj, sort) {
   try {
@@ -100,4 +113,7 @@ async function Delete(id) {
   }
 }
 
-export { GetAll,FindCategory, Add,Edit, validateData,Delete,GetbyId,validateId };
+export { GetAll,FindCategory, Add,Edit, 
+  ValidateData,Delete,GetbyId,
+  TemplateSpeacial,GetListCategoryByListid,LinkImagetoFile
+ };

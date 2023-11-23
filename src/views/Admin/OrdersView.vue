@@ -2,13 +2,10 @@
   <section class="w-100 position-relative" style="width: 100vw">
     <Teleport :to="'body'">
       <Create v-if="isShowCreate" @clodeEdit="isShowCreate = false" />
-
       <Infor v-if="isShowInfor" :account="account_pick" @closeInfor="isShowInfor = false" @openEdit="
         isShowEdit = true;
-
       isShowInfor = false;
       " />
-
       <Edit :account="account_pick" v-if="isShowEdit" @closeEdit="isShowEdit = false" @change="UpdateOne" />
     </Teleport>
 

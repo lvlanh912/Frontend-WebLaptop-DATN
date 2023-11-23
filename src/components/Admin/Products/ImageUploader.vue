@@ -12,7 +12,7 @@
             type="button"
             @click="RemoveImage(index)"
             class="btn btn-danger position-absolute top-0 start-0 py-1"
-            >-</button
+            ><i class=" bi bi-trash"></i></button
           >
         </div>
         <label for="file-upload" class="p-2">
@@ -40,11 +40,27 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
+import {LinkImagetoFile} from '../../../modules/admin/Product_Manager.js'
 export default {
+  props:{
+    //linkimage
+    inputImage:{
+      require:false
+    }
+  },
   setup(props, { emits }) {
     const imagesView = ref([]);
     const Images=ref([])
+    onMounted(async ()=>{
+      if(props.inputImage){
+        for(let i=0;i<props.inputImage.length;i++)
+        {
+          Images.value.push(await LinkImagetoFile(props.inputImage[i]))
+          imagesView.value.push(URL.createObjectURL(Images.value[i]))
+        }
+      }
+    })
     const UploadChange = () => {};
     const AddImage = (e) => {
         imagesView.value.push(URL.createObjectURL(e.target.files[0]));
@@ -58,6 +74,7 @@ export default {
 
     return {
       AddImage,
+      Images,
       imagesView,
       RemoveImage,
       UploadChange,

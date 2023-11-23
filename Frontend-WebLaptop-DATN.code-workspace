@@ -20,9 +20,29 @@
 			"styles"
 		],
 		"typescript.tsdk": "node_modules/typescript/lib",
-		"prettier.htmlWhitespaceSensitivity": "strict",
+		"prettier.htmlWhitespaceSensitivity": "ignore",
 		"vetur.validation.interpolation": false,
-		"typescript.validate.enable": false
+		"typescript.validate.enable": false,
+		"html-css-class-completion.HTMLLanguages": [
+		
+			"html",
+			"vue",
+			"razor",
+			"blade",
+			"handlebars",
+			"twig",
+			"django-html",
+			"php",
+			"markdown",
+			"erb",
+			"ejs",
+			"svelte"
+		],
+		"prettier.bracketSameLine": false,
+		"prettier.bracketSpacing": false,
+		"prettier.proseWrap": "never",
+		"prettier.semi": false,
+		"prettier.singleAttributePerLine": false
 	},
 	"extensions": {
 		"recommendations": [

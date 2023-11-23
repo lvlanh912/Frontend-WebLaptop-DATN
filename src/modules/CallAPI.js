@@ -375,3 +375,35 @@ export async function Get_all_Product(page,size,filterobj,sort){
   }
   
 }
+//Create
+//Add
+export async function Create_new_Product(payload) {
+  try {
+    const response = await axios.post(`products`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data.Message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Edit
+export async function Edit_Product(id,payload) {
+  try {
+    const response = await axios.put(`products/${id}`, payload, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data.Message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Delete
+export async function Delete_Product(id){
+  try {
+    const response = await axios.delete(`products/${id}`)
+    return response.data.Message;
+  } catch (err) {
+    throw err;
+  }
+}
