@@ -407,3 +407,34 @@ export async function Delete_Product(id){
     throw err;
   }
 }
+
+//Orders
+//get
+export async function Get_all_Order(page,size,filterobj,sort){
+  try{
+    let query = {
+      pageindex: page,
+      pagesize: size,
+      accountid: filterobj.accountid,
+      status:filterobj.status,
+      isPaid:filterobj.isPaid,
+      paymentId:filterobj.paymentId,
+      minPaid:filterobj.minPaid,
+      maxPaid:filterobj.maxPaid,
+      startdate:filterobj.startdate,
+      enddate:filterobj.enddate,
+      sort: sort,
+  }
+    let response=await axios.get(`/orders`,
+    {
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+  
+}

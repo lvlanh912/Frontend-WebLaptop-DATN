@@ -1,12 +1,12 @@
 <template>
   <section class="w-100 position-relative" style="width: 100vw">
     <Teleport :to="'body'">
-      <Create v-if="isShowCreate" @clodeEdit="isShowCreate = false" />
-      <Infor v-if="isShowInfor" :account="account_pick" @closeInfor="isShowInfor = false" @openEdit="
+      <Create v-if="isShowCreate" @closeAdd="isShowCreate = false" />
+      <Infor v-if="isShowInfor" :order="order_pick" @closeInfor="isShowInfor = false" @openEdit="
         isShowEdit = true;
       isShowInfor = false;
       " />
-      <Edit :account="account_pick" v-if="isShowEdit" @closeEdit="isShowEdit = false" @change="UpdateOne" />
+      <Edit :order="order_pick" v-if="isShowEdit" @closeEdit="isShowEdit = false" @change="UpdateOne" />
     </Teleport>
 
     <div class="text-end">
@@ -47,71 +47,69 @@
         <table class="table table-inverse" style="width: 100%">
           <thead>
             <tr>
-              <th class="fw-bold bg-light">Họ tên</th>
+              <th class="fw-bold bg-light">STT</th>
 
-              <th @click="sortbyusername" class="fw-bold bg-light">
-                Username
+              <th  class="fw-bold bg-light">Người nhận hàng</th>
 
-                <i :class="{
-                  'bi bi-arrow-down': true,
-
-                  'text-black-50': sort == 'username',
-                }"></i>
-
-                <i :class="{
-                  'bi bi-arrow-up': true,
-
-                  'text-black-50': sort == 'username_desc',
-                }"></i>
+              <th @click="sortbydate" class="fw-bold bg-light">Ngày đặt hàng
+                <i :class="{'bi bi-arrow-down': true,'text-black-50': sort == 'date',}"></i>
+                <i :class="{'bi bi-arrow-up': true,'text-black-50': sort == 'date_desc',}"></i>
               </th>
 
-              <th class="fw-bold bg-light">Email</th>
-
-              <th @click="sortbydate" class="fw-bold bg-light">
-                Ngày tham gia
-
-                <i :class="{
-                  'bi bi-arrow-down': true,
-
-                  'text-black-50': sort == 'date_desc',
-                }"></i>
-
-                <i :class="{
-                  'bi bi-arrow-up': true,
-
-                  'text-black-50': sort == 'date',
-                }"></i>
+              <th class="fw-bold bg-light">
+                Trạng thái đơn hàng
               </th>
-
-              <th class="fw-bold bg-light">Giới tính</th>
+              <th @click="sortbypay" class="fw-bold bg-light">Tình trạng thanh toán
+                <i :class="{'bi bi-arrow-down': true,'text-black-50': sort == 'ispaid',}"></i>
+                <i :class="{'bi bi-arrow-up': true,'text-black-50': sort == 'ispaid_desc',}"></i>
+              </th>
+              <th @click="sortbytotal" class="fw-bold bg-light">Giá trị
+                <i :class="{'bi bi-arrow-down': true,'text-black-50': sort == 'total',}"></i>
+                <i :class="{'bi bi-arrow-up': true,'text-black-50': sort == 'total_desc',}"></i>
+              </th>
 
               <th class="fw-bold bg-light">Tuỳ chọn</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr v-for="Account in data.items" :key="Account.Id">
-              <td>{{ Account.fullname }}</td>
+            <tr v-for="Order,index in data.items" :key="Order.Id">
+              <td>{{ ++index}}</td>
 
-              <td>{{ Account.username }}</td>
+              <td>{{ Order.shippingAddress.fullname }}</td>
 
-              <td>{{ Account.email }}</td>
-
-              <td>{{ gettime(Account.createAt) }}</td>
-
-              <td>{{ Account.sex === true ? "Nam" : "Nữ" }}</td>
+              <td>{{convertTime(Order.createAt)}}</td>
 
               <td>
+                <i :class="{'bi bi-circle-fill me-1':true,'text-yellow':Order.status.code==1,
+                'text-blue':Order.status.code==2,
+                'text-green':Order.status.code==3,
+                'text-red':Order.status.code==0,
+              }"></i>
+                {{Order.status.description}}
+              </td>
+
+              <td>
+                <i :class="{'bi bi-circle-fill me-1':true,
+                'text-yellow':!Order.isPaid,
+                'text-green':Order.isPaid,
+                'text-red':Order.status.code==0
+              }"></i>
+                {{ Order.status.code!=0? Order.isPaid === true ? "Đã thanh toán" : "Chưa thanh toán":"Đã huỷ" }}</td>
+              <td>
+                {{ ConvertTotal(Order.total) }}
+              </td>
+                <td>
                 <div class="d-flex">
-                  <a class="ms-2" @click="ShowInfor(Account)">
+                  <a class="ms-2" @click="ShowInfor(Order)">
                     <i class="bi bi-info-circle text-success fs-5"></i>
                   </a>
 
-                  <a class="ms-2" @click="ShowEdit(Account)">
+                  <a class="ms-2" @click="ShowEdit(Order)">
                     <i class="bi bi-pencil-fill text-blue fs-5"></i>
                   </a>
 
-                  <a class="ms-2" @click="OnDelete(Account.id)">
+                  <a class="ms-2" @click="OnDelete(Order.id)">
                     <i class="bi bi-trash2-fill text-red fs-5"></i>
                   </a>
                 </div>
@@ -144,12 +142,12 @@
 
 <script>
 import { onBeforeMount, onMounted, reactive, ref } from "vue";
-import * as _accounts from "../../modules/admin/Account_Manager.js";
-import Account from "../../model/Account.js";
-import Create from "../../components/Admin/Accounts/Create.vue";
-import Infor from "../../components/Admin/Accounts/Infor.vue";
-import Edit from "../../components/Admin/Accounts/Edit.vue";
-import FilterForm from "../../components/Admin/Accounts/FilterForm.vue";
+import {GetAll} from "../../modules/admin/Order_Manager.js";
+import Order from "../../model/Order.js";
+import Create from "../../components/Admin/Orders/Create.vue";
+import Infor from "../../components/Admin/Orders/Infor.vue";
+import Edit from "../../components/Admin/Orders/Edit.vue";
+import FilterForm from "../../components/Admin/Orders/FilterForm.vue";
 export default {
   components: { Create, Infor, Edit, FilterForm },
   setup() {
@@ -164,30 +162,33 @@ export default {
     const isShowCreate = ref(false);
     const isShowInfor = ref(false);
     const isShowEdit = ref(false);
-    const account_pick = ref();
-    const sortbyusername = async () => {
-      if (sort.value == "username") sort.value = "username_desc";
-      else sort.value = "username";
-      data.value = await Getdata();
-    };
+    const order_pick = ref();
     const sortbydate = async () => {
       if (sort.value == "date") sort.value = "date_desc";
       else sort.value = "date";
-      data.value = await Getdata();
+       await Getdata();
     };
-    const gettime = (time) => {
-      let datetime = new Date(time);
-      return (
-        datetime.getDay() +
-        "-" +
-        datetime.getMonth() +
-        "-" +
-        datetime.getFullYear()
-      );
+    const sortbypay = async () => {
+      if (sort.value == "ispaid") sort.value = "ispaid_desc";
+      else sort.value = "ispaid";
+       await Getdata();
     };
+    const sortbytotal = async () => {
+      if (sort.value == "total") sort.value = "total_desc";
+      else sort.value = "total";
+       await Getdata();
+    };
+    const convertTime = (time) => {
+      const date= new Date(time)
+      return date.toLocaleDateString()
+    }
+    const ConvertTotal=(e)=>{
+      return e.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+    }
+
     onBeforeMount(async () => {
       try {
-        data.value = await Getdata();
+         await Getdata();
         totalpage.value = data.value.totalPages;
         loading.value = false;
       } catch (error) {
@@ -197,45 +198,46 @@ export default {
     });
     //lấy dữ liệu
     const Getdata = async () => {
-      return await _accounts.Get_list_accounts(
+      data.value = await GetAll(
         pageindex.value,
         pagesize.value,
         filterObj.value,
         sort.value
       );
+      totalpage.value = data.value.totalPages;
     };
     //lọc dữ liệu
     const getFildata = async (value) => {
       filterObj.value = value;
-      data.value = await Getdata();
+       await Getdata();
     };
     //Huỷ lọc
     const removeFil = async () => {
       filterObj.value = {};
-      data.value = await Getdata();
+      await Getdata();
     };
     //thay đổi trang
     const changepage = async (e) => {
       loading.value = true;
       pageindex.value = e;
-      data.value = await Getdata();
+      await Getdata();
       loading.value = false;
     };
     //hiển thị thông tin người dùng
     const ShowInfor = (e) => {
       isShowInfor.value = true;
-      account_pick.value = e;
+      order_pick.value = e;
     };
     //hiển thị form chỉnh sửa
     const ShowEdit = (e) => {
       isShowEdit.value = true;
-      account_pick.value = e;
+      order_pick.value = e;
     };
     //thay đổi số lượng hiển thị
     const changepagesize = async (e) => {
       pageindex.value = 1;
       pagesize.value = e.target.value;
-      data.value = await Getdata();
+       await Getdata();
       totalpage.value = data.value.totalPages;
     };
     //Thay đổi dữ liệu trong danh sách vừa thực hiện sửa đổi ở com child
@@ -263,7 +265,7 @@ export default {
       }).then(async (result) => {
         console.log(id);
         if (result.isConfirmed) {
-          await _accounts.Delete(id);
+          await _orders.Delete(id);
           //xoá phần tử trong danh sách
           data.value.items.forEach((item, index) => {
             if (item.id == id) {
@@ -277,7 +279,7 @@ export default {
 
     return {
       data,
-      Account,
+      Order,
       pagesize,
       listpagesize,
       changepage,
@@ -287,13 +289,15 @@ export default {
       isShowCreate,
       sort,
       loading,
-      gettime,
-      sortbyusername,
+      convertTime,
       sortbydate,
+      sortbypay,
+      sortbytotal,
+      ConvertTotal,
       isShowInfor,
       isShowEdit,
       ShowEdit,
-      account_pick,
+      order_pick,
       ShowInfor,
       getFildata,
       removeFil,
