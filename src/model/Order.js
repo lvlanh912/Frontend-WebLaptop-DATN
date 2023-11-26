@@ -4,7 +4,7 @@ class Order {
     this.paymentMethod=null,//object
     this.accountId=null,
     this.items=[],
-    this.status={},//object
+    this.status=null,//object
     this.shippingAddress={},//object
     this.total=null,
     this.voucher={},//object

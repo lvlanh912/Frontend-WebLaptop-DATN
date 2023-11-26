@@ -224,7 +224,7 @@ export default {
           Swal.fire({
             icon: "success",
             title: "Thành công",
-            text: "Thêm sản phẩm mới thành công",
+            text: "Đã cập nhật sản phẩm",
           }).then(() => {
             emit('reload')
             closeform()

@@ -9,7 +9,7 @@
         <form>
           <div class="modal-body">
             <div class="row mb-2">
-              <product-select></product-select>
+              <product-select ref="Com_ProductSelected"></product-select>
               <div class="col-lg-6">
                 <div class="form-group">
                   <label class="form-label">Mã giảm giá (nếu có)</label>
@@ -76,7 +76,7 @@
 <script>
 import Order from "../../../model/Order.js";
 import { reactive, ref } from "vue";
-import {  } from "../../../modules/admin/Order_Manager.js";
+import { Add } from "../../../modules/admin/Order_Manager.js";
 import ProductSelect from "./ProductSelect.vue";
 
 export default {
@@ -87,28 +87,37 @@ export default {
     const order = reactive(new Order());
     const result = ref();
     const closeThis = () => emit("closeAdd");
-
-  
+    const Com_ProductSelected=ref(null)
     async function onSubmit() {
-     
-     // result.value = await Add(voucher);
+    order.items=Com_ProductSelected.value.selected_product
+    console.log(order)
+    result.value=await Add(order)
+    
+      
       //dữ liệu chưa valid hoặc lỗi trả từ bên server hoặc mất mạng :)))
-      if (!result.value.success)
-        Swal.fire({
-          icon: "warning",
-          title: result.value.data,
-        });
+      if (!result.value.success){
+
+        console.log(result.value)
+          Swal.fire({
+            icon: "warning",
+            title: result.value.data,
+          });
+      }
       else {
         Swal.fire({
           icon: "success",
           title: "Thêm thành công",
         });
+        emit('reloadData')
+        closeThis()
       }
     }
     return {
       order,
       onSubmit,
       closeThis,
+      Com_ProductSelected,
+
     };
   },
 };

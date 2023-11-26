@@ -438,3 +438,58 @@ export async function Get_all_Order(page,size,filterobj,sort){
   }
   
 }
+
+export async function Get_all_ProductsbyKeyword(keyword){
+  try{
+    let query = {
+      keywords:keyword
+  }
+    let response=await axios.get(`/products/search`,
+    {
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+  
+}
+//create
+export async function Create_new_Order(payload) {
+  try {
+    const response = await axios.post(`orders/create`, payload,{
+      headers:{"Content-Type":"application/json"}
+    });
+    return response.data.message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Update
+export async function Update_Order(id,shippingAddress,ispaid,status) {
+  try {
+    let query = {
+      ispaid:ispaid,
+      status:status,
+    }
+    const response = await axios.put(`orders/${id}`, shippingAddress,{
+      params:query,
+      headers:{"Content-Type":"application/json"}
+    });
+    return response.data.message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Delete
+export async function Delete_Order(id){
+  try {
+    const response = await axios.delete(`orders/${id}`)
+    return response.data.Message;
+  } catch (err) {
+    throw err;
+  }
+}

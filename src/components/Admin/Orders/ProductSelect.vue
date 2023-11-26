@@ -3,30 +3,40 @@
 <div class=" mb-2">
     <strong>Sản phẩm đã chọn:</strong>
     <div v-for="item,index in selected_product" :key="index"
-     class=" dropdown-item d-flex">
-        <div class=" position-relative" style="width: 4rem;height: 4rem;">
-            <div class="align-self-center">
-                <img class="img-thumbnail border-0" :src="BackendHost+'/images/products/'+item.product.Images[0]" alt="">
-            </div>
-        </div>
-            <!-- Tên sản phẩm -->
-        <span class="rounded-circle p-1">{{ item.product.productName }}</span>
+     class=" dropdown-item d-flex justify-content-between">
+     <div class="d-flex">
+       <div class=" position-relative" style="width: 4rem;height: 4rem;">
+           <div class="align-self-center">
+               <img class="img-thumbnail border-0" :src="BackendHost+'/images/products/'+item.product.images[0]" alt="">
+           </div>
+       </div>
+           <!-- Tên sản phẩm -->
+       <span class="rounded-circle p-1">{{ item.product.productName }}</span>
+     </div>
+     <!-- Số lượng -->
+     <div class="d-flex align-self-center justify-content-end">
+       <i @click="DecreseQuantity(item)" class="bi bi-dash text-white bg-red px-2 align-self-center py-2"></i>
+        <input @input="GetProduct" v-model="item.quantity" class="form-control text-center" style="max-width: 55px;" type="text">
+        <i @click="increseQuantity(item)" class="bi bi-plus text-white bg-blue px-2 align-self-center py-2"></i>
+        <i @click="DeleteChoosen(index)" class="bi bi-trash text-white bg-red px-2 align-self-center py-2 ms-2"></i>
+     </div>
     </div>
 </div>
 <br>
   <!-- Danh sách sản phẩm -->
   <div class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
     <div class="p-2 mb-2 bg-light border-bottom">
-      <input v-model="keywords" type="text" class="form-control" autocomplete="false" placeholder="Type to filter...">
+      <input @input="GetProduct" v-model="keywords" type="text" class="form-control" autocomplete="false" placeholder="Type to filter...">
     </div>
-    <ul class="list-unstyled mb-0">
-      <li  v-for="item,index in list_products" :key="index"
+    <ul  class="list-unstyled mb-0">
+      <li v-if="loading" class=" spinner-border"></li>
+      <li v-else  v-for="item,index in list_products" :key="index"
       @click="OnSelect(item)"
         class="d-flex dropdown-item">
         <!-- Ảnh sản phẩm -->
         <div class=" position-relative" style="width: 4rem;height: 4rem;">
             <div class="align-self-center">
-                <img class="img-thumbnail border-0" :src="BackendHost+'/images/products/'+item.Images[0]" alt="">
+                <img class="img-thumbnail border-0" :src="BackendHost+'/images/products/'+item.images[0]" alt="">
             </div>
         </div>
             <!-- Tên sản phẩm -->
@@ -40,56 +50,13 @@
 
 <script>
 import {ref} from "vue"
-
+import {Search_Product} from '../../../modules/admin/Order_Manager.js'
 export default {
   setup(props, {emit}) {
     const BackendHost=ref(backendHost)
     const keywords = ref("")
-    const list_products = ref([
-      {
-        id:"aaksasjsj",
-        productName: "Sản phẩm 1",
-        Price: 50000,
-        Product_CategoriesID: [],
-        Max_Price: 60000,
-        CreateAt: {
-          $date: "2023-11-23T15:00:34.850Z",
-        },
-        Images: [
-          "products655f6912764490c6b14390a7-0.jpg",
-          "products655f6912764490c6b14390a7-1.jpg",
-        ],
-        Stock: 36,
-        Sold: 64,
-        View: {
-          $numberLong: "0",
-        },
-        Brand_name: "SAMSUNG",
-        Weight: 500,
-        Special: [],
-      },
-      {
-        productName: "Sản phẩm 2",
-        Price: 50000,
-        Product_CategoriesID: [],
-        Max_Price: 60000,
-        CreateAt: {
-          $date: "2023-11-23T15:00:34.850Z",
-        },
-        Images: [
-          "products655f6912764490c6b14390a7-0.jpg",
-          "products655f6912764490c6b14390a7-1.jpg",
-        ],
-        Stock: 36,
-        Sold: 64,
-        View: {
-          $numberLong: "0",
-        },
-        Brand_name: "SAMSUNG",
-        Weight: 500,
-        Special: [],
-      },
-    ])
+    const loading=ref(false)
+    const list_products = ref([])
     const selected_product = ref([])
     const OnSelect=(product)=>{
         //Nếu chưa có sản phẩm mới thêm
@@ -102,12 +69,41 @@ export default {
         }
         console.log(selected_product.value)
     }
-    const GetProduct = () => {}
+    const DecreseQuantity=(product_select)=>{
+      if(product_select.quantity==1)
+        return product_select.quantity
+      return --product_select.quantity
+    }
+     const increseQuantity=(product_select)=> ++product_select.quantity
+    const DeleteChoosen=(index)=>selected_product.value.splice(index,1)
+    
+    let timeoutId
+      const GetProduct= ()=>{
+        clearTimeout(timeoutId);
+        try{
+          timeoutId = setTimeout(async ()=> {
+            if(keywords.value.trim()!=''){
+              loading.value=true
+              list_products.value=await Search_Product(keywords.value)
+              loading.value=false
+            }
+            else
+            list_products.value=[]
+         
+          }, 1000);
+        }
+        catch{}
+      }
     return {
+      GetProduct,
+      loading,
       list_products,
       selected_product,
       keywords,OnSelect,
-      BackendHost
+      BackendHost,
+      DecreseQuantity,
+      increseQuantity,
+      DeleteChoosen,
     }
   },
 }
