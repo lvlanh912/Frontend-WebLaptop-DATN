@@ -4,6 +4,7 @@ class ResponseAPI {
     (this.Message = "Success"), (this.Result = {});
   }
 }
+export default ResponseAPI
 //Account
 //Get
 export async function Get_All_Account(page, size, filterobj, sort) {

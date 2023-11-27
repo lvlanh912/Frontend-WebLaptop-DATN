@@ -1,92 +1,133 @@
-<template >
-  <div :class="{'col-12 col-sm-6 col-md-4 col-xl-3 p-2':!showfull,'col-12':showfull}">
-   <div class="card text-center">
-    <router-link :to="{name:'home'}">
-      <img :src="item.image[0]" class="card-img-top" alt="...">
-    </router-link>
-    <div class="card-body">
-    <router-link :to="{name:'home'}" class="card-title name--product fs-5">{{ item.name }}</router-link>
-    <h6 class="fs-3 fw-bold price--product"> {{ toVND(item.new_price) }}</h6>
-    <p class=" d-inline-block card-text fs-4 old-price fw-normal text-decoration-line-through">{{ toVND(item.old_price) }}
-    </p>
-    <span class="product-discout badge bg-danger text-white ms-3 fs-6">{{discount}}%</span>
-    <slot>
-    </slot>
-    <div class="d-flex justify-content-between">
-      <p class="m-0 d-inline-block text-start d-flex align-items-center has fw-bold">
-        <i class="bi bi-check-circle fs-3"></i>
-        &nbsp;
-        Còn hàng
-      </p>
-      <span @click="showAlert" class="rounded-3 btn add-cart d-block border-0 px-3"><i class="fs-3 bi bi-cart text-white px-2"></i></span>
+<template>
+  <div class="bg-white pt-2 pb-2 overflow-hidden text-center col-12 col-lg-3 col-md-6  border">
+    <a href="#" class="position-relative pb-2 mb-2 d-block text-dark text-decoration-none justify-content-center">
+      <img class="img-product img-fluid" :src="backendhost+'/images/products/'+item.images[0]"
+        alt="">
+    </a>
+    <!-- Tên sản phẩm -->
+    <div class="py-1" style="min-height: 60px;">
+      <span href="" class="mb-2 max-line-2 overflow-hidden">
+        <h3 class="name--product text-decoration-none">{{item.productName}}</h3>
+      </span>
     </div>
-  </div>
-   </div>
+    <!-- Giá sản phẩm -->
+    <div class="">
+      <!-- Giá bán -->
+      <h6 class="fs-4 fw-bold price--product">{{ toVND(item.price) }}</h6>
+      <p class="d-flex justify-content-center">
+        <span class="old-price">
+          {{ toVND(item.maxPrice) }}
+        </span>
+        <span class="product-discout badge bg-danger text-white align-self-center">
+          - {{ discount}}%
+        </span>
+      </p>
+    </div>
+    <!-- Tuỳ chọn -->
+    <div class="d-flex justify-content-between">
+      <p class="m-0 ms-2 d-inline-block text-start d-flex align-items-center has fw-bold">
+        <i class="bi bi-check-circle fs-6"></i>
+        &nbsp; Còn hàng</p>
+    </div>
+    <button @click="onAddCart" class="rounded-3 btn add-cart d-block d-flex justify-content-between no-wrap align-self-center w-100">
+      <label class="align-self-center inherit text-white">Thêm giỏ hàng</label> <i class="fs-5 bi bi-cart text-white px-3"></i>
+    </button>
   </div>
 </template>
 
 <script>
-import { computed,defineProps } from 'vue'
-export default {
-  props: {
-    showfull:true,
-    item: Object
-  },
-  setup(props){
-   function showAlert() {
-      // Use sweetalert2
-      Swal.fire(
-      {
-        icon: 'success',
-        title: 'Thành công',
-        text: 'Sản phẩm đã được thêm vào giỏ hàng của bạn'
+  import { computed, defineProps, ref } from "vue"
+  export default {
+    props: {
+      showfull: true,
+      item: Object,
+    },
+    setup(props) {
+      const item = props.item
+      const backendhost = ref(backendHost)
+      function onAddCart() {
+        // Use sweetalert2
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Sản phẩm đã được thêm vào giỏ hàng của bạn",
+        })
       }
-      )
-    }
-     function toVND(n){
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(n)
-    }
-    const discount= computed(()=>{return 100-((props.item.new_price/props.item.old_price)*100).toFixed(2)})
-    return {showAlert,toVND,discount}
+      function toVND(n) {
+        return new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(n)
+      }
+      const discount = computed(() => {
+        return 100 - ((item.price / item.maxPrice) * 100).toFixed()
+      })
+      return { onAddCart, backendhost, toVND, discount, item }
+    },
   }
-
-}
 </script>
 
 <style scoped>
-.card:hover .card-img-top{
-  transition: all 0.2s linear;
-  transform: translateY(-16px);
-}
-.name--product{
-  text-decoration: none;
-  color: black!important;
-  font-weight: 555;
-  cursor: pointer;
-  display: -webkit-box;
-  text-align: center;
- text-overflow: ellipsis;
- overflow: hidden;
- -webkit-line-clamp: 2;
- -webkit-box-orient: vertical;
- overflow: hidden;
-}
-.name--product:hover{
-  color: var(--bs-red) !important;
-}
-.price--product{
-  color:var(--product-price)
-}
-.old-price{
-  color: var(--product-old-price);
-}
-.product-discout{
-  color: var(--product-discount);
-}
-.has{
-  color:var(--product-has-quanlity)
-}
-.add-cart{
-  background-image: var(--product-cart-bg);
-}
+.img-product {
+    width: auto;
+    max-height: 200px;
+    margin: auto;
+    aspect-ratio:  1;
+    display: block;
+  }
+
+  .card:hover {
+    transition: all 0.2s linear;
+    transform: translateY(-16px);
+  }
+
+  .name--product {
+    text-decoration: none;
+    color: black !important;
+    font-weight: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    display: -webkit-box;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .name--product:hover {
+    color: var(--bs-red) !important;
+  }
+
+  .price--product {
+    color: var(--product-price);
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 4px;
+    width: 100%;
+  }
+
+  .old-price {
+    color: var(--product-old-price);
+    font-size: 12px;
+    line-height: 14px;
+    color: #A3A3A3;
+    -webkit-text-decoration-line: line-through;
+    text-decoration-line: line-through;
+    margin-right: 4px;
+  }
+
+  .product-discout {
+    color: var(--product-discount);
+  }
+
+  .has {
+    color: var(--product-has-quanlity);
+  }
+
+  .add-cart {
+    background-image: var(--product-cart-bg);
+  }
 </style>

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store, {} from '../Store.js'
-import HomeView from '../views/HomeView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -81,9 +81,27 @@ const router = createRouter({
     },
     {
       path: '/',
-      name: 'home',
+      name: 'index',
       namevi: 'Trang chủ',
-      component: HomeView
+      component: ()=>import ('../views/Home/HomeView.vue'),
+      children:[
+        {
+          path: '',
+          name:'home',
+          component: () => import('../views/Home/DefaultHome.vue')
+        },
+        {
+          path: '/:categoryID',
+          name:'products',
+          component: () => import('../views/Home/ProductHome.vue'),
+          beforeEnter(to,from,next){
+            console.log(to.fullPath)
+            to.fullPath
+            console.log(from)
+            next()
+          }
+        },
+      ]
     },
     {
       path: '/about',
