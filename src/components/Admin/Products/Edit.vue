@@ -227,7 +227,7 @@ export default {
             text: "Đã cập nhật sản phẩm",
           }).then(() => {
             emit('reload')
-            closeform()
+            closeThis()
           });
         } catch (err) {
           console.log(err);

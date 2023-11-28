@@ -118,7 +118,10 @@
     text-decoration-line: line-through;
     margin-right: 4px;
   }
-
+.img-product:hover{
+  scale: 105%;
+  transition: all .2s ease-in-out;
+}
   .product-discout {
     color: var(--product-discount);
   }

@@ -79,28 +79,35 @@ const router = createRouter({
       meta: { title: 'Đăng nhập quản trị viên' },
       component: () => import('../views/Admin/LoginView.vue')
     },
+
     {
+      //master-page
       path: '/',
       name: 'index',
       namevi: 'Trang chủ',
       component: ()=>import ('../views/Home/HomeView.vue'),
       children:[
         {
+          //trang chủ
           path: '',
           name:'home',
           component: () => import('../views/Home/DefaultHome.vue')
         },
         {
-          path: '/:categoryID',
+          //sản phẩm
+          path: '/danh-sach-san-pham/:categoryID?',
           name:'products',
-          component: () => import('../views/Home/ProductHome.vue'),
+          component: () => import('../views/Home/Product/ProductHome.vue'),
           beforeEnter(to,from,next){
-            console.log(to.fullPath)
-            to.fullPath
-            console.log(from)
-            next()
+           next()
           }
         },
+        {
+          path: '/tin-tuc',name:'post',meta:{title:'Tin tức'},component: () => import('../views/Home/Post/PostsView.vue')
+        },
+        {
+         path: '/tin-tuc/:id',name:'post-detail',component: () => import('../views/Home/Post/DetailPostView.vue'),
+       },
       ]
     },
     {

@@ -86,7 +86,7 @@
 </template>
 
 <script >
-import Comment from '../components/Comments.vue'
+import Comment from '../components/home/Products/Comments.vue'
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
 import { useRoute } from 'vue-router'

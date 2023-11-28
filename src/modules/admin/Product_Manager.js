@@ -11,8 +11,11 @@ function ValidateData(Product,Images) {
     return "Giá sản phẩm không được để trống và lớn hơn 0"
   if(Product.maxPrice==null||Product.maxPrice==0||Product.maxPrice=="")
     return "Giá sản phẩm tối đa không được để trống và lớn hơn 0"
-  if(Product.maxPrice<=Product.price)
+  if(Product.maxPrice*1<=Product.price*1){
+    console.log(Product.maxPrice)
     return "Giá sản phẩm tối đa phải lớn hơn giá sản phẩm"
+  }
+    
   if(Product.weight==''||Product.weight==null)
    return "Cân nặng không được để trống"
   if(Product.brandName==''||Product.brandName==null)
