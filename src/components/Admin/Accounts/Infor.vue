@@ -25,15 +25,16 @@
                                 </div>
                                 <div class="d-flex justify-content-between  px-4">
                                     <div class="text-center pb-4">
-                                        <h6 class="text-dark pb-1">354</h6>
+                                        <h6 class="text-dark pb-1">{{ totalOrder }}</h6>
                                         <p class="">Đơn hàng đã đặt</p>
                                     </div>
-
                                     <div class="text-center pb-4">
-                                        <h6 class="text-dark pb-1">30</h6>
-                                        <p class="">Lượt Đánh giá</p>
+                                        <h6 class="text-dark pb-1">{{ totalComment }}</h6>
+                                        <p class="m-0">Lượt Đánh giá</p>
+                                    <router-link v-if="totalComment>0" :to="{name:'comments_manager',params:{accountId:account.id}}">
+                                        Chi tiết
+                                    </router-link>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -63,8 +64,8 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-
+import { computed, onBeforeMount,ref } from 'vue'
+import {Get_totalOrder,Get_totalComment} from '../../../modules/admin/Account_Manager.js'
 export default {
     props: {
     account: {
@@ -75,6 +76,8 @@ export default {
 
     //avatar tài khoản
     const image_profile= props.account.profileImage? backendHost+`/images/avatar/${props.account.profileImage}`:backendHost+'/images/avatar/'+'null_avatar.png'
+    const totalOrder=ref(0)
+    const totalComment=ref(0)
     const gender=computed(()=>{
         return props.account.sex?'Nam':'Nữ'
     })
@@ -113,7 +116,11 @@ export default {
     function onEdit(){
         emit('openEdit')
     }
-    return {image_profile,gender,Role,closeInfor,CreateAt,onEdit}
+    onBeforeMount( async()=>{
+        totalOrder.value=await Get_totalOrder(props.account.id)
+        totalComment.value=await Get_totalComment(props.account.id)
+    })
+    return {image_profile,gender,Role,closeInfor,CreateAt,onEdit,totalOrder,totalComment}
   }
 
 }

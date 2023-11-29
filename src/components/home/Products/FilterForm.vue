@@ -1,14 +1,14 @@
 <template>
-    <div class="d-flex flex-column col col-lg-8 ms-lg-3 ">
-     <div class="card">
-      <div class=" mb-2 mt-2 mx-2">
+    <div class="d-flex flex-column col col-lg-8 ms-lg-3 shadow me-5  ">
+     <div class="card bg-light">
+      <div class=" mb-2 mt-2 mx-2 row">
        <input v-model="filterobj.keywords" class="rounded-2 form-control px-3" type="text" placeholder="Nhập tên sản phẩm cần tìm" />
        <Transition>
-        <div class="d-block">
-         <div v-if="filterobj.category==''" class="form-control border-0">
+        <div class="row">
+         <div v-if="filterobj.category==''" class="d-none form-control border-0">
           <strong class="form-label">Danh mục</strong>
           <label class="ms-2 text-blue">{{ selected_categoryname }} </label>
-          <div class="dropdown mt-2">
+          <div class="dropdown mt-2 ">
            <a class="btn btn-primary dropdown-toggle w-100" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-plus-circle"></i> Chọn danh mục </a>
            <ul class="dropdown-menu w-100">
@@ -18,13 +18,22 @@
            </ul>
           </div>
          </div>
-         <div class="form-control border-0">
+        
+          <div class="col-lg-6 mt-2">
+              <label  class="form-label fw-bold">Tình trạng hàng</label>
+              <select v-model="filterobj.stock"  class="form-select" >
+                <option :value="''">Tất cả</option>
+                <option :value="true">Còn hàng</option>
+                <option :value="false">Hết hàng</option>
+              </select>
+          </div>
+          <div class="col-lg-6 mt-2">
           <strong class="form-label d-block">Tên thương hiệu</strong>
           <input class=" form-control" type="text" v-model="filterobj.brand">
          </div>
-         <div class="form-control border-0">
+         <div class="col mt-2">
           <strong class="form-label d-block">Giá sản phẩm</strong>
-          <div class="d-flex">
+          <div class="d-flex justify-content-between">
             <div class="">
                 <input @keyup="onlyNumber" class="form-control" type="text" v-model="filterobj.min">
                 <span class="inherit text-center text-muted">{{toVND(filterobj.min)}}</span>
@@ -72,6 +81,7 @@ import { useRoute } from 'vue-router'
        brand: '',
        min: '',
        max: '',
+       stock:'',
       })
       const selected_categoryname =ref('')
       //load đầu

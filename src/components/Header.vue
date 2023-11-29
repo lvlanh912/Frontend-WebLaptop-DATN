@@ -1,265 +1,402 @@
 <template>
-  <header class="fixed-top container-lg">
-   <nav class="navbar navbar-expand-md navbar-light bg-white w-100 text-black position-relative">
-    <div class="d-flex justify-content-between w-100">
-     <router-link :to="{ name: 'home' }" class="ms-2 navbar-brand brand" >DIENTUME.com</router-link>
-     <i @click="ishowMenu =!ishowMenu" class="navbar-toggler-icon fs-4 me-2 d-lg-none"></i>
-     <!-- toggle-menu -->
-     <div v-if="ishowMenu" class="slow-show position-absolute end-0 bg-white shadow top-0 toggle-menu text-center pt-2 d-lg-none">
-      <button @click="ishowMenu =false" class="btn btn-close end-0 position-absolute me-3 mt-2"></button>
-      <ul class="navbar-nav mt-5 flex-column">
-        <li class="nav-item">
-          <RouterLink class="nav-link text-dark fw-bolder flex-column" :to="{name:'home'}" >Trang chủ</RouterLink>
-        </li>
-        <li class="nav-item ">
-          <RouterLink  class="nav-link text-dark fw-bolder" :to="{name:'products'}">
-            Sản phẩm
-            <i class="bi bi-caret-right-fill"></i>
-          </RouterLink>      
-    </li>
-    <li class="nav-item">
-      <RouterLink  class="nav-link text-dark fw-bolder flex-column" :to="{name:'post'}" >Tin tức</RouterLink>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-dark fw-bolder flex-column" >Liên hệ</a>
-    </li>
-      </ul>
-      <div class="start-0 bg-white me-2 mt-4">
-       <div class="input-group mt-2">
-        <button class="btn" type="button">
-         <i class="bi bi-search"></i>
-        </button>
-        <input type="text" class="form-control border-0" placeholder="Nhập từ khoá tìm kiếm" />
-       </div>
-      </div>
-      <hr />
-      <!-- search -->
-      <a href="" class="nav-link text-dark fw-bolder">
-       <i class="bi bi-cart"></i> Giỏ hàng </a>
-      <a href="" class="nav-link text-dark fw-bolder">Đăng xuất</a>
-     </div>
-     <!--  -->
-     <div class="d-none d-lg-flex">
-      <RouterLink :to="{name:'home'}" :class="{'nav-link px-0 ms-4 fw-bold text-danger nav--item ': true,
-              active: $route.name == 'home',}"> Home </RouterLink>
-      <RouterLink :to="{name:'products'}" :class="{'nav-link px-0 ms-4 fw-bold text-danger nav--item ': true,
-              active: $route.name == 'products',}" @mouseenter="ishowdropdown=true" @mouseleave="ishowdropdown=false"> Sản phẩm <i class="bi bi-caret-down-fill inherit"></i>
-       <div v-if="ishowdropdown" class="dropdown-menu mt-3 pe-5 d-block">
-        <router-link v-for="item in list_category" :key="item.id" :to="{ name:'products',params: {
-                  categoryID:item.id
-                  }}" :class="{'nav-link px-0 ms-4 fw-bold text-danger nav--item no-wrap':true,
-              'active':$route.params.categoryID==item.id
-              }">{{item.name}}
+  <header class="fixed-top container-lg px-0 px-lg-3">
+    <nav
+      class="navbar navbar-expand-md navbar-light bg-white w-100 text-black position-relative"
+    >
+      <div class="d-flex justify-content-between w-100">
+        <router-link :to="{name: 'home'}" class="ms-2 navbar-brand brand">
+          DIENTUME.com
         </router-link>
+        <i
+          @click="ishowMenu = !ishowMenu"
+          class="navbar-toggler-icon fs-4 me-2 d-lg-none"
+        ></i>
+        <!-- toggle-menu -->
+        <transition name="slide-fade">
+          <div
+            v-if="ishowMenu"
+            class="slow-show position-absolute end-0 bg-white shadow top-0 toggle-menu text-center pt-2 d-lg-none"
+          >
+            <button
+              @click="ishowMenu = false"
+              class="btn btn-close end-0 position-absolute me-3 mt-2"
+            ></button>
+            <ul class="navbar-nav mt-5 flex-column">
+              <li>
+                <RouterLink
+                  :class="{
+                    'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
+                    active: $route.name == 'home',
+                  }"
+                  :to="{name: 'home'}"
+                >
+                  <i class="bi bi-house-fill text-blue me-2"></i>
+                  Trang chủ
+                </RouterLink>
+              </li>
+              <li
+                @mouseenter="ishowdropdown = true"
+                @mouseleave="ishowdropdown = false"
+              >
+                <RouterLink
+                  :class="{
+                    'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
+                    active: $route.name == 'products',
+                  }"
+                  :to="{name: 'products'}"
+                >
+                  <i class="bi bi-gift-fill text-danger me-2"></i>
+                  Sản phẩm
+                  <i v-if="ishowdropdown" class="bi bi-caret-down-fill"></i>
+                  <i v-else class="bi bi-caret-right-fill"></i>
+                </RouterLink>
+                <transition name="slide-fade">
+                  <div
+                    v-if="ishowdropdown"
+                    class="dropdown-menu position-static pe-3 d-block border-0"
+                  >
+                    <router-link
+                      v-for="item in list_category"
+                      :key="item.id"
+                      :to="{
+                        name: 'products',
+                        params: {
+                          categoryID: item.id,
+                        },
+                      }"
+                      :class="{
+                        'nav-link px-0 ms-3 fw-bold text-danger nav--item no-wrap': true,
+                        active: $route.params.categoryID == item.id,
+                      }"
+                    >
+                      {{ item.name }}
+                    </router-link>
+                  </div>
+                </transition>
+              </li>
+              <li>
+                <RouterLink
+                  :class="{
+                    'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
+                    active:
+                      $route.name == 'post' || $route.name == 'post-detail',
+                  }"
+                  :to="{name: 'post'}"
+                >
+                  <i class="bi bi-newspaper text-info me-2"></i>
+                  Tin tức
+                </RouterLink>
+              </li>
+              <li>
+                <a class="nav-link px-0 mx-5 fw-bold text-danger nav--item">
+                  <i class="bi bi-telephone-fill text-green me-2"></i>
+                  Liên hệ
+                </a>
+              </li>
+              <li>
+                <div class="start-0 bg-white me-2">
+                  <div class="input-group mt-2">
+                    <button class="btn" type="button">
+                      <i class="bi bi-search"></i>
+                    </button>
+                    <input
+                      type="text"
+                      class="form-control border-0"
+                      placeholder="Nhập từ khoá tìm kiếm"
+                    />
+                  </div>
+                </div>
+              </li>
+              <hr class="mt-0" />
+              <li>
+                <RouterLink
+                  :class="{
+                    'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
+                    active: $route.name == 'post',
+                  }"
+                  :to="{name: 'post'}"
+                >
+                  <i class="bi bi-cart-fill text-yellow me-2"></i>
+                  Giỏ hàng
+                </RouterLink>
+              </li>
+              <li v-if="user.islogin">
+                <RouterLink
+                  :class="{
+                    'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
+                    active: $route.name == 'post',
+                  }"
+                  :to="{name: 'post'}"
+                >
+                  <i class="bi bi-box-arrow-left text-blue me-2"></i>
+                  Đăng xuất
+                </RouterLink>
+              </li>
+            </ul>
+          </div>
+        </transition>
+        <!--end toggle-menu -->
+        <!-- Category -->
+        <div class="d-none d-lg-flex me-lg-2">
+          <RouterLink
+            :to="{name: 'home'}"
+            :class="{
+              'nav-link px-0 ms-4 fw-bold text-danger nav--item no-wrap ': true,
+              active: $route.name == 'home',
+            }"
+          >
+            Home
+          </RouterLink>
+          <RouterLink
+            :to="{name: 'products'}"
+            :class="{
+              'nav-link px-0 ms-4 fw-bold text-danger nav--item no-wrap ': true,
+              active: $route.name == 'products',
+            }"
+            @mouseenter="ishowdropdown = true"
+            @mouseleave="ishowdropdown = false"
+          >
+            Sản phẩm
+            <i class="bi bi-caret-down-fill inherit"></i>
+            <div v-if="ishowdropdown" class="dropdown-menu mt-3 pe-5 d-block">
+              <router-link
+                v-for="item in list_category"
+                :key="item.id"
+                :to="{
+                  name: 'products',
+                  params: {
+                    categoryID: item.id,
+                  },
+                }"
+                :class="{
+                  'nav-link px-0 ms-4 fw-bold text-danger nav--item no-wrap': true,
+                  active: $route.params.categoryID == item.id,
+                }"
+              >
+                {{ item.name }}
+              </router-link>
+            </div>
+          </RouterLink>
+          <router-link
+            :to="{name: 'post'}"
+            :class="{
+              'nav-link px-0 ms-4 fw-bold text-danger nav--item no-wrap': true,
+              active: $route.name == 'post' || $route.name == 'post-detail',
+            }"
+          >
+            Tin tức
+          </router-link>
+          <a
+            @click="goBottom"
+            class="nav-link px-0 ms-4 fw-bold text-danger nav--item no-wrap"
+          >
+            Liên hệ
+          </a>
+        </div>
+        <!--end Category -->
+        <div class="me-2 d-none d-lg-block no-wrap">
+          <!-- <router-link :to="{name:'authenticaton'}"  class="btn btn-info ms-4 text-white">Đăng nhập </router-link> -->
+          <!-- giỏ hàng + thông tin ở đây -->
+          <!-- Đã đăng nhập -->
+          <div v-if="user.islogin">
+            <RouterLink :to="{name: 'cart'}" class="ms-2 btn cart  px-2 item--header">
+              <i class="bi bi-cart-dash me-1 ">  <span class=" ms-1 inherit text-select">Giỏ hàng</span></i>
+            </RouterLink>
+            <router-link class="btn person  px-2 item--header" :to="{name:'cart'}">
+              <i class="bi bi-person me-1"> <span class=" ms-1 inherit text-select">Tài khoản</span></i>
+            </router-link>
+            <router-link class="btn fs-6 logout px-2 item--header " title="Đăng xuất" :to="{name:'home'}">
+              <i class="bi bi-box-arrow-right me-1"><span class=" ms-1 inherit text-select">Đăng xuất</span></i>
+            </router-link>
+          </div>
+       <!-- Chưa đăng nhập -->
+       <div v-else class="d-flex">
+         <RouterLink :to="{name: 'cart'}" class="ms-2 btn cart  px-2 item--header">
+             <span class=" ms-1 inherit text-select">Đăng nhập</span>
+          </RouterLink>
+          <span class=" align-self-center">/</span>
+          <RouterLink :to="{name: 'cart'}" class=" btn cart  px-2 item--header">
+             <span class=" ms-1 inherit text-select">Đăng ký</span>
+          </RouterLink>
        </div>
-      </RouterLink>
-      <router-link :to="{ name: 'post' }" :class="{'nav-link px-0 ms-4 fw-bold text-danger nav--item':true, 'active':$route.name=='post'||$route.name=='post-detail'}">
-        Tin tức 
-      </router-link>
-      <a href="#" class="nav-link px-0 ms-4 fw-bold text-danger nav--item">Liên hệ </a>
-     </div>
-     <div class="me-2 d-none d-lg-block">
-      <!-- <router-link :to="{name:'authenticaton'}"  class="btn btn-info ms-4 text-white">Đăng nhập </router-link> -->
-      <!-- giỏ hàng + thông tin ở đây -->
-      <button @click="show_seachbar = !show_seachbar" class="btn search">
-       <i class="bi bi-search"></i>
-      </button>
-      <button class="btn person">
-       <i class="bi bi-person"></i>
-      </button>
-      <button class="ms-2 btn cart">
-       <i class="bi bi-cart-dash"></i>
-      </button>
-      <button class="btn fs-6 logout" title="Đăng xuất">
-       <i class="bi bi-box-arrow-down-right"></i>
-      </button>
-      <!-- tìm kiếm dropdown -->
-      <div v-if="show_seachbar" @mouseleave="show_seachbar = false" class="position-absolute start-0 bg-white pb-5 ease" style="width: 100vw">
-       <div class="input-group mt-2">
-        <button class="btn" type="button">
-         <i class="bi bi-search"></i>
-        </button>
-        <input type="text" class="form-control border-0" placeholder="Nhập từ khoá tìm kiếm" />
-       </div>
+        </div>
       </div>
-     </div>
-    </div>
-   </nav>
+    </nav>
   </header>
 </template>
 
 <script>
-  import { RouterLink, useRoute } from "vue-router";
-  import { ref, onBeforeMount } from "vue";
-  import { company_list, type_list } from "../data/filter";
-  import { getCategory_noParent } from '../modules/home/HomeAPI.js'
-  export default {
-    setup() {
-      const show_seachbar = ref(false);
-      const ishowMenu = ref(false)
-      const ishowdropdown=ref(false)
-      const route = useRoute();
-      const list_category = ref([])
-      onBeforeMount(async () => {
-        list_category.value = await getCategory_noParent()
-      })
-      const convertToPath = (str) => {
-        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-        str = str.replace(/đ/g, "d");
-        str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
-        str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
-        str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
-        str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
-        str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
-        str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
-        str = str.replace(/Đ/g, "D");
-        str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
-        str = str.replace(/  +/g, ' ');
-        str = str.replaceAll(' ', '-').toLowerCase()
-        return str;
-      }
-      return { ishowMenu,ishowdropdown, show_seachbar, list_category, company_list, type_list, convertToPath };
-    },
-  };
+import {RouterLink, useRoute} from "vue-router"
+import {ref, onBeforeMount} from "vue"
+import {company_list, type_list} from "../data/filter"
+import {getCategory_noParent} from "../modules/home/HomeAPI.js"
+import { useStore } from 'vuex'
+export default {
+  setup() {
+    const ishowMenu = ref(false)
+    const ishowdropdown = ref(false)
+    const route = useRoute()
+    const user=useStore().state.user
+    const list_category = ref([])
+    const goBottom = () =>
+      document.querySelector("footer").scrollIntoView({behavior: "smooth"})
+    onBeforeMount(async () => {
+      list_category.value = await getCategory_noParent()
+    })
+
+    return {
+      user,
+      ishowMenu,
+      ishowdropdown,
+      list_category,
+      company_list,
+      type_list,
+      goBottom,
+    }
+  },
+}
 </script>
 
 <style scoped>
-  .brand {
-    font-size: large;
-    font-weight: bold;
-    color: var(--bs-indigo);
+.brand {
+  font-size: large;
+  font-weight: bold;
+  color: var(--bs-indigo);
+}
+
+.toggle-menu {
+  min-width: 250px;
+  height: 500px;
+}
+
+.slow-show {
+  animation: ani-menu 0.5s linear alternate;
+}
+
+@keyframes ani-menu {
+  from {
+    opacity: 0.6;
+  }
+}
+
+.nav--item {
+  color: rgb(3, 3, 50) !important;
+  position: relative;
+}
+
+.nav--item:hover {
+  color: var(--bs-red) !important;
+}
+
+.nav--item:after {
+  content: "";
+  position: absolute;
+  background-color: var(--bs-red) !important;
+  height: 3px;
+  width: 0;
+  bottom: 0;
+  left: 0;
+  margin-bottom: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.nav--item::before {
+  content: "";
+  position: absolute;
+
+  height: 100%;
+  width: 100%x;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-bottom: -10px;
+}
+
+.nav--item:hover:after {
+  width: 100%;
+}
+
+.active:after {
+  content: "";
+  position: absolute;
+  background-color: blue;
+  height: 3px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  margin-bottom: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.menu-drop {
+  width: 100vw;
+  max-width: 900px;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.col a {
+  padding-top: 2px;
+  word-spacing: 3px;
+  font-family: sans-serif;
+  font-weight: 450;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.col a:hover {
+  color: var(--bs-red) !important;
+}
+
+.cart,
+.person,
+.search {
+  color: var(--bs-blue) !important;
+  position: relative;
+}
+.text-select{
+  font-weight: 600;
+  font-style: normal;
+  color: rgba(0, 0, 0, 0.761);
+}
+
+.cart::after,
+.person::after,
+.logout::after,
+.search::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.1;
+  z-index: 1;
+  height: 40px;
+  border-radius: 10%;
+  background-color: currentColor;
+}
+.item--header:hover span{
+  color: rgb(0, 132, 255) !important;;
+}
+
+.logout {
+  color: var(--bs-blue) !important;
+  position: relative;
+}
+
+.ease {
+  animation: animation 0.7s linear;
+  animation-direction: alternate;
+}
+
+@keyframes animation {
+  from {
+    opacity: 0.2;
   }
 
-  .toggle-menu {
-    min-width: 250px;
-    height: 500px;
+  to {
+    opacity: 1;
   }
-
-  .slow-show {
-    animation: ani-menu 0.5s linear alternate;
-  }
-
-  @keyframes ani-menu {
-    from {
-      opacity: 0.6;
-    }
-  }
-
-  .nav--item {
-    color: rgb(3, 3, 50) !important;
-    position: relative;
-  }
-
-  .nav--item:hover {
-    color: var(--bs-red) !important;
-  }
-
-  .nav--item:after {
-    content: "";
-    position: absolute;
-    background-color: var(--bs-red) !important;
-    height: 3px;
-    width: 0;
-    bottom: 0;
-    left: 0;
-    margin-bottom: 5px;
-    transition: width 0.5s ease-in-out;
-  }
-
-  .nav--item::before {
-    content: "";
-    position: absolute;
-
-    height: 100%;
-    width: 100%x;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-bottom: -40px;
-  }
-
-  .nav--item:hover:after {
-    width: 100%;
-  }
-
-  .active:after {
-    content: "";
-    position: absolute;
-    background-color: blue;
-    height: 3px;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    margin-bottom: 5px;
-    transition: width 0.5s ease-in-out;
-  }
-
-  .menu-drop {
-    width: 100vw;
-    max-width: 900px;
-    border-radius: 12px;
-    padding: 20px;
-  }
-
-  .col a {
-    padding-top: 2px;
-    word-spacing: 3px;
-    font-family: sans-serif;
-    font-weight: 450;
-    font-size: 18px;
-    cursor: pointer;
-  }
-
-  .col a:hover {
-    color: var(--bs-red) !important;
-  }
-
-  .cart,
-  .person,
-  .search {
-    color: var(--bs-green) !important;
-    position: relative;
-  }
-
-  .cart::after,
-  .person::after,
-  .logout::after,
-  .search::after {
-    content: "";
-    position: absolute;
-    width: 40px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.1;
-    z-index: 1;
-    height: 40px;
-    border-radius: 50%;
-    background-color: currentColor;
-  }
-
-  .logout {
-    color: var(--bs-red) !important;
-    position: relative;
-  }
-
-  .ease {
-    animation: animation 0.7s linear;
-    animation-direction: alternate;
-  }
-
-  @keyframes animation {
-    from {
-      opacity: 0.2;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
+}
 </style>

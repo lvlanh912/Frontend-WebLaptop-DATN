@@ -1,10 +1,10 @@
 import {createStore} from 'vuex'
 
 	const store=createStore({
-	state(){		//danh sách các biến
+	state(){	//danh sách các biến
 	return{
         user:{
-			islogin:true,
+			islogin:false,
 			isAdmin:false
 		},
 		count:0,

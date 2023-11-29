@@ -39,10 +39,50 @@ export async function GetnameCategory(id){
         throw error
     }
 }
+export async function GetCategorybyId(id){
+    try {
+       let data= await Get_Category_by_id(id)
+       return data
+    } catch (error) {
+        throw error
+    }
+}
 
 export async function getProduct(pageindex,pagesize,fillterObj,sort){
     try {
-       return await Get_all_Product(pageindex,pagesize,fillterObj,sort)
+       return await Get_all_Product(pageindex,pagesize,fillterObj,'sort')
+    } catch (error) {
+        throw error
+    }
+}
+export async function GettopProductSold(value){
+    try {
+        let fillterObj={
+            keywords:'',
+            category:'',
+            brand:'',
+            min:'',
+            max:'',
+            stock:''
+        }
+       return await Get_all_Product(1,value,fillterObj,'sold_desc')
+    } catch (error) {
+        throw error
+    }
+}
+export async function GetProductbyId(productId){
+    try {
+      const response= await axios.get(`/products/${productId}`)
+        let data = new ResponseAPI();
+        data = response.data;
+        return data.result;
+    } catch (error) {
+        throw error
+    }
+}
+export async function InsertView(productId){
+    try {
+      await axios.post(`/products/view?id=${productId}`)
     } catch (error) {
         throw error
     }

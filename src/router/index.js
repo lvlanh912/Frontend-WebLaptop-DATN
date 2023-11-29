@@ -65,7 +65,7 @@ const router = createRouter({
           component: ()=>import('../views/Admin/NewsView.vue')
         },
         {
-          path: 'quan-ly-danh-gia',
+          path: 'quan-ly-danh-gia/:accountId?',
           name:'comments_manager',
           meta: { title: 'Quản lý đánh giá' },
           component: ()=>import('../views/Admin/CommentsView.vue')
@@ -79,7 +79,7 @@ const router = createRouter({
       meta: { title: 'Đăng nhập quản trị viên' },
       component: () => import('../views/Admin/LoginView.vue')
     },
-
+//Home
     {
       //master-page
       path: '/',
@@ -95,12 +95,21 @@ const router = createRouter({
         },
         {
           //sản phẩm
-          path: '/danh-sach-san-pham/:categoryID?',
-          name:'products',
-          component: () => import('../views/Home/Product/ProductHome.vue'),
+          path: '/danh-sach-san-pham/:categoryID?',name:'products',component: () => import('../views/Home/Product/ProductHome.vue'),
           beforeEnter(to,from,next){
            next()
           }
+        },
+        {
+          //chi tiết sản phẩm
+          path: '/chi-tiet-san-pham/:productId',name:'product-detail',component: () => import('../views/Home/Product/ProductDetailtView.vue'),
+          beforeEnter(to,from,next){
+           next()
+          }
+        },
+        {
+          //Giỏ hàng
+          path:'/gio-hang',name:'cart',meta:{title:'Giỏ hàng của tôi'},component:()=>import('../views/Home/CartView.vue')
         },
         {
           path: '/tin-tuc',name:'post',meta:{title:'Tin tức'},component: () => import('../views/Home/Post/PostsView.vue')
@@ -134,16 +143,7 @@ const router = createRouter({
       name:'laptop',
       component :()=> import('../views/LaptopView.vue')
     },
-    {
-      path:'/lap-top/:id',
-      name:'laptop_detail',
-      component:()=>import('../views/Detail-Laptop.vue')
-    },
-    {
-      path:'/cart',
-      name:'card',
-      component:()=>import('../views/Cart.vue')
-    }
+    
   ]
 })
 
@@ -153,6 +153,6 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title??"Index";
     next()
   
-});
+})
 
 export default router

@@ -51,9 +51,10 @@
             </li>
         </ul>
     </div>
-    <div class="col-3 align-self-center text-center">
+    <div class="col-12 col-lg-3 align-self-center text-center">
         <button @click="showform=!showform" class="btn btn-send-commnent">{{contentbtn}}</button>
     </div>
+    <transition name="slide-fade" :duration="200">
     <form action="" class="d-block" v-if="showform">
         <div class="d-flex align-items-center">
             <span class="float-left fs-6 fw-bolder d-inline">Chọn đánh giá của bạn: </span>
@@ -65,15 +66,16 @@
              <span @click="rating=5" :class="{'fs-3 bi px-1':true,'bi-star-fill star-yellow':rating>=5,'bi-star ':rating<=4||rating==0}"></span>
             </div>
         </div>
-        <div class="d-lg-flex align-items-center">
-            <div class="form-group col-12 col-lg-6">
+        <div class="d-lg-flex align-items-center ">
+            <div class="form-group col">
                 <textarea type="text" class="form-control " placeholder="Nhập đánh giá của bạn"></textarea>
             </div>
-            <div class="d-block ms-4">
+            <div class="d-block ms-4 align-self-center m-0">
                 <button class="btn btn-send-commnent mt-2 col py-1 px-0 pe-2"><i class="fs-5 bi bi-telegram ps-2 ms-0 me-2"></i>Gửi</button>
             </div>
         </div>
     </form>
+</transition>
     <!-- list comment -->
     <ul class="list-unstyle">
         <li>
@@ -104,7 +106,13 @@
 <script>
 import { computed, ref } from 'vue'
 export default {
+    props:{
+        productId:{
+            
+        }
+    },
  setup(){
+    const listComment=ref([])
     const rating= ref(0)
     const showform=ref(false)
     const contentbtn= computed(()=>{

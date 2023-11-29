@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-white pt-2 pb-2 overflow-hidden text-center col-12 col-lg-3 col-md-6  border">
-    <a href="#" class="position-relative pb-2 mb-2 d-block text-dark text-decoration-none justify-content-center">
+  <div class="bg-white pt-2 pb-2 overflow-hidden text-center col-12 col-lg-3 col-md-4 col-sm-6  border">
+    <router-link :to="{name:'product-detail',params:{productId:item.id}}" class="position-relative pb-2 mb-2 d-block text-dark text-decoration-none justify-content-center">
       <img class="img-product img-fluid" :src="backendhost+'/images/products/'+item.images[0]"
         alt="">
-    </a>
+    </router-link>
     <!-- Tên sản phẩm -->
     <div class="py-1" style="min-height: 60px;">
       <span href="" class="mb-2 max-line-2 overflow-hidden">
@@ -24,8 +24,9 @@
       </p>
     </div>
     <!-- Tuỳ chọn -->
-    <div class="d-flex justify-content-between">
-      <p class="m-0 ms-2 d-inline-block text-start d-flex align-items-center has fw-bold">
+    <div class="d-flex justify-content-end">
+      <p v-if="item.stock==0"  class="text-orange fw-bolder pt-2 mb-0 me-2" ><i class="bi bi-exclamation-circle me-2"></i> Hết hàng </p>
+      <p v-else class="m-0 ms-2 d-inline-block text-start d-flex align-items-center has fw-bold">
         <i class="bi bi-check-circle fs-6"></i>
         &nbsp; Còn hàng</p>
     </div>

@@ -6,7 +6,7 @@ class ResponseAPI {
 }
 export default ResponseAPI
 //Account
-//Get
+//Get all
 export async function Get_All_Account(page, size, filterobj, sort) {
   try {
     let query = {
@@ -59,6 +59,28 @@ export async function Edit_Account(id,payload){
 export async function Delete_Account(id){
   try {
     const response= await axios.delete(`/users/${id}`)
+    return response.data.result
+  } 
+  catch (err) {
+    throw err
+    
+  }
+}
+//Get total order
+export async function Get_totalOrder_by_Account(id){
+  try {
+    const response= await axios.get(`/users/total-orders?id=${id}`)
+    return response.data.result
+  } 
+  catch (err) {
+    throw err
+    
+  }
+}
+//Get total comments
+export async function Get_totalComments_by_Account(id){
+  try {
+    const response= await axios.get(`/users/total-comments?id=${id}`)
     return response.data.result
   } 
   catch (err) {
@@ -317,8 +339,8 @@ export async function Create_new_Category(payload) {
 }
 export async function Get_Category_by_id(CategoryId){
   try{
-    if(CategoryId==undefined)
-    return
+    if(CategoryId==undefined||CategoryId=='')
+    return {}
     let response=await axios.get(`/categories/getbyId?id=${CategoryId}`)
     let data = new ResponseAPI();
     data = response.data;
@@ -361,6 +383,7 @@ export async function Get_all_Product(page,size,filterobj,sort){
       brand:filterobj.brand,
       min:filterobj.min,
       max:filterobj.max,
+      stock:filterobj.stock,
       sort: sort,
   }
     let response=await axios.get(`/products`,
@@ -489,6 +512,52 @@ export async function Update_Order(id,shippingAddress,ispaid,status) {
 export async function Delete_Order(id){
   try {
     const response = await axios.delete(`orders/${id}`)
+    return response.data.Message;
+  } catch (err) {
+    throw err;
+  }
+}
+
+//Commnet
+//Get-all
+export async function Get_all_Comments(page,size,filterobj,sort){
+  try{
+    let query = {
+      pageindex: page,
+      pagesize: size,
+      accountid: filterobj.accountid,
+      productId: filterobj.productId,
+      keywords:filterobj.keywords,
+      sort: sort,
+  }
+    let response=await axios.get(`/comments`,
+    {
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+  
+}
+//Update
+export async function Edit_Comment(payload,id) {
+  try {
+    const response = await axios.put(`comments/${id}`, payload,{
+      headers:{"Content-Type":"application/json"}
+    });
+    return response.data.message;
+  } catch (err) {
+    throw err;
+  }
+}
+//Delete
+export async function Delete_Comment(id){
+  try {
+    const response = await axios.delete(`comments/${id}`)
     return response.data.Message;
   } catch (err) {
     throw err;

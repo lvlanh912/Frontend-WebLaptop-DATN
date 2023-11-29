@@ -1,40 +1,36 @@
 <template>
-
+<main>
     <section class="row ">
         <div class="col-12 ms-2 mt-2">
             <crumb/>
         </div>
-        <div class="col-3 d-none d-lg-block rounded-3">
+        <div class="col-3 d-none d-md-block rounded-3">
                 <category-child-vue ></category-child-vue>
         </div>
-        <!-- Sản phẩm -->
-        <div class="col-12 col-md-9 rounded-3">
+        <!-- Danh sách Sản phẩm -->
+        <div class="col-12 col-md-9 rounded-3 position-relative">
         <div class="bg-white p-3">
             <!-- Lọc,sắp xếp -->
-            <div class="px-2 py-4 d-flex justify-content-between">
-                <div class="align-items-center d-none d-lg-flex">
-                    <button href="" class="btn sort-button me-2 rounded-4 text-blue fw-bolder py-1">Hàng mới</button>
-                    <button href="" class="btn sort-button me-2 rounded-4 text-blue fw-bolder py-1">Giá tăng dần</button>
-                    <button href="" class="btn sort-button me-2 rounded-4 text-blue fw-bolder py-1">Giá giảm dần</button>
-                </div>
-                <div class="d-flex align-items-center">
-                    <select class="select-sort">
-                        <option value="">Sắp xếp</option>
-                        <option value="">Lượt đánh giá</option>
-                        <option value="">Lượt xem</option>
-                        <option value="">Tên A-Z</option>
-                        <option value="">Tên Z-A</option>
+            <div class="px-2 py-4 row justify-content-between justify-content-lg-end">
+                    <select @change="onSort" class="select-sort col-6 col-md-4 col-lg-2 " v-model="sort">
+                        <option :value="''">Sắp xếp</option>
+                        <option :value="'name'">Tên A-Z</option>
+                        <option :value="'name_desc'">Tên Z-A</option>
+                        <option :value="'sold'">Sản phẩm bán chạy</option>
+                        <option :value="'date'">hàng mới trước</option>
+                        <option :value="'date_desc'">hàng cũ trước</option>
+                        <option :value="'price'">Giá tăng dần</option>
+                        <option :value="'price_desc'">Giá giảm dần</option>
                     </select>
                 <!-- Lọc -->
-                    <div @click="isShowFilter=!isShowFilter" class="btn inherit border">
-                        <i class="bi bi-funnel-fill text-blue me-2"></i>Lọc
-                    </div>
-
-                </div>
+                <div @click="isShowFilter=!isShowFilter" style="max-width: 80px;"
+                 class="btn inherit border col-lg-2 col-4 no-wrap">
+                    <i class="bi bi-funnel-fill text-blue me-2"></i>Lọc
+            </div>
             </div>
             <!-- form-lọc -->
-            <div class="d-flex justify-content-end mb-2">
-                <transition>
+            <div style="z-index: 99999;" class="d-flex justify-content-end mb-2 position-absolute">
+                <transition name="slide-fade">
                     <filter-form-vue v-if="isShowFilter" :categoryId="filterobj.category"
                      @closeFilter="isShowFilter=false"
                      @filData="onFilter"
@@ -50,7 +46,7 @@
             </div>
         </transition>
             <!-- Phân trang -->
-            <nav v-if="listProduct.length>0" class="d-flex justify-content-end pt-2">
+            <nav v-if="listProduct.length>0" class="d-flex justify-content-center pt-2 mt-2">
                 <ul class="pagination">
                 <li v-if="pageindex > 1" @click="changepage(--pageindex)" class="page-item">
                     <p class="page-link m-0">
@@ -75,6 +71,7 @@
            
         </div>
     </section>
+</main>
 </template>
 
 <script>
@@ -107,6 +104,7 @@ export default {
             brand: '',
             min: '',
             max: '',
+            stock:''
         })
         const GetData = async () => {
             isLoadproduct.value=false
@@ -134,17 +132,20 @@ export default {
             filterobj.keywords=filterObj.keywords,
             filterobj.category=filterObj.category,
             filterobj.min=filterObj.min,
-            filterobj.max=filterObj.max
+            filterobj.max=filterObj.max,
+            filterobj.stock=filterObj.stock
             await GetData()
         }
         const onCancelFilter=async()=>{
             filterobj.value=''
             await GetData()
         }
+        const onSort= async()=>await GetData()
 
 
         return{listProduct,isShowFilter,filterobj,onFilter,onCancelFilter,
-            pageindex,totalpage,changepage,isLoadproduct
+            pageindex,totalpage,changepage,isLoadproduct,
+            sort,onSort
         }
     }
 }
@@ -166,7 +167,6 @@ export default {
     background-color: #1988EC;
 }
 .select-sort{
-    width: 120px;
     height: 36px;
     border: 1px solid #BDC6D3;
     border-radius: 40px;

@@ -6,6 +6,9 @@ import {
   Get_List_Province,
   Get_List_districts,
   Get_List_wards,
+  Get_totalOrder_by_Account,
+  Get_totalComments_by_Account
+
 } from "../CallAPI.js";
 import removeEmptyFields from "../removeEmptyFields.js";
 async function Get_list_accounts(page = 1, size = 5, filterobj, sort = "") {
@@ -15,7 +18,20 @@ async function Get_list_accounts(page = 1, size = 5, filterobj, sort = "") {
     throw err;
   }
 }
-
+async function Get_totalOrder(id){
+  try {
+    return await Get_totalOrder_by_Account(id);
+  } catch (err) {
+    throw err;
+  }
+}
+async function Get_totalComment(id){
+  try {
+    return await Get_totalComments_by_Account(id);
+  } catch (err) {
+    throw err;
+  }
+}
 async function add_account(account, image) {
   //xoá thuộc tính trống
   let datajson = JSON.stringify(removeEmptyFields(account));
@@ -70,4 +86,6 @@ export {
   Get_List_Province,
   Get_List_districts,
   Get_List_wards,
+  Get_totalOrder,
+  Get_totalComment
 };
