@@ -1,29 +1,58 @@
 <template>
-   <div style="background-color: rgb(228, 200, 134); height: 100vh;" class="justify-content-center align-items-center card">
-    <Crumd_Com/>
-    <login @switch="(n)=>select=n" v-if="select==1"></login>
-    <sign-up @switch="(n)=>select=n" v-if="select==2"/>
-    <forgotpassword @switch="(n)=>select=n" v-if="select==3"></forgotpassword>
-  </div>
+    <div v-if="!isloggin" style="height: 100vh;" class=" position-relative justify-content-center align-items-center card border-0 bg-light bg-img">
+     <login v-if="selected==1"></login>
+     <sign-up v-if="selected==2"/>
+     <forgotpassword v-if="selected==3"></forgotpassword>
+   </div>
 </template>
 <script>
-import Login from '../components/Login.vue';
-import SignUp  from '../components/SignUp.vue';
-import Forgotpassword from '../components/Forgotpassword.vue'
-import Crumd_Com from '../components/Crumd_Com.vue';
+import Login from '../components/authentication/Login.vue';
+import SignUp  from '../components/authentication/SignUp.vue';
+import Forgotpassword from '../components/authentication/Forgotpassword.vue'
+import { onMounted,ref } from 'vue';
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 export default {
-  created () {
-    console.log(this.$route)
-  },
-  data () {
-    return {
-      select:1
+components:{
+  Login,
+  SignUp,
+  Forgotpassword
+},
+setup(){
+  const store=useStore()
+  const isloggin=ref(false)
+  if(store.state.user.jwtToken!=null){
+    isloggin.value=true
+    useRouter().push('/')
+  }
+//Nếu đã đăng nhập -->điều hướng về trang chủ
+ 
+  const selected=ref(1)
+  const route=useRoute()
+  const onChooseForm=(name)=>{
+    switch(name){
+      case 'login':
+        selected.value=1
+        break
+      case 'signup':
+        selected.value=2
+        break
+      default :
+       selected.value=3
     }
-  },
-  components: { Login, SignUp,Forgotpassword,Crumd_Com}
+  }
+  onMounted(()=>onChooseForm(route.name))
+  onBeforeRouteLeave((to,from,next)=>{
+    
+    onChooseForm(to.name)
+    next()
+  })
+  return{selected,isloggin}
+  
+}
 }
 </script>
 
-<style>
+<style  scoped>
 
 </style>

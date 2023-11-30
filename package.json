@@ -17,7 +17,8 @@
     "vue-router": "^4.2.2",
     "vue-sweetalert2": "^5.0.5",
     "vue3-carousel": "^0.3.1",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.23.3",

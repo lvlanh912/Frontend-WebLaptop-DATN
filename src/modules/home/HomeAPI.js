@@ -109,3 +109,26 @@ export async function getPostbyid(id){
           throw error
       }
 }
+
+//đăng ký
+export async function SignUp(payload){
+    try {
+        const response= await axios.post(`/users/sign-up`,payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//đăng nhập
+export async function SignIn(payload){
+    try {
+        const response= await axios.post(`/users/sign-in`,payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}

@@ -180,13 +180,7 @@ export default {
     };
     const gettime = (time) => {
       let datetime = new Date(time);
-      return (
-        datetime.getDay() +
-        "-" +
-        datetime.getMonth() +
-        "-" +
-        datetime.getFullYear()
-      );
+      return datetime.toLocaleDateString()
     };
     onBeforeMount(async () => {
       try {

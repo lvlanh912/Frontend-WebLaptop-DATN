@@ -4,8 +4,8 @@
       class="navbar navbar-expand-md navbar-light bg-white w-100 text-black position-relative"
     >
       <div class="d-flex justify-content-between w-100">
-        <router-link :to="{name: 'home'}" class="ms-2 navbar-brand brand">
-          DIENTUME.com
+        <router-link :to="{name: 'home'}" class="ms-2 navbar-brand brand position-relative">
+          <img class=" position-absolute" style="max-height: 100%;" src="../../public/banner.jpg" alt="">
         </router-link>
         <i
           @click="ishowMenu = !ishowMenu"
@@ -87,8 +87,8 @@
                   Tin tức
                 </RouterLink>
               </li>
-              <li>
-                <a class="nav-link px-0 mx-5 fw-bold text-danger nav--item">
+              <li >
+                <a @click="goBottom" class="nav-link px-0 mx-5 fw-bold text-danger nav--item">
                   <i class="bi bi-telephone-fill text-green me-2"></i>
                   Liên hệ
                 </a>
@@ -108,7 +108,8 @@
                 </div>
               </li>
               <hr class="mt-0" />
-              <li>
+              <!-- Đã đăng nhập -->
+              <li v-if="islogin">
                 <RouterLink
                   :class="{
                     'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
@@ -120,7 +121,19 @@
                   Giỏ hàng
                 </RouterLink>
               </li>
-              <li v-if="user.islogin">
+              <li v-if="islogin">
+                <RouterLink
+                  :class="{
+                    'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
+                    active: $route.name == 'post',
+                  }"
+                  :to="{name: 'post'}"
+                >
+                  <i class="bi bi-person-fill text-blue me-2"></i>
+                  Thông tin cá nhân
+                </RouterLink>
+              </li>
+              <li v-if="islogin">
                 <RouterLink
                   :class="{
                     'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
@@ -130,6 +143,17 @@
                 >
                   <i class="bi bi-box-arrow-left text-blue me-2"></i>
                   Đăng xuất
+                </RouterLink>
+              </li>
+              <!-- Chưa đăng nhập -->
+              <li v-else>
+                <RouterLink class="nav-link px-0 mx-5 fw-bold text-danger nav--item" :to="{name: 'login'}">
+                  Đăng nhập
+                </RouterLink>
+              </li>
+              <li v-if="!islogin">
+                <RouterLink class="nav-link px-0 mx-5 fw-bold text-danger nav--item" :to="{name: 'signup'}">
+                  Đăng ký
                 </RouterLink>
               </li>
             </ul>
@@ -198,7 +222,7 @@
           <!-- <router-link :to="{name:'authenticaton'}"  class="btn btn-info ms-4 text-white">Đăng nhập </router-link> -->
           <!-- giỏ hàng + thông tin ở đây -->
           <!-- Đã đăng nhập -->
-          <div v-if="user.islogin">
+          <div v-if="islogin">
             <RouterLink :to="{name: 'cart'}" class="ms-2 btn cart  px-2 item--header">
               <i class="bi bi-cart-dash me-1 ">  <span class=" ms-1 inherit text-select">Giỏ hàng</span></i>
             </RouterLink>
@@ -211,11 +235,11 @@
           </div>
        <!-- Chưa đăng nhập -->
        <div v-else class="d-flex">
-         <RouterLink :to="{name: 'cart'}" class="ms-2 btn cart  px-2 item--header">
+         <RouterLink :to="{name: 'login'}" class="ms-2 btn cart  px-2 item--header">
              <span class=" ms-1 inherit text-select">Đăng nhập</span>
           </RouterLink>
           <span class=" align-self-center">/</span>
-          <RouterLink :to="{name: 'cart'}" class=" btn cart  px-2 item--header">
+          <RouterLink :to="{name: 'signup'}" class=" btn cart  px-2 item--header">
              <span class=" ms-1 inherit text-select">Đăng ký</span>
           </RouterLink>
        </div>
@@ -236,7 +260,7 @@ export default {
     const ishowMenu = ref(false)
     const ishowdropdown = ref(false)
     const route = useRoute()
-    const user=useStore().state.user
+    const islogin=useStore().state.user.jwtToken!=null
     const list_category = ref([])
     const goBottom = () =>
       document.querySelector("footer").scrollIntoView({behavior: "smooth"})
@@ -245,7 +269,7 @@ export default {
     })
 
     return {
-      user,
+      islogin,
       ishowMenu,
       ishowdropdown,
       list_category,
@@ -305,7 +329,7 @@ export default {
   position: absolute;
 
   height: 100%;
-  width: 100%x;
+  width: 100%;
   bottom: 0;
   left: 0;
   right: 0;

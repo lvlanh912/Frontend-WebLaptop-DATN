@@ -1,5 +1,6 @@
 <template>
-   <div style="min-width: 20rem;;max-width: 50rem;" class="p-3 bg-white rounded-3 col-7 col-lg-6  px-md-2 px-lg-5 px-sm-1 d-flex flex-column align-content-center">
+    <transition name="slide-fade">
+   <div v-if="isShow" style="min-width: 20rem;;max-width: 50rem;" class="p-3 bg-white rounded-3 col-7 col-lg-6  px-md-2 px-lg-5 px-sm-1 d-flex flex-column align-content-center">
             <div class="d-flex flex-column p-sm-2 p-md-4 p-lg-5 ">
                 <h3 class="text-center mb-5 pt-4" style="color: rgb(7, 93, 93);">Đăng ký</h3>
                <div class="input-group">
@@ -40,98 +41,132 @@
     <hr>
         <p class="text-center bottom-0">
            <label for="">Đã có tài khoản?</label>&nbsp;
-           <a @click="this.$emit('switch',1)" class="link-info text-decoration-none">Đăng Nhập</a>
+           <router-link class="link-info text-decoration-none" :to="{name:'login'}">Đăng Nhập</router-link>
         </p>
     </div>
+</transition>
 </template>
 
 <script>
+import { onMounted, reactive,ref } from 'vue'
+import {SignUp} from '../../modules/home/HomeAPI.js'
+import { useRouter } from 'vue-router'
 export default {
-  data () {
-    return {
-        Error:{
+  setup() {
+    const isShow=ref()
+    const Error=reactive({
             username:'',
             fullname:'',
             password:'',
             password_repeat:'',
             email:'',
             phone:''
-            },
-        Payload:{
+    })
+    const Payload=reactive({
             username:'',
             fullname:'',
             password:'',
             password_repeat:'',
             email:'',
             phone:''
-            }
-        }
+    })
+
+    const validate=()=>{
+        if(Payload.username==''||Payload.password==''||Payload.email==''||Payload.phone=='')
+            return false
+        return true
+    }
+    onMounted(()=>{
+        isShow.value=false
+        isShow.value=true
+    })
     
-  },
-  methods: {
-    OnSignup(){
-        this.Validate()
-    },
-    NumberOnly(evt){
-      evt = (evt) ? evt : window.event;
+    const OnSignup= async()=>{
+        if(!validate())
+            return
+        try{
+            await SignUp(Payload)
+            Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: "Đăng ký thành công, Có thể đăng nhập",
+          })
+        }
+        catch(err){
+            Swal.fire({
+          icon: "error",
+          title: "Thất Bại",
+          text: err.response.data.message??err.message,
+        });
+           
+        }
+        
+
+        
+
+    }
+    const NumberOnly=(evt)=>{
+        evt = (evt) ? evt : window.event;
       var charCode = (evt.which) ? evt.which : evt.keyCode;
       if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
         evt.preventDefault();;
       } else 
         return true;
-    },
-    v_username(){
-        //username
-        if(this.Payload.username.length==0)
-            this.Error.username='Tên đăng nhập không được để trống'
-        else if(!this.Payload.username.match('^[a-zA-Z0-9]+$'))
-            this.Error.username='Tên đăng nhập chứa ký tự không hợp lệ'
-        else
-            this.Error.username=null
-    },
-    v_fullname(){
-         //fullname
-         if(this.Payload.fullname.length==0)
-            this.Error.fullname='Họ tên không được để trống'
-        else
-            this.Error.fullname=null
-    },
-    v_password(){
-        //password
-        if(this.Payload.password.length==0)
-            this.Error.password='Mật khẩu không được để trống'
-        else
-                this.Error.password=null
-    },
-    v_password_repeat(){
-         //password-repeat
-         if(this.Payload.password_repeat.length==0)
-            this.Error.password_repeat='Không được để trống trường này'
-        else if(this.Payload.password!=this.Payload.password_repeat)
-            this.Error.password_repeat='Mật khẩu không giống nhau'
-        else
-                this.Error.password_repeat=null
-    },
-    v_email(){
-         //email
-         if(this.Payload.email.length==0)
-            this.Error.email='Email không được để trống'
-        else if(!this.Payload.email.match('[a-z0-9]+@[a-z]+\.[a-z]{2,3}'))
-            this.Error.email='Email không hợp lệ'
-        else
-                this.Error.email=null
-    },
-    v_phone(){
-        //phone
-        if(this.Payload.phone.length==0)
-            this.Error.phone='Số điện thoại không được để trống'
-        else if(!this.Payload.phone.match('(84|0[3|5|7|8|9])+([0-9]{8})$'))
-            this.Error.phone='Số điện thoại không hợp lệ'
-        else
-                this.Error.phone=null
     }
-  },
 
+    const v_username=()=>{
+        if(Payload.username.length==0)
+            Error.username='Tên đăng nhập không được để trống'
+        else if(!Payload.username.match('^[a-zA-Z0-9]+$'))
+            Error.username='Tên đăng nhập chứa ký tự không hợp lệ'
+        else
+            Error.username=null
+    }
+    const v_fullname=()=>{
+        if(Payload.fullname.length==0)
+            Error.fullname='Họ tên không được để trống'
+        else
+            Error.fullname=null
+    }
+    const  v_password=()=>{
+        //password
+        if(Payload.password.length==0)
+            Error.password='Mật khẩu không được để trống'
+        else
+            Error.password=null
+    }
+   const v_password_repeat=()=>{
+         //password-repeat
+         if(Payload.password_repeat.length==0)
+            Error.password_repeat='Không được để trống trường này'
+        else if(Payload.password!=Payload.password_repeat)
+            Error.password_repeat='Mật khẩu không giống nhau'
+        else
+                Error.password_repeat=null
+    }
+    const v_email=()=>{
+         //email
+         if(Payload.email.length==0)
+            Error.email='Email không được để trống'
+        else if(!Payload.email.match('[a-z0-9]+@[a-z]+\.[a-z]{2,3}'))
+            Error.email='Email không hợp lệ'
+        else
+                Error.email=null
+    }
+    const v_phone=()=>{
+        //phone
+        if(Payload.phone.length==0)
+            Error.phone='Số điện thoại không được để trống'
+        else if(!Payload.phone.match('(84|0[3|5|7|8|9])+([0-9]{8})$'))
+            Error.phone='Số điện thoại không hợp lệ'
+        else
+                Error.phone=null
+    }
+    return {isShow,Payload,Error,OnSignup,NumberOnly,
+        v_username,v_fullname,v_password,v_password_repeat,v_email,v_phone
+
+    }
+}
 }
 </script>
 

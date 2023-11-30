@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <header_com />
-    <section class=" container-lg container-fluid mt-5 pt-1">
+    <section id="section" class="container-lg container-fluid mt-5 pt-1">
       <router-view v-slot="{Component}">
         <transition  :duration="200">
           <component :is="Component" />

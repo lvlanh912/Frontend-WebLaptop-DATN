@@ -3,7 +3,7 @@
     style="width: 250px; height: 100vh;">
     <ul class="list-unstyled ps-0">
       <li class="mb-1">
-        <router-link :to="{name:'admin'}" :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='admin'}">
+        <router-link :to="{name:'adminhome'}" :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='adminhome'}">
           <i class="bi bi-house-fill text-blue me-2"></i>Trang chủ
         </router-link>
       </li>
