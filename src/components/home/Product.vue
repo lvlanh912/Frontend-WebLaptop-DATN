@@ -1,6 +1,8 @@
 <template>
   <div class="bg-white pt-2 pb-2 overflow-hidden text-center col-12 col-lg-3 col-md-4 col-sm-6  border">
-    <router-link :to="{name:'product-detail',params:{productId:item.id}}" class="position-relative pb-2 mb-2 d-block text-dark text-decoration-none justify-content-center">
+    <router-link :to="{name:'product-detail',params:{productId:item.id}}"  style="aspect-ratio: 1;
+    overflow: hidden; align-self: center;"
+    class="position-relative pb-2 mb-2 d-flex text-dark text-decoration-none justify-content-center">
       <img class="img-product img-fluid" :src="backendhost+'/images/products/'+item.images[0]"
         alt="">
     </router-link>
@@ -73,7 +75,7 @@
     width: auto;
     max-height: 200px;
     margin: auto;
-    aspect-ratio:  1;
+    aspect-ratio:  auto;
     display: block;
   }
 

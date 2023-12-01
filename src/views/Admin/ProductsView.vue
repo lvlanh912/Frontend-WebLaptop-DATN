@@ -111,10 +111,6 @@
 
               <td>
                 <div class="d-flex">
-                  <a class="ms-2" @click="ShowInfor(Product)">
-                    <i class="bi bi-info-circle text-success fs-5"></i>
-                  </a>
-
                   <a class="ms-2" @click="ShowEdit(Product)">
                     <i class="bi bi-pencil-fill text-blue fs-5"></i>
                   </a>

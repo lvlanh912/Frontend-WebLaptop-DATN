@@ -60,9 +60,7 @@
             <td>{{ SetMaxtitle(item.title) }}</td>
             <td>
               <div class="d-flex">
-                <a @click="onInfor(item)" class="ms-2" >
-                  <i class="bi bi-info-circle text-success fs-5"></i>
-                </a>
+              
                 <a @click="onEdit(item)" class="ms-2">
                   <i class="bi bi-pencil-fill text-blue fs-5"></i>
                 </a>
