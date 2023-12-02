@@ -94,13 +94,13 @@ const router = createRouter({
       component: ()=>import ('../views/Home/HomeView.vue'),
       children:[
         {
-          path: '/dang-nhap',name: 'login',meta:{title:'Đăng nhập'},component: () => import('../views/AuthenticationView.vue')
+          path: 'dang-nhap',name: 'login',meta:{title:'Đăng nhập'},component: () => import('../views/AuthenticationView.vue')
         },
         {
-          path: '/dang-ky',name: 'signup', meta:{title:'Đăng Ký'},component: () => import('../views/AuthenticationView.vue')
+          path: 'dang-ky',name: 'signup', meta:{title:'Đăng Ký'},component: () => import('../views/AuthenticationView.vue')
         },
         {
-          path: '/quen-mat-khau',name: 'forgetPassword', meta:{title:'Quên mật khẩu'},component: () => import('../views/AuthenticationView.vue')
+          path: 'quen-mat-khau',name: 'forgetPassword', meta:{title:'Quên mật khẩu'},component: () => import('../views/AuthenticationView.vue')
         },
         {
           //trang chủ

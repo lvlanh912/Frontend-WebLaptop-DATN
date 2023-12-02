@@ -2,10 +2,9 @@
   <Carousel>
     <Slide v-for="image,index in images_banner" :key="index">
       <div class="carousel__item">
-        <img :src="image" alt="">
+        <img style="width: 100%;" class="img-fluid" :src="image" alt="">
       </div>
     </Slide>
-
     <template #addons>
       <Navigation />
       <Pagination />
@@ -29,10 +28,11 @@ export default defineComponent({
   },
   setup(){
     const images_banner=ref([
-      'https://cf.shopee.vn/file/vn-50009109-af1827253632c27d09043549fc3d6eb3_xxhdpi',
-      'https://cf.shopee.vn/file/vn-50009109-af1827253632c27d09043549fc3d6eb3_xxhdpi',
-      'https://cf.shopee.vn/file/vn-50009109-af1827253632c27d09043549fc3d6eb3_xxhdpi',
-      'https://cf.shopee.vn/file/vn-50009109-af1827253632c27d09043549fc3d6eb3_xxhdpi'
+     '../../../public/slide/Banner_1.webp',
+     '../../../public/slide/Banner_2.webp',
+     '../../../public/slide/Banner_3.webp',
+     '../../../public/slide/Banner_4.webp',
+     '../../../public/slide/Banner_5.webp'
     ])
     return{images_banner}
   }
@@ -43,6 +43,7 @@ export default defineComponent({
 .carousel__item {
   min-height: 200px;
   width: 100%;
+  aspect-ratio: 900/400;
   background-color: var(--vc-clr-primary);
   color: var(--vc-clr-white);
   font-size: 20px;

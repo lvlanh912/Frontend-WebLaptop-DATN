@@ -280,6 +280,7 @@ export default {
     }
 
     return {
+      pagesize,
       SetmaxLength,
       data,
       Product,

@@ -93,7 +93,7 @@ export default {
         const router=useRoute()
         const listProduct=ref([])
         const pageindex=ref(1)
-        const pagesize=ref(20)
+        const pagesize=ref(4)
         const totalpage=ref(0)
         const sort=ref('')
         const isShowFilter=ref(false)
@@ -145,7 +145,7 @@ export default {
 
         return{listProduct,isShowFilter,filterobj,onFilter,onCancelFilter,
             pageindex,totalpage,changepage,isLoadproduct,
-            sort,onSort
+            sort,onSort,pagesize
         }
     }
 }
@@ -175,4 +175,4 @@ export default {
     font-size: 16px;
     margin-right: 16px;
 }
-</style>
+</style>../../../modules/home/ClientAction.js../../../modules/home/HomeAPI.js

@@ -24,8 +24,8 @@
 <hr class="mt-2 mb-0 border-top border-light">
 <div class="text-center text-white" style="background-color: rgba(0, 0, 0, 0.2);">
     © 2023 Copyright:
-    <a href="#" class="ms-1 text-white">laptop.com</a>
-    - Design by Lv Lanh
+    <a href="#" class="ms-1 text-white">ASP.NET</a>
+    - Build with VueJs 3 & ASP.NET CORE 6
 </div>
 </footer>
 </template>

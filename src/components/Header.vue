@@ -4,7 +4,7 @@
       class="navbar navbar-expand-md navbar-light bg-white w-100 text-black position-relative"
     >
       <div class="d-flex justify-content-between w-100">
-        <router-link :to="{name: 'home'}" class="ms-2 navbar-brand brand position-relative">
+        <router-link :to="{name: 'home'}" class="ms-2 navbar-brand brand position-relative me-5">
           <img class=" position-absolute" style="max-height: 100%;" src="../../public/banner.jpg" alt="">
         </router-link>
         <i
@@ -251,7 +251,7 @@
 
 <script>
 import {RouterLink, useRoute} from "vue-router"
-import {ref, onBeforeMount} from "vue"
+import {ref, onBeforeMount, onUpdated} from "vue"
 import {company_list, type_list} from "../data/filter"
 import {getCategory_noParent} from "../modules/home/HomeAPI.js"
 import { useStore } from 'vuex'
@@ -260,12 +260,19 @@ export default {
     const ishowMenu = ref(false)
     const ishowdropdown = ref(false)
     const route = useRoute()
-    const islogin=useStore().state.user.jwtToken!=null
+    const store=useStore()
+    const islogin=ref(store.state.user.jwtToken!=null)
     const list_category = ref([])
     const goBottom = () =>
       document.querySelector("footer").scrollIntoView({behavior: "smooth"})
     onBeforeMount(async () => {
       list_category.value = await getCategory_noParent()
+    })
+    onUpdated(()=>{
+      if(store.state.user.jwtToken==null)
+        islogin.value=false
+      else
+        islogin.value=true
     })
 
     return {
@@ -424,3 +431,4 @@ export default {
   }
 }
 </style>
+../modules/home/ClientAction.js../modules/home/HomeAPI.js

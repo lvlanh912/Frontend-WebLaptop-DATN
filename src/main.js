@@ -18,5 +18,5 @@ app.use(VueSweetalert2);
 //set golbal cho Swal 
 window.Swal =  app.config.globalProperties.$swal
 window.backendHost= 'https://localhost:7251'
-
+axios.defaults.headers.common['Authorization'] = store.state.user.jwtToken;
 app.mount('#app')

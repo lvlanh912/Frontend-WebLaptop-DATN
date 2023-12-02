@@ -66,3 +66,4 @@ export default {
     transition: all .5s ease-in-out;
 }
 </style>
+../../../modules/home/ClientAction.js../../../modules/home/HomeAPI.js

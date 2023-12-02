@@ -1,104 +1,128 @@
 <template>
-  <div class="container">
-      <h3 class="text-blue">Giỏ hàng của tôi</h3>
-    <div class="cart row bg-white">
-        <p class="text-end mt-2 col-12 col-lg-7">
-            <button class="btn bg-red text-white"><i class="bi bi-trash me-2"> </i>Xoá tất cả</button>
+    <main>
+   <div class="container px-0">
+     <h3 class="text-blue fw-bold">Giỏ hàng của tôi</h3>
+     <div style="height: 100vh;" class=" bg-white px-3">
+      <div v-if="Cart_show.length>0">
+        <p class="text-end ">
+          <button class="btn bg-red text-white">
+            <i class="bi bi-trash me-2"></i>Xoá tất cả </button>
         </p>
-        <ol class="list-unstyled mt-3 col-12 col-lg-7">
-            <li class="px-2 row">
-                <div class="col flex-shrink-0" style="max-width: 88px;">
-                    <img class="img-fluid" src="https://hoanghapccdn.com/media/product/120_4416_pc_beautiful_montech_premium_black_h4.jpg" alt="">
-                </div>
-                <!-- infor -->
-            <div class="col ">
-                <strong class="">HHPC BLACK CORE i7 13700K | 32G DDR5 | NVIDIA RTX 4070 12G</strong>
-                <p class="text-orange fw-bolder pt-2 mb-0">
-                    <i class="bi bi-exclamation-circle me-2"></i>
-                    Hết hàng
-                </p>
-            </div>
-            <!-- control -->
-            <div class="col-12 mt-3 mt-lg-0 col-lg-3 list-cart">
-                <div class="d-flex align-items-center justify-content-between my-0">
-                    <div class="d-flex">
-                        <i class="bi bi-dash-lg  px-2 bg-red text-white"></i>
-                        <input type="number"
-                            class="bg-light text-center border-0 my-0 py-0" style="max-width: 40px;">
-                        <i class="bi bi-plus-lg px-2 bg-blue text-white"></i>
-                    </div>
-                    <button class=" btn btn-outline-danger bi-trash3 px-1 py-0 text-red bg-white"></button>
-                </div>
-                <p class="fst-normal mt-2">
-                    <span class="fs-6">43.000.00 đ</span>
-                    <strong class="d-block text-blue">57.000.000 đ</strong>
-                </p>
-            </div>
-           <div class="text-center px-5 py-1">
-            <span class="border d-block"></span>
+        <ol class="list-unstyled col-12 py-4">
+        
+          <li v-for="item,index in Cart_show" :key="item.product.id" class="px-2 d-flex justify-content-between row py-2 border-top border-bottom">
+             <!-- Sản phẩm -->
+             <div class="d-flex col-xl-5 col-md-6">
+               <div class=" align-self-center col-1 me-4 text-start">
+                     <input type="checkbox" class="form-check-input fs-5">
+                 </div>
+               <!-- ảnh -->
+               <div class="align-middle white-space-nowrap py-0 me-3">
+                   <a class="d-block rounded-2 border">
+                   <img :src="backendhost+'/images/products/'+item.product.images[0]" alt="" width="53"></a>
+               </div>
+               <!-- tên sản phẩm -->
+               <div class="align-middle white-space-nowrap align-self-center ms-2">
+                   <span class="fw-bold">{{item.product.productName}}</span>
+               </div>
            </div>
-            </li>
-<!-- item hết hàng -->
-<li class="px-2 row">
-    <div class="col flex-shrink-0" style="max-width: 88px;">
-        <img class="img-fluid" src="https://hoanghapccdn.com/media/product/120_4416_pc_beautiful_montech_premium_black_h4.jpg" alt="">
-    </div>
-    <!-- infor -->
-<div class="col ">
-    <strong class="">HHPC BLACK CORE i7 13700K | 32G DDR5 | NVIDIA RTX 4070 12G</strong>
-    <p class="text-green fw-bolder pt-2 mb-0">
-        <i class=" bi bi-check-circle me-2"></i>
-        Còn hàng
-    </p>
-</div>
-<!-- control -->
-<div class="col-12 mt-3 mt-lg-0 col-lg-3 list-cart">
-    <div class="d-flex align-items-center justify-content-between my-0">
-        <div class="d-flex">
-            <i class="bi bi-dash-lg  px-2 bg-red text-white"></i>
-            <input type="number"
-                class="bg-light text-center border-0 my-0 py-0" style="max-width: 40px;">
-            <i class="bi bi-plus-lg px-2 bg-blue text-white"></i>
-        </div>
-        <button class=" btn btn-outline-danger bi-trash3 px-1 py-0 text-red bg-white"></button>
-    </div>
-    <p class="fst-normal mt-2">
-        <span class="fs-6">43.000.00 đ</span>
-        <strong class="d-block text-blue">57.000.000 đ</strong>
-    </p>
-</div>
-<div class="text-center px-5 py-1">
-<span class="border d-block"></span>
-</div>
-</li>
-<!--  -->
-            <p class="text-end mt-3 border-bottom py-2">
-                <i class=" fs-4 text-red bi bi-gift m-auto d-inline-block me-2 py-1"></i>
-                <input type="text" class="border border-danger p-2" placeholder="Mã giảm giá (nếu có)">
-            </p>
-           <p class="text-end me-2 fs-5">Tổng cộng: 
-            <strong class="text-red">60.000.000</strong>
-        </p>
+           <!-- Tình trạng hàng -->
+           <div class="px-2 ms-2 align-middle white-space-nowrap align-self-center col-xl-1 col-md-2 justify-content-start">
+                <p class=" inherit text-muted pt-2 mb-0">
+                   còn lại {{ item.product.stock }}
+                 </p>
+           </div>
+           <!-- Giá sản phẩm-->
+           <div class="align-middle white-space-nowrap align-self-center col-xl-2 col-md-3 justify-content-start">
+             <span class="fs-6">{{ ToVND(item.product.price) }}</span>
+               <strong class="d-block text-red text-decoration-line-through">{{ ToVND(item.product.maxPrice) }}</strong>
+           </div>
+           <!-- Số lượng-->
+           <div class="align-middle white-space-nowrap align-self-center col justify-content-start col-xl-3">
+             <div class="d-flex">
+                 <!-- Giảm SL -->
+                  <i @click="onDecrease(index)" class="bi bi-dash-lg  px-2 bg-red text-white"></i>
+                  <!-- Số lượng trong giỏ -->
+                  <input v-model="item.quantity" type="number" class="bg-light text-center border-0 my-0 py-0" style="max-width: 40px;">
+                  <!-- Tăng SL -->
+                  <i  @click="onIncrease(index)" class="bi bi-plus-lg px-2 bg-blue text-whitev"></i>
+                </div>
+           </div>
+           <!-- Xoá-->
+           <div class="align-middle white-space-nowrap align-self-center col d-flex justify-content-end">
+             <button @click="onDeleteOne(index)" class=" ms-4 fs-4 btn btn-outline-danger bi-trash3 px-1 py-0 text-red bg-white"></button>
+           </div>
+          </li>
+         
         </ol>
-        <!-- infor customer -->
-        <section class="infor-customer border-start col-12 col-lg-5 mb-3 p-3">
-            <div class="cart border border-info p-2 shadow rounded-2 px-3 px-lg-4">
-                <h5 class="fw-bold text-blue mb-3 text-center">Thông tin thanh toán</h5>
-                <input type="text" class="form-control mb-3 input-custom" placeholder="Họ tên người nhận hàng">
-                <input type="tel" class="form-control mb-3 input-custom" placeholder="Số điện thoại người nhận">
-                <input type="email" class="form-control mb-3 input-custom" placeholder="Email">
-                <input type="text" class="form-control mb-3 input-custom" placeholder="Địa chỉ nhận hàng">
-                <input type="text" class="form-control mb-3 input-custom" placeholder="Ghi chú">
-            <button class="btn bg-blue text-white d-block m-auto">Xác nhận đặt hàng</button>
-            </div>
-        </section>
-    </div>
-  </div>
-
+      </div>
+      <div v-else class="">
+        Không có sản phẩm nào trong giỏ hàng
+      </div>
+       <!-- infor customer -->
+       <!-- <section class="infor-customer border-start col-12 col-lg-5 mb-3 p-3">
+         <div class="cart border border-info p-2 shadow rounded-2 px-3 px-lg-4">
+           <h5 class="fw-bold text-blue mb-3 text-center">Thông tin thanh toán</h5>
+           <input type="text" class="form-control mb-3 input-custom" placeholder="Họ tên người nhận hàng">
+           <input type="tel" class="form-control mb-3 input-custom" placeholder="Số điện thoại người nhận">
+           <input type="email" class="form-control mb-3 input-custom" placeholder="Email">
+           <input type="text" class="form-control mb-3 input-custom" placeholder="Địa chỉ nhận hàng">
+           <input type="text" class="form-control mb-3 input-custom" placeholder="Ghi chú">
+           <button class="btn bg-blue text-white d-block m-auto">Xác nhận đặt hàng</button>
+         </div>
+       </section> -->
+     </div>
+   </div>
+ </main>
 </template>
 
 <script>
+import { onBeforeMount, ref } from 'vue'
+import {GetCart,GetProductbyId} from '../../modules/home/HomeAPI.js'
+import { useStore } from 'vuex'
+import Swal from 'sweetalert2'
+import { Icon } from 'vue3-carousel'
 export default {
+    setup(){
+        const mycart=ref({})
+        const store= useStore()
+        const Cart_show=ref([])
+        const backendhost=ref(backendHost)
+        const ToVND = (e) => {
+      return e.toLocaleString("it-IT", {style: "currency", currency: "VND"})
+    }
+    const onDecrease=(index)=>{
+      if(Cart_show.value[index].quantity>=1){
+        Cart_show.value[index].quantity-=1;
+        if(Cart_show.value[index].quantity==0)
+        onDeleteOne(index)
+      }
+    }
+    const onIncrease=(index)=>{
+      if(Cart_show.value[index].quantity<Cart_show.value[index].product.stock)
+        Cart_show.value[index].quantity+=1;
+      else
+      console.log('Không thể tăng')
+      }
+    const onDeleteOne=(e)=>{
+      //xoá API
+      Cart_show.value.splice(e,1)
+    }
+        onBeforeMount( async()=>{
+            try{
+                mycart.value=await GetCart()
+                mycart.value.items.forEach(async (item)=>{
+                  Cart_show.value.push({product: await GetProductbyId(item.productId),quantity:item.quantity})
+                })
+            }
+            catch(error){
+                if(error.response&&error.response.status==401){
+                    store.dispatch('Logout')
+                }
+            }
+        })
+        return{Cart_show,backendhost,ToVND,onDeleteOne,onDecrease,onIncrease}
+    }
 
 }
 </script>
@@ -121,4 +145,4 @@ export default {
     font-weight: 455;
     line-height: normal;
 }
-</style>
+</style>../../modules/home/ClientAction.js../../modules/home/HomeAPI.js

@@ -1,58 +1,76 @@
 <template>
+  <div class="mb-4">
     <div class="col">
         <banner-com/>
-        <!-- Tin tức -->
     </div>
-      <section class=" container container-fluid bg-custom" >
+      <section class=" container-fluid bg-light" >
      <p class="position-relative header fw-bold fs-3 pt-3">Bán chạy<a href="" class=" fs-4 fw-bold text-decoration-none position-absolute end-0">Xem tất cả <i class=""></i></a></p>
-     <div class=" row g-2">
+     <div class=" row g-1">
       <!-- Sản phẩm bán chạy -->
-      <product v-for="laptop in list_laptop" :key="laptop" :item="laptop"/>
+      <product_slide-vue :products="top_product_sold.items"/>
      </div>
      <div class="list-more"></div>
     </section>
-    <section class="container-fluid bg-light bg-white">
-     <p class="position-relative header fw-bold fs-3 pt-3">Laptop mới cập nhật<a href="" class=" fs-4 fw-bold text-decoration-none position-absolute end-0">Xem tất cả <i class=""></i></a></p>
-     <div class=" row g-2">
-      <product v-for="laptop in list_laptop" :key="laptop" :item="laptop"/>
+    <!-- Sản phẩm mới cập nhật -->
+    <section class="container-fluid bg-light">
+     <p class="position-relative header fw-bold fs-3 pt-3">Sản phẩm mới cập nhật<a href="" class=" fs-4 fw-bold text-decoration-none position-absolute end-0">Xem tất cả <i class=""></i></a></p>
+     <div class=" row g-1">
+      <product_slide-vue :products="new_product_add.items"/>
      </div>
      <div class="list-more"></div>
     </section>
-    <section class="container-fluid bg-light bg-white mt-4">
-     <p class="position-relative header fw-bold fs-3 pt-3">Phụ kiện<a href="" class=" fs-4 fw-bold text-decoration-none position-absolute end-0">Xem tất cả <i class=""></i></a></p>
-     <div class=" row g-2">
-       <product v-for="laptop in list_laptop" :key="laptop" :item="laptop"/>
+    <!-- Sản phẩm mới cập nhật -->
+    <section class="container-fluid bg-light">
+     <p class="position-relative header fw-bold fs-3 pt-3">Sản phẩm được xem nhiều<a href="" class=" fs-4 fw-bold text-decoration-none position-absolute end-0">Xem tất cả <i class=""></i></a></p>
+     <div class=" row g-1">
+      <product_slide-vue :products="new_product_add.items"/>
      </div>
      <div class="list-more"></div>
     </section>
-    <section class="container-fluid bg-light bg-white mt-4">
-     <p class="position-relative header fw-bold fs-3 pt-3">Tin tức<a href="" class=" fs-4 fw-bold text-decoration-none position-absolute end-0">Xem tất cả <i class=""></i></a></p>
-     <div class="row g-2">
-      <news v-for="n in 3" :key="n"/>
+    <section class="container-fluid bg-light">
+     <p class="position-relative header fw-bold fs-3 pt-3">Tin tức mới<a href="" class=" fs-4 fw-bold text-decoration-none position-absolute end-0">Xem tất cả <i class=""></i></a></p>
+     <div class=" row g-1">
+      <MyPost v-for="item in new_post_updated.items" :key="item.id" :post="item" ></MyPost>
      </div>
      <div class="list-more"></div>
-    
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
-import BannerCom from '../../components/home/Banner-Com.vue'
-import Product from '../../components/home/Product.vue'
 import News from '../../components/home/news.vue'
-import list_laptop from '../../data/data-sample/laptop.js'
+import { onBeforeMount, onMounted, ref } from 'vue'
+import {GettopProductSold,GetTopProductNew,GetTopPost} from '../../modules/home/HomeAPI.js'
+import BannerCom from '../../components/home/Banner-Com.vue'
+import Product_slideVue from '../../components/home/Product_slide.vue'
+
+import MyPost from '../../components/home/Post/MyPost.vue'
 export default {
 components:{
-    Product,
     News,
-    BannerCom
-
+    BannerCom,
+    Product_slideVue,
+    MyPost
 },
 setup(){
-    return {list_laptop}
+ const top_product_sold=ref([])
+ const new_product_add=ref([])
+ const new_post_updated=ref([])
+  onBeforeMount(async ()=>{
+    top_product_sold.value=await GettopProductSold(6)
+    new_product_add.value=await GetTopProductNew(6)
+    new_post_updated.value=await GetTopPost(6)
+
+  })
+
+    return {
+      top_product_sold,new_product_add,
+      new_post_updated
+    }
 }
 }
 </script>
 
 <style>
 
-</style>
+</style>../../modules/home/ClientAction.js../../modules/home/HomeAPI.js

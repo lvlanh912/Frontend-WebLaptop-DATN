@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white pt-2 pb-2 overflow-hidden text-center col-12 col-lg-3 col-md-4 col-sm-6  border">
+  <div :class="{'bg-white pt-2 pb-2 overflow-hidden text-center col-12 border':true,'col-lg-3 col-md-4 col-sm-6':!showfull}  ">
     <router-link :to="{name:'product-detail',params:{productId:item.id}}"  style="aspect-ratio: 1;
     overflow: hidden; align-self: center;"
     class="position-relative pb-2 mb-2 d-flex text-dark text-decoration-none justify-content-center">
@@ -40,21 +40,38 @@
 
 <script>
   import { computed, defineProps, ref } from "vue"
+  import {AddtoCart} from '../../modules/home/HomeAPI.js'
   export default {
     props: {
-      showfull: true,
+      showfull:{
+        require:false
+      },
       item: Object,
     },
     setup(props) {
+      const showfull=props.showfull
       const item = props.item
       const backendhost = ref(backendHost)
-      function onAddCart() {
-        // Use sweetalert2
-        Swal.fire({
-          icon: "success",
-          title: "Thành công",
-          text: "Sản phẩm đã được thêm vào giỏ hàng của bạn",
-        })
+      const onAddCart=async()=> {
+        try{
+          await AddtoCart({
+            productId:item.id,
+            quantity:1
+          })
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: "Sản phẩm đã được thêm vào giỏ hàng của bạn",
+          })
+        }
+        catch(err){
+          Swal.fire({
+            icon: "warning",
+            title: "Lỗi",
+            text: err.message,
+          })
+        }
+        
       }
       function toVND(n) {
         return new Intl.NumberFormat("vi-VN", {
@@ -65,7 +82,7 @@
       const discount = computed(() => {
         return 100 - ((item.price / item.maxPrice) * 100).toFixed()
       })
-      return { onAddCart, backendhost, toVND, discount, item }
+      return { onAddCart, backendhost, toVND, discount, item,showfull }
     },
   }
 </script>

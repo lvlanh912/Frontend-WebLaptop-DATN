@@ -1,5 +1,6 @@
 import {createStore} from 'vuex'
 import createPersistedState from "vuex-persistedstate";
+import axios from 'axios';
 	const store=createStore({
 	plugins: [createPersistedState()],
 	state(){	//danh sách các biến
@@ -20,13 +21,21 @@ import createPersistedState from "vuex-persistedstate";
 			state.data=payload
 			},
 		SetLoginUser(state,token){
-			state.user.jwtToken=token
+			state.user.jwtToken='Bearer '+ token
 			state.user.isAdmin=false
+			axios.defaults.headers.common['Authorization'] =state.user.jwtToken;
 			
 		},
 		SetLoginAdmin(state,token){
-			state.user.jwtToken=token
+			state.user.jwtToken='Bearer '+ token
 			state.user.isAdmin=true
+			axios.defaults.headers.common['Authorization'] = state.user.jwtToken;
+		},
+		Logout(state){
+			console.log('đăng xuất')
+			state.user.jwtToken=null
+			state.user.isAdmin=false
+			axios.defaults.headers.common['Authorization'] = '';
 		}
 		},
 	actions:{		//dùng để tương tác với mutations
@@ -39,7 +48,9 @@ import createPersistedState from "vuex-persistedstate";
 		SetLoginUser({commit},token){
 			commit("SetLoginUser",token)
 		},
+		Logout({commit}){
+			commit("Logout")
+		}
 	}
 	});
-
 	export default store;
