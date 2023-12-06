@@ -2,19 +2,19 @@
     <main>
    <div class="container px-0">
      <h3 class="text-blue fw-bold">Giỏ hàng của tôi</h3>
-     <div style="height: 100vh;" class=" bg-white px-3">
+     <div style="height: 100vh;" class="px-3">
       <div v-if="Cart_show.length>0">
         <p class="text-end ">
-          <button class="btn bg-red text-white">
+          <button @click="onDeleteAll" class="btn bg-red text-white">
             <i class="bi bi-trash me-2"></i>Xoá tất cả </button>
         </p>
         <ol class="list-unstyled col-12 py-4">
         
-          <li v-for="item,index in Cart_show" :key="item.product.id" class="px-2 d-flex justify-content-between row py-2 border-top border-bottom">
+          <li v-for="item,index in Cart_show" :key="item.product.id" class="px-2 d-flex justify-content-between row py-2 border-top border-bottom bg-white mb-2">
              <!-- Sản phẩm -->
              <div class="d-flex col-xl-5 col-md-6">
                <div class=" align-self-center col-1 me-4 text-start">
-                     <input type="checkbox" class="form-check-input fs-5">
+                     <input v-model="selected_item" :value="item" type="checkbox" class="form-check-input fs-5">
                  </div>
                <!-- ảnh -->
                <div class="align-middle white-space-nowrap py-0 me-3">
@@ -45,7 +45,7 @@
                   <!-- Số lượng trong giỏ -->
                   <input v-model="item.quantity" type="number" class="bg-light text-center border-0 my-0 py-0" style="max-width: 40px;">
                   <!-- Tăng SL -->
-                  <i  @click="onIncrease(index)" class="bi bi-plus-lg px-2 bg-blue text-whitev"></i>
+                  <i  @click="onIncrease(index)" class="bi bi-plus-lg px-2 bg-blue text-white"></i>
                 </div>
            </div>
            <!-- Xoá-->
@@ -55,6 +55,9 @@
           </li>
          
         </ol>
+        <section v-if="selected_item.length>0" class="px-4">
+          <Pendingorder :items="selected_item" />
+        </section>
       </div>
       <div v-else class="">
         Không có sản phẩm nào trong giỏ hàng
@@ -78,18 +81,44 @@
 
 <script>
 import { onBeforeMount, ref } from 'vue'
-import {GetCart,GetProductbyId} from '../../modules/home/HomeAPI.js'
+import {GetCart,GetProductbyId,UpdateQuantity,DeleteOneItem,DeleteAllItem} from '../../modules/home/HomeAPI.js'
 import { useStore } from 'vuex'
-import Swal from 'sweetalert2'
-import { Icon } from 'vue3-carousel'
+import Pendingorder from '../../components/home/Pendingorder.vue'
 export default {
+  components:{
+    Pendingorder
+  },
     setup(){
         const mycart=ref({})
         const store= useStore()
         const Cart_show=ref([])
         const backendhost=ref(backendHost)
+        const selected_item=ref([])
+
         const ToVND = (e) => {
       return e.toLocaleString("it-IT", {style: "currency", currency: "VND"})
+    }
+
+    const onDeleteAll= async()=>{
+      try{
+        await DeleteAllItem()
+        Cart_show.value=[]
+        Swal.fire(
+						  {
+                icon: 'success',
+                title: 'Đã xoá',
+                text: 'Giỏ hàng đã được làm trống'   
+						  })
+        store.dispatch("UpdateTotalCart")
+      }
+      catch(err){
+        Swal.fire(
+						  {
+                icon: 'error',
+                title: 'Thất bại',
+                text:  err.message 
+						  })
+      }
     }
     const onDecrease=(index)=>{
       if(Cart_show.value[index].quantity>=1){
@@ -98,17 +127,31 @@ export default {
         onDeleteOne(index)
       }
     }
-    const onIncrease=(index)=>{
-      if(Cart_show.value[index].quantity<Cart_show.value[index].product.stock)
+    const onIncrease= async(index)=>{
+      if(Cart_show.value[index].quantity<Cart_show.value[index].product.stock){
         Cart_show.value[index].quantity+=1;
-      else
-      console.log('Không thể tăng')
+       await UpdateQuantity({
+        productId:Cart_show.value[index].product.id,
+        quantity:Cart_show.value[index].quantity
+      })
       }
-    const onDeleteOne=(e)=>{
-      //xoá API
+      else
+        Swal.fire(
+						  {
+                icon: 'warning',
+                title: 'Không thể tăng',
+                text: 'Sản phẩm đã quá số lượng còn lại'   
+						  })
+      }
+    const onDeleteOne=async (e)=>{
+      await DeleteOneItem({
+        productId:Cart_show.value[e].product.id,
+        quantity:Cart_show.value[e].quantity
+      })
       Cart_show.value.splice(e,1)
+      store.dispatch("UpdateTotalCart")
     }
-        onBeforeMount( async()=>{
+      onBeforeMount( async()=>{
             try{
                 mycart.value=await GetCart()
                 mycart.value.items.forEach(async (item)=>{
@@ -121,7 +164,7 @@ export default {
                 }
             }
         })
-        return{Cart_show,backendhost,ToVND,onDeleteOne,onDecrease,onIncrease}
+    return{Cart_show,backendhost,ToVND,onDeleteOne,onDecrease,onIncrease,onDeleteAll,selected_item}
     }
 
 }

@@ -41,6 +41,7 @@
 <script>
   import { computed, defineProps, ref } from "vue"
   import {AddtoCart} from '../../modules/home/HomeAPI.js'
+import { useStore } from 'vuex'
   export default {
     props: {
       showfull:{
@@ -49,6 +50,7 @@
       item: Object,
     },
     setup(props) {
+      const store = useStore()
       const showfull=props.showfull
       const item = props.item
       const backendhost = ref(backendHost)
@@ -63,6 +65,8 @@
             title: "Thành công",
             text: "Sản phẩm đã được thêm vào giỏ hàng của bạn",
           })
+
+          store.dispatch("UpdateTotalCart")
         }
         catch(err){
           Swal.fire({

@@ -111,39 +111,32 @@
               <!-- Đã đăng nhập -->
               <li v-if="islogin">
                 <RouterLink
-                  :class="{
-                    'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
-                    active: $route.name == 'post',
-                  }"
-                  :to="{name: 'post'}"
+                  class="nav-link px-0 mx-5 fw-bold text-danger nav--item"
+                  :to="{name: 'cart'}"
                 >
                   <i class="bi bi-cart-fill text-yellow me-2"></i>
-                  Giỏ hàng
+                  Giỏ hàng  <i class="position-absolute ms-2 translate-middle badge rounded-pill bg-danger">{{ cart_total }}
+                </i>
                 </RouterLink>
               </li>
               <li v-if="islogin">
                 <RouterLink
                   :class="{
                     'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
-                    active: $route.name == 'post',
+                    active: $route.name == 'profile-home',
                   }"
-                  :to="{name: 'post'}"
+                  :to="{name: 'profile-home'}"
                 >
                   <i class="bi bi-person-fill text-blue me-2"></i>
                   Thông tin cá nhân
                 </RouterLink>
               </li>
               <li v-if="islogin">
-                <RouterLink
-                  :class="{
-                    'nav-link px-0 mx-5 fw-bold text-danger nav--item': true,
-                    active: $route.name == 'post',
-                  }"
-                  :to="{name: 'post'}"
+                <a @click="onLogout" class="nav-link px-0 mx-5 fw-bold text-danger nav--item"
                 >
                   <i class="bi bi-box-arrow-left text-blue me-2"></i>
                   Đăng xuất
-                </RouterLink>
+              </a>
               </li>
               <!-- Chưa đăng nhập -->
               <li v-else>
@@ -224,14 +217,16 @@
           <!-- Đã đăng nhập -->
           <div v-if="islogin">
             <RouterLink :to="{name: 'cart'}" class="ms-2 btn cart  px-2 item--header">
-              <i class="bi bi-cart-dash me-1 ">  <span class=" ms-1 inherit text-select">Giỏ hàng</span></i>
+              <i class="bi bi-cart-dash me-1 ">  <span class=" ms-1 inherit text-select">Giỏ hàng 
+                <i class="position-absolute start-90 top-0 translate-middle badge rounded-pill bg-danger">{{ cart_total }}
+                </i></span></i>
             </RouterLink>
-            <router-link class="btn person  px-2 item--header" :to="{name:'cart'}">
+            <router-link class="btn person  px-2 item--header" :to="{name:'profile-home'}">
               <i class="bi bi-person me-1"> <span class=" ms-1 inherit text-select">Tài khoản</span></i>
             </router-link>
-            <router-link class="btn fs-6 logout px-2 item--header " title="Đăng xuất" :to="{name:'home'}">
+            <a @click="onLogout" class="btn fs-6 logout px-2 item--header">
               <i class="bi bi-box-arrow-right me-1"><span class=" ms-1 inherit text-select">Đăng xuất</span></i>
-            </router-link>
+          </a>
           </div>
        <!-- Chưa đăng nhập -->
        <div v-else class="d-flex">
@@ -250,8 +245,8 @@
 </template>
 
 <script>
-import {RouterLink, useRoute} from "vue-router"
-import {ref, onBeforeMount, onUpdated} from "vue"
+import {RouterLink,  useRouter} from "vue-router"
+import {ref, onBeforeMount, onUpdated, onBeforeUpdate, computed} from "vue"
 import {company_list, type_list} from "../data/filter"
 import {getCategory_noParent} from "../modules/home/HomeAPI.js"
 import { useStore } from 'vuex'
@@ -259,8 +254,9 @@ export default {
   setup() {
     const ishowMenu = ref(false)
     const ishowdropdown = ref(false)
-    const route = useRoute()
+    const router = useRouter()
     const store=useStore()
+    const cart_total=computed(()=>store.state.user.cartCount)
     const islogin=ref(store.state.user.jwtToken!=null)
     const list_category = ref([])
     const goBottom = () =>
@@ -268,12 +264,20 @@ export default {
     onBeforeMount(async () => {
       list_category.value = await getCategory_noParent()
     })
+
+    const onLogout=()=>{
+      store.dispatch("Logout")
+      islogin.value=false
+      router.push('/')
+    }
+
     onUpdated(()=>{
       if(store.state.user.jwtToken==null)
         islogin.value=false
       else
         islogin.value=true
     })
+
 
     return {
       islogin,
@@ -283,6 +287,8 @@ export default {
       company_list,
       type_list,
       goBottom,
+      onLogout,
+      cart_total
     }
   },
 }

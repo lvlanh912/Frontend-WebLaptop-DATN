@@ -182,3 +182,72 @@ export async function AddtoCart(Payload){
           throw error
       }
 }
+//Cập nhật số lượng sản phẩm trong giỏ hàng
+export async function UpdateQuantity(Payload){
+    try {
+        const response= await axios.patch(`/cart`,Payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Xoá sản phẩm trong giỏ hàng
+export async function DeleteOneItem(Payload){
+    try {
+        const response= await axios.patch(`/cart/delete-item`,Payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Làm trống giỏ hàng
+export async function DeleteAllItem(){
+    try {
+        const response= await axios.delete(`/cart`)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//lấy thông tin tài khoản
+export async function GetProfile(){
+    try {
+        const response= await axios.get(`/users/profile`)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//cập nhật avt
+export async function updateAvatar(image) {
+    try {
+        const formData = new FormData();
+        formData.append('image',image)
+      const response = await axios.patch(`users/update-avatar`, formData, 
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return response.data.message;
+    } catch (err) {
+      throw err;
+    }
+  }
+//cập nhật thông tin (tên và địa chỉ)
+export async function updateInfor(Payload) {
+    try {
+        const response= await axios.patch(`/users/update-infor`,Payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
