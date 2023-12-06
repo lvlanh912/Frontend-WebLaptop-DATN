@@ -1,8 +1,8 @@
 import ResponseAPI from '../CallAPI.js'
 import axios from "axios";
-import {Get_all_Product,FindCategoryByName,Get_Category_by_id,Get_all_News} from '../CallAPI.js'
+import {Get_all_Product,FindCategoryByName,Get_Category_by_id,Get_all_News,Get_List_Province,Get_List_districts,Get_List_wards} from '../CallAPI.js'
 import { useStore } from 'vuex';
-
+export{Get_List_Province,Get_List_districts,Get_List_wards}
 export async function getCategory_noParent(){
     try {
       const response= await axios.get('/categories')
@@ -244,6 +244,39 @@ export async function updateAvatar(image) {
 export async function updateInfor(Payload) {
     try {
         const response= await axios.patch(`/users/update-infor`,Payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Thêm địa chỉ nhận hàng
+export async function AddNewShippingAddress(Payload){
+    try {
+        const response= await axios.post(`/users/shipping-address`,Payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Lấy danh sách địa chỉ nhận hàng
+export async function GetMyShippingAddress(){
+    try {
+        const response= await axios.get(`/users/shipping-address`)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Lấy địa chỉ huyện tỉnh với mã xã
+export async function GetFulladdress(wardID){
+    try {
+        const response= await axios.get(`/address/${wardID}`)
           let data = new ResponseAPI();
           data = response.data;
           return data.result;

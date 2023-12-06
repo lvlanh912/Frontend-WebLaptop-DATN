@@ -104,14 +104,17 @@ const router = createRouter({
         },
         {
           path: 'tai-khoan',name: 'profile', meta:{title:'Tài khoản của tôi'},component: () => import('../views/Home/ProfileView.vue'),
+          beforeEnter(to,from,next){
+            const store=useStore()
+            if(store.state.user.jwtToken==null)
+              router.push('/')
+            next()
+          },
           children:[
-            { path: '',name:'profile-home',component: () => import('../views/Home/Profile/InforAccountView.vue'),
-            beforeEnter(to,from,next){
-              const store=useStore()
-              if(store.state.user.jwtToken==null)
-                router.push('/')
-              next()
-            }}
+            { path: '',name:'profile-home',component: () => import('../views/Home/Profile/InforAccountView.vue')},
+            { path: 'dia-chi-giao-hang',name:'shipping-address',component: () => import('../views/Home/Profile/ShippingAddressView.vue')}
+
+
           ]
         },
         {

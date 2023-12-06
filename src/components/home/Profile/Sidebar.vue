@@ -5,12 +5,12 @@
         <div @click="closeThis" class=" position-absolute end-0 top-0 p-2 d-md-none"><i class="bi bi-x-lg fs-6 text-red"></i></div>
       <li class="mb-1 mt-4">
         <router-link :to="{name:'profile-home'}" :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='profile-home'}">
-          <i class="bi bi-person-fill text-blue me-2"></i>Thông tin tài khoản
+          <i class="bi bi-person-fill text-blue me-2"></i>Hồ sơ
         </router-link>
       </li>
       <li class="mb-1">
-        <router-link :to="{name:'statistics_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='statistics_manager'}">
-         <i class="bi bi-speedometer2 text-red me-2"></i> Thống kê
+        <router-link :to="{name:'shipping-address'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='shipping-address'}">
+         <i class="bi bi-signpost-2-fill text-red me-2"></i> Địa chỉ giao hàng
         </router-link>
       </li>
       <li class="mb-1">

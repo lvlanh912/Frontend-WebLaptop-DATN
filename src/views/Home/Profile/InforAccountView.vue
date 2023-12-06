@@ -4,7 +4,7 @@
             <h3 class="mt-1">Hồ Sơ Của Tôi</h3>
             <span class="text-muted">Quản lý thông tin hồ sơ để bảo mật tài khoản</span>
         </div>
-        <div class="row mt-4">
+        <div class="row mt-4 justify-content-around">
             <div class="col-8 mt-3">
                 <div class="row">
                     <div class="col-5 text-end">
@@ -92,8 +92,8 @@
                 </transition>
             </div>
         </div>
-        <div class="d-flex gap-3 justify-content-center">
-            <button @click="onUpdate" class="btn btn-success px-2"> Lưu lại</button>
+        <div class="d-flex justify-content-center mt-5">
+            <button @click="onUpdate" class="btn btn-success px-4"> Lưu lại</button>
         </div>
         
     </section>
