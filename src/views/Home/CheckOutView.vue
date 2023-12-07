@@ -1,15 +1,14 @@
 <template>
-    <main>
+    <main class="position-relative">
    <div class="container px-0">
-     <h3 class="text-blue fw-bold">Giỏ hàng của tôi</h3>
-     <div style="height: 100%; min-height: 100vh;" class="px-3">
+     <h3 class="text-blue fw-bold">Đơn hàng của tôi</h3>
+     <div style="height: 100%; min-height: 100vh;" class=" px-lg-3">
       <div v-if="Cart_show.length>0">
-        <p class="text-end ">
-          <button @click="onDeleteAll" class="btn bg-red text-white">
-            <i class="bi bi-trash me-2"></i>Xoá tất cả </button>
-        </p>
+        <!-- Địa chỉ nhận hàng -->
+        <section>
+          <select-shipping-address/>
+        </section>
         <ol class="list-unstyled col-12 py-4">
-        
           <li v-for="item,index in Cart_show" :key="item.product.id" class="px-2 d-flex justify-content-between row py-2 border-top border-bottom bg-white mb-2">
              <!-- Sản phẩm -->
              <div class="d-flex col-xl-5 col-md-6">
@@ -55,25 +54,7 @@
           </li>
          
         </ol>
-        <section v-if="selected_item.length>0" class="px-4">
-          <Pendingorder :items="selected_item" />
-        </section>
       </div>
-      <div v-else class="">
-        Không có sản phẩm nào trong giỏ hàng
-      </div>
-       <!-- infor customer -->
-       <!-- <section class="infor-customer border-start col-12 col-lg-5 mb-3 p-3">
-         <div class="cart border border-info p-2 shadow rounded-2 px-3 px-lg-4">
-           <h5 class="fw-bold text-blue mb-3 text-center">Thông tin thanh toán</h5>
-           <input type="text" class="form-control mb-3 input-custom" placeholder="Họ tên người nhận hàng">
-           <input type="tel" class="form-control mb-3 input-custom" placeholder="Số điện thoại người nhận">
-           <input type="email" class="form-control mb-3 input-custom" placeholder="Email">
-           <input type="text" class="form-control mb-3 input-custom" placeholder="Địa chỉ nhận hàng">
-           <input type="text" class="form-control mb-3 input-custom" placeholder="Ghi chú">
-           <button class="btn bg-blue text-white d-block m-auto">Xác nhận đặt hàng</button>
-         </div>
-       </section> -->
      </div>
    </div>
  </main>
@@ -83,12 +64,12 @@
 import { onBeforeMount, ref } from 'vue'
 import {GetCart,GetProductbyId,UpdateQuantity,DeleteOneItem,DeleteAllItem} from '../../modules/home/HomeAPI.js'
 import { useStore } from 'vuex'
-import Pendingorder from '../../components/home/Pendingorder.vue'
+import SelectShippingAddress from '../../components/home/Checkout/SelectShippingAddress.vue'
 export default {
-  components:{
-    Pendingorder
-  },
-    setup(){
+components:{
+  SelectShippingAddress
+},
+setup(){
         const mycart=ref({})
         const store= useStore()
         const Cart_show=ref([])

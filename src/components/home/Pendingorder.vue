@@ -1,14 +1,19 @@
 <template>
-  <div class="d-flex justify-content-between align-content-center px-4">
-    <h3 class="fs-5 text-muted">Đã chọn {{ count_item }} sản phẩm</h3>
-    <div class="d-flex flex-column justify-content-center">
-        <h4 class="mb-1">Tổng cộng: <span class="fw-bold text-blue">
-            {{ ToVND(total) }}
-        </span> </h4>
-        <h4 class="fs-6 inherit text-red text-end">Tiết kiệm {{ ToVND(maxPrice_total-total) }}</h4>
+    <div class="">
+        <div class="d-flex justify-content-between align-content-center px-4">
+          <h3 class="fs-5 text-muted">Đã chọn {{ count_item }} sản phẩm</h3>
+          <div class="d-flex flex-column justify-content-center">
+              <h4 class="mb-1">Tổng cộng: <span class="fw-bold text-blue">
+                  {{ ToVND(total) }}
+              </span> </h4>
+              <h4 class="fs-6 inherit text-red text-end">Tiết kiệm {{ ToVND(maxPrice_total-total) }}</h4>
+          </div>
+          
+        </div>
+        <div class="text-end">
+            <button class="btn btn-success bg-blue border-0 fw-bold px-3">Đặt hàng</button>
+        </div>
     </div>
-    
-  </div>
 </template>
 
 <script>

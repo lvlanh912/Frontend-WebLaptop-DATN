@@ -7,7 +7,7 @@
           <h4 class="modal-title">Thêm địa chỉ mới</h4>
           <button @click="onClose" type="button" class="btn-close" ></button>
         </div>
-  
+        <p class="mt-1 ms-2"><span class="text-danger">Vui lòng chọn lại địa chỉ</span></p>
         <!-- Modal body -->
         <div class="modal-body">
             <div class="d-md-flex gap-2 justify-content-between">
@@ -57,13 +57,19 @@
 
 <script>
 import { onMounted, reactive, ref } from 'vue';
-import {Get_List_Province,Get_List_districts,Get_List_wards,AddNewShippingAddress} from '../../../modules/home/HomeAPI.js'
+import {Get_List_Province,Get_List_districts,Get_List_wards,EditShippingAddress} from '../../../modules/home/HomeAPI.js'
 export default {
-    setup(props,{emit}) {
+  props:{
+    shippingAddress:{
+
+    }
+  },
+  setup(props,{emit}) {
         const shipping_address=reactive({
-            fullname:'',
-            address:'',
-            phone:'',
+            id:props.shippingAddress.id,
+            fullname:props.shippingAddress.fullname,
+            address:props.shippingAddress.address,
+            phone:props.shippingAddress.phone,
             wardId:null
         })
         const chosen_provices = ref(null)
@@ -87,7 +93,7 @@ export default {
         const validate=()=>{
             if(shipping_address.fullname.trim()=='')
                 return "Họ tên người nhận không được để trống"
-            if(shipping_address.phone.trim()=='')
+            if(shipping_address.phone=='')
                 return "Số điện thoại không được để trông"
             if(shipping_address.phone<300000000||shipping_address.phone>999999999)
                 return "Số điện thoại không hợp lệ"
@@ -102,7 +108,7 @@ export default {
         const onSubmit=async()=>{
             if(validate()==undefined){
                 try{
-                    await AddNewShippingAddress(shipping_address)
+                  await EditShippingAddress(shipping_address)
                     Swal.fire({
                     text: "thành công",
                     icon: "success"
@@ -125,7 +131,10 @@ export default {
             }
           
         }
-        const onClose=()=>emit("closeAdd")
+        const onClose=()=>{
+          emit("closeEdit")
+          emit("onReload")
+      }
     return{provinces,chosen_district,shipping_address
         ,wards,get_districts,
         get_wards,districts,chosen_provices,

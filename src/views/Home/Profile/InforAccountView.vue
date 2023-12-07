@@ -103,12 +103,16 @@
 import { onMounted, ref } from 'vue'
 import {GetProfile,updateAvatar,updateInfor} from '../../../modules/home/HomeAPI.js'
 import Swal from 'sweetalert2'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
     setup() {
         const avatarPath=ref('')
         const showUpload=ref(false)
         const updated_avatar=ref(false)
         const file_uploader=ref()
+        const store=useStore()
+        const router=useRouter()
 
         const onUpdate=async()=>{
             try{
@@ -151,8 +155,16 @@ export default {
     }
     const account=ref({})
     onMounted(async()=>{
-        account.value= await GetProfile()
-        avatarPath.value= backendHost+'/images/avatar/'+account.value.profileImage??'../../../../public/Images/avatar-default.svg'
+        try{
+            account.value= await GetProfile()
+            avatarPath.value= backendHost+'/images/avatar/'+account.value.profileImage??'../../../../public/Images/avatar-default.svg'
+        }
+        catch(err){
+            if(err.response&&err.response.status==401){
+                    store.dispatch('Logout')
+                    router.push('/')
+                }
+        }  
     })
     return{account,GetDate,showUpload,avatarPath,updated_avatar,onUploadImage,onUpdate}
 }

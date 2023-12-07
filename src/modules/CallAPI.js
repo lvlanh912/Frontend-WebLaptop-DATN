@@ -517,7 +517,6 @@ export async function Delete_Order(id){
     throw err;
   }
 }
-
 //Commnet
 //Get-all
 export async function Get_all_Comments(page,size,filterobj,sort){

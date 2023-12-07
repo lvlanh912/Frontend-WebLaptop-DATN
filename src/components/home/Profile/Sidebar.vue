@@ -14,8 +14,8 @@
         </router-link>
       </li>
       <li class="mb-1">
-        <router-link :to="{name:'user_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='user_manager'}">
-         <i class="bi bi-person text-pink me-2"></i> Tài khoản
+        <router-link :to="{name:'session'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='session'}">
+         <i class="bi bi-list-check text-yellow me-2"></i> Phiên đăng nhập
         </router-link>
       </li>
       <li class="mb-1">

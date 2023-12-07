@@ -1,6 +1,6 @@
 import {createStore} from 'vuex'
 import createPersistedState from "vuex-persistedstate";
-import {GetCart} from './modules/home/HomeAPI.js'
+import {GetCart,DeleteMySession} from './modules/home/HomeAPI.js'
 import axios from 'axios';
 	const store=createStore({
 	plugins: [createPersistedState()],
@@ -58,7 +58,8 @@ import axios from 'axios';
 			let cart=await GetCart()
 			commit("SetTotalItemCart",cart.items.length)
 		},
-		Logout({commit}){
+	 	Logout({commit}){
+			 DeleteMySession()
 			commit("Logout")
 		},
 		async UpdateTotalCart({commit}){

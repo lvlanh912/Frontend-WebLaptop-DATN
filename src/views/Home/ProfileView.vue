@@ -5,7 +5,7 @@
          class="bi bi-arrow-right-circle-fill text-blue m-0 fs-4 bg-light"></p>
     </div>
     <div class="row justify-content-between" style="height: 100vh;">
-        <Transition name="slide-fade">
+        <Transition name="slide-fade" mode="out-in">
             <sidebar class="col d-none d-md-block" />
         </Transition>
         <!-- màn hình điện thoại -->
@@ -13,7 +13,11 @@
             <sidebar class="position-absolute d-md-none shadow" style="z-index: 2;"  v-if="ishowSidebar" @closeSidebar="ishowSidebar=false"/>
         </Transition>
         <div class="bg-light col col-md-9">
-            <router-view/>
+        <router-view v-slot="{Component}">
+            <transition  :duration="200"  mode="out-in">
+                <component :is="Component" />
+            </transition>
+      </router-view>
         </div>
     </div>
   </main>

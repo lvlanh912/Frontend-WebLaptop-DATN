@@ -140,7 +140,7 @@ export async function getPostbyid(id){
 //đăng ký
 export async function SignUp(payload){
     try {
-        const response= await axios.post(`/users/sign-up`,payload)
+        const response= await axios.post(`/auth/sign-up`,payload)
           let data = new ResponseAPI();
           data = response.data;
           return data.result;
@@ -151,7 +151,7 @@ export async function SignUp(payload){
 //đăng nhập
 export async function SignIn(payload){
     try {
-        const response= await axios.post(`/users/sign-in`,payload)
+        const response= await axios.post(`/auth/sign-in`,payload)
           let data = new ResponseAPI();
           data = response.data;
           return data.result;
@@ -262,6 +262,28 @@ export async function AddNewShippingAddress(Payload){
           throw error
       }
 }
+//Sửa địa chỉ nhận hàng
+export async function EditShippingAddress(Payload){
+    try {
+        const response= await axios.put(`/users/shipping-address/${Payload.id}`,Payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Xoá địa chỉ nhận hàng
+export async function DeleteMyShippingAddress(id){
+    try {
+        const response= await axios.delete(`/users/shipping-address/${id}`)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
 //Lấy danh sách địa chỉ nhận hàng
 export async function GetMyShippingAddress(){
     try {
@@ -277,6 +299,39 @@ export async function GetMyShippingAddress(){
 export async function GetFulladdress(wardID){
     try {
         const response= await axios.get(`/address/${wardID}`)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//lấy danh sách phiên đăng nhập
+export async function GetMySessions(){
+    try {
+        const response= await axios.get(`/users/session`)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Xoá phiên đăng nhập
+export async function DeleteSession(id){
+    try {
+        const response= await axios.delete(`/users/delete-session/${id}`)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Đăng xuất, xoá phiên đăng nhập hiện tại
+export async function DeleteMySession(){
+    try {
+        const response= await axios.delete(`/users/logout`)
           let data = new ResponseAPI();
           data = response.data;
           return data.result;

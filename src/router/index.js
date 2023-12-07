@@ -103,6 +103,7 @@ const router = createRouter({
           path: 'quen-mat-khau',name: 'forgetPassword', meta:{title:'Quên mật khẩu'},component: () => import('../views/AuthenticationView.vue')
         },
         {
+          //Người dùng
           path: 'tai-khoan',name: 'profile', meta:{title:'Tài khoản của tôi'},component: () => import('../views/Home/ProfileView.vue'),
           beforeEnter(to,from,next){
             const store=useStore()
@@ -112,7 +113,8 @@ const router = createRouter({
           },
           children:[
             { path: '',name:'profile-home',component: () => import('../views/Home/Profile/InforAccountView.vue')},
-            { path: 'dia-chi-giao-hang',name:'shipping-address',component: () => import('../views/Home/Profile/ShippingAddressView.vue')}
+            { path: 'dia-chi-giao-hang',name:'shipping-address',component: () => import('../views/Home/Profile/ShippingAddressView.vue')},
+            { path: 'phien-dang-nhap',name:'session',component: () => import('../views/Home/Profile/SessionView.vue')}
 
 
           ]
@@ -147,6 +149,17 @@ const router = createRouter({
             next()
           }
         },
+        {
+          //kiểm tra đơn hàng
+          path:'/check-out',name:'checkout',meta:{title:'Đặt hàng'},component:()=>import('../views/Home/CheckOutView.vue'),
+          beforeEnter(to,from,next){
+            const store=useStore()
+            if(store.state.user.jwtToken==null)
+              router.push('/')
+            next()
+          }
+        },
+        
         {
           path: '/tin-tuc',name:'post',meta:{title:'Tin tức'},component: () => import('../views/Home/Post/PostsView.vue')
         },
