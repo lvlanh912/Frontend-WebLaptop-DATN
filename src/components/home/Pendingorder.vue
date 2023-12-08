@@ -11,13 +11,14 @@
           
         </div>
         <div class="text-end">
-            <button class="btn btn-success bg-blue border-0 fw-bold px-3">Đặt hàng</button>
+            <router-link @click="onCheckout" :to="{name:'checkout'}" class="btn btn-success bg-blue border-0 fw-bold px-3" >Đặt hàng</router-link>
         </div>
     </div>
 </template>
 
 <script>
 import { computed, onUpdated } from 'vue'
+import { useStore } from 'vuex'
 export default {
 props:{
     items:{
@@ -26,7 +27,7 @@ props:{
 },
 setup(props,{emit}){
     const count_item=computed(()=>props.items.length)
-
+    const store=useStore()
     const total=computed(()=>{
         let sum=0
         props.items.forEach(item => {
@@ -44,10 +45,13 @@ setup(props,{emit}){
     const ToVND = (e) => {
       return e.toLocaleString("it-IT", {style: "currency", currency: "VND"})
     }
+    const onCheckout=()=>{
+        store.dispatch("SetItemCheckout",props.items)
+    }
     onUpdated(()=>{
         console.log(props.items)
     })
-    return {count_item,total,ToVND,maxPrice_total
+    return {count_item,total,ToVND,maxPrice_total,onCheckout
 
     }
 }

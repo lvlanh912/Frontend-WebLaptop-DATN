@@ -339,3 +339,55 @@ export async function DeleteMySession(){
           throw error
       }
 }
+//Lấy danh sách phương thức thanh toán
+export async function GetPaymentMethod(){
+    try {
+        const response= await axios.get(`/payments/list-payments`)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+
+//xem trước đơn hàng
+export async function CheckOut(Payload){
+    try {
+        const response= await axios.post(`/orders/checkout`,Payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Tạo đơn hàng mới
+export async function CreateOrder(Payload){
+    try {
+        const response= await axios.post(`/orders/create-order`,Payload)
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Lấy danh sách đơn hàng
+export async function GetMyOrders(type=null,page=1,size=10){
+    try {
+        let query = {
+            pageindex: page,
+            pagesize: size,
+            type:type
+          };
+        const response= await axios.get(`/orders/my-orders`,{
+            params:query
+        })
+          let data = new ResponseAPI();
+          data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}

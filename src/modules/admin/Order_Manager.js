@@ -1,4 +1,6 @@
-import Order from "../../model/Order.js"
+
+import {GetFulladdress} from "../home/HomeAPI.js"
+export {GetFulladdress}
 import {
   Get_all_Order,
   Get_all_ProductsbyKeyword,

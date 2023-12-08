@@ -151,7 +151,8 @@
                       <label class="form-label no-wrap col-4 text-end pe-4">
                         Địa chỉ
                       </label>
-                      <input
+                      <span v-if="full_address" class="inherit" style="font-size: small;">{{ order.shippingAddress.address }} - {{ full_address }}</span>
+                      <input v-else
                         v-model="order.shippingAddress.address"
                         type="text"
                         class="form-control"
@@ -188,8 +189,8 @@
 </template>
 
 <script>
-import {reactive, ref, computed} from "vue"
-import {Edit} from "../../../modules/admin/Order_Manager.js"
+import {reactive, ref, computed, onMounted} from "vue"
+import {Edit,GetFulladdress} from "../../../modules/admin/Order_Manager.js"
 
 export default {
   props: {
@@ -201,6 +202,11 @@ export default {
     const BackendHost = ref(backendHost)
     const order = ref(props.Order)
     const result = ref()
+    const full_address=ref()
+    onMounted(async()=>{
+      if(order.value.accountId!=null)
+        full_address.value=await GetFulladdress(order.value.shippingAddress.wardId)
+    })
     const Paymentmethod = computed(() => {
       if (order.value.paymentMethod != null)
         return order.value.paymentMethod.name
@@ -234,7 +240,6 @@ export default {
       )
       //dữ liệu chưa valid hoặc lỗi trả từ bên server hoặc mất mạng :)))
       if (!result.value.success) {
-        emit("reloadData")
         Swal.fire({
           icon: "warning",
           title: result.value.data,
@@ -245,6 +250,7 @@ export default {
           title: "Thành công",
         })
       }
+      closeThis()
     }
     return {
       BackendHost,
@@ -254,6 +260,7 @@ export default {
       onSubmit,
       closeThis,
       ToVND,
+      full_address,
     }
   },
 }

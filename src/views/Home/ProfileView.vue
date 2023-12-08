@@ -1,11 +1,11 @@
 <template>
   <main class="m-2" >
-    <div class="position-absolute bottom-50 d-block d-md-none">
-        <p v-if="ishowSidebar==false" @click="ishowSidebar=!ishowSidebar" style="z-index: 2;"
-         class="bi bi-arrow-right-circle-fill text-blue m-0 fs-4 bg-light"></p>
+    <div class="position-absolute bottom-50 d-block d-md-none icon-show" style="z-index: 2;">
+        <p v-if="ishowSidebar==false" @click="ishowSidebar=!ishowSidebar" 
+         class="bi bi-caret-right-fill text-blue m-0 fs-4 bg-light"></p>
     </div>
     <div class="row justify-content-between" style="height: 100vh;">
-        <Transition name="slide-fade" mode="out-in">
+        <Transition :duration="300"  mode="out-in">
             <sidebar class="col d-none d-md-block" />
         </Transition>
         <!-- màn hình điện thoại -->
@@ -39,6 +39,12 @@ setup(){
 }
 </script>
 
-<style>
-
+<style scoped>
+.icon-show{
+    animation: slide 0.8s ease-in-out infinite alternate;
+}
+@keyframes slide {
+  from {left:0px; }
+  to {left:5px;}
+}
 </style>

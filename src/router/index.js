@@ -114,7 +114,8 @@ const router = createRouter({
           children:[
             { path: '',name:'profile-home',component: () => import('../views/Home/Profile/InforAccountView.vue')},
             { path: 'dia-chi-giao-hang',name:'shipping-address',component: () => import('../views/Home/Profile/ShippingAddressView.vue')},
-            { path: 'phien-dang-nhap',name:'session',component: () => import('../views/Home/Profile/SessionView.vue')}
+            { path: 'phien-dang-nhap',name:'session',component: () => import('../views/Home/Profile/SessionView.vue')},
+            { path: 'don-hang',name:'myorder',component: () => import('../views/Home/Profile/OrderView.vue')}
 
 
           ]

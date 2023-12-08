@@ -7,6 +7,7 @@ import axios from 'axios';
 	state(){	//danh sách các biến
 	return{
         user:{
+			items_checkout:[],
 			cartCount:1,
 			jwtToken:null,
 			isAdmin:false
@@ -19,6 +20,10 @@ import axios from 'axios';
 		increment(state){
 			state.count++;
 			},
+		//thêm sản phẩm vào để kiểm tra khi đặt hàng
+		SetItemCheckout(state,payload){
+			state.user.items_checkout=payload
+		},
 		Setdata(state,payload){
 			state.data=payload
 			},
@@ -65,6 +70,9 @@ import axios from 'axios';
 		async UpdateTotalCart({commit}){
 			let cart=await GetCart()
 			commit("SetTotalItemCart",cart.items.length)
+		},
+		SetItemCheckout({commit},items){
+			commit("SetItemCheckout",items)
 		}
 	}
 	});
