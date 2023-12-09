@@ -4,7 +4,7 @@
         <p v-if="ishowSidebar==false" @click="ishowSidebar=!ishowSidebar" 
          class="bi bi-caret-right-fill text-blue m-0 fs-4 bg-light"></p>
     </div>
-    <div class="row justify-content-between" style="height: 100vh;">
+    <div class="row justify-content-between" style="min-height: 100vh;">
         <Transition :duration="300"  mode="out-in">
             <sidebar class="col d-none d-md-block" />
         </Transition>

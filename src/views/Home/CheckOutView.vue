@@ -197,8 +197,8 @@ export default {
         })
         Swal.fire("Đặt hàng thành công","","success")
         //Xoá giỏ hàng các sản phẩm đã đặt
-        Cart_show.value.forEach(item=>{
-          DeleteOneItem({
+        Cart_show.value.forEach(async item=>{
+         await DeleteOneItem({
           productId:item.product.id,
           quantity:item.quantity
         })

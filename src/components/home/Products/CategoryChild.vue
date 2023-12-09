@@ -26,7 +26,7 @@
 <script>
 import { ref,onBeforeMount, computed, onUpdated, onBeforeUpdate } from 'vue'
 import {  onBeforeRouteUpdate, useRoute } from 'vue-router'
-import {getChildsCategory,getCategory_noParent} from '../../../modules/home/HomeAPI.js'
+import {getChildsCategory,getCategory_noParent,GetSameLeverCategory} from '../../../modules/home/HomeAPI.js'
 export default {
     setup(){
         const  router=useRoute()
@@ -46,7 +46,9 @@ export default {
           if(categoryID!=null&&categoryID!=undefined&&categoryID!='')
           {
             const result=await getChildsCategory(categoryID)
-            list_childs_categories.value=result.length>0?result:list_childs_categories.value
+            list_childs_categories.value=result.length>0?
+            result:list_childs_categories.value.length>0?
+            list_childs_categories.value:await GetSameLeverCategory(categoryID)
           }
           else
             list_childs_categories.value=await getCategory_noParent()

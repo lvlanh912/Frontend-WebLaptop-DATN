@@ -139,16 +139,8 @@ export default {
       else sort.value = "date";
       await Getdata();
     };
-    const gettime = (time) => {
-      let datetime = new Date(time);
-      return (
-        datetime.getDay() +
-        "-" +
-        datetime.getMonth() +
-        "-" +
-        datetime.getFullYear()
-      );
-    };
+    const gettime = (time) => new Date(time).toLocaleString()
+     
     onMounted(async () => {
       try {
         if(route.params.accountId)

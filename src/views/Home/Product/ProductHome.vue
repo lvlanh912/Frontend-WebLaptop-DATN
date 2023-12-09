@@ -93,7 +93,7 @@ export default {
         const router=useRoute()
         const listProduct=ref([])
         const pageindex=ref(1)
-        const pagesize=ref(4)
+        const pagesize=ref(24)
         const totalpage=ref(0)
         const sort=ref('')
         const isShowFilter=ref(false)
@@ -106,6 +106,13 @@ export default {
             max: '',
             stock:''
         })
+        const ResetFilter=()=>{
+             filterobj.keywords= '',
+             filterobj.brand= '',
+             filterobj.min= '',
+             filterobj.max= '',
+             filterobj.stock=''
+        }
         const GetData = async () => {
             isLoadproduct.value=false
             const data=await getProduct(pageindex.value,pagesize.value,filterobj,sort.value)
@@ -119,10 +126,12 @@ export default {
         }
         onBeforeMount(async()=>{
             filterobj.category=router.params.categoryID
+            ResetFilter()
             await GetData()
          })
         onBeforeRouteUpdate(async (to, from, next) => {
             filterobj.category=to.params.categoryID
+            ResetFilter()
             await GetData()
              next()
         })

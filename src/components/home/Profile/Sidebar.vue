@@ -23,41 +23,6 @@
          <i class="bi bi-shop-window text-blue me-2"></i> Đơn đặt hàng
         </router-link>
       </li>
-      <li class="mb-1">
-        <router-link :to="{name:'vouchers_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='vouchers_manager'}">
-         <i class="bi bi-gift-fill text-pink me-2"></i> Voucher
-        </router-link>
-      </li>
-      <li class="mb-1">
-        <router-link :to="{name:'products_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='products_manager'}">
-         <i class="bi bi-laptop-fill text-blue me-2"></i> Sản phẩm
-        </router-link>
-      </li>
-      <li class="mb-1">
-        <router-link :to="{name:'categories_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='categories_manager'}">
-         <i class="bi bi-list-ul text-blue me-2"></i>Danh mục
-         </router-link>
-      </li>
-      <li class="mb-1">
-        <router-link :to="{name:'payments_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='payments_manager'}">
-         <i class="bi bi-currency-bitcoin text-yellow me-2"></i>Thanh toán
-        </router-link>
-      </li>
-      <li class="mb-1">
-        <router-link :to="{name:'chats_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='chats_manager'}">
-         <i class="bi bi-messenger text-blue me-2"></i>Chăm sóc khách hàng 
-         </router-link>
-      </li>
-      <li class="mb-1">
-        <router-link :to="{name:'news_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='news_manager'}">
-         <i class="bi bi-newspaper text-blue me-2"></i>Tin đăng
-         </router-link>
-      </li>
-      <li class="mb-1">
-        <router-link :to="{name:'comments_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='comments_manager'}">
-         <i class="bi bi-star-fill text-yellow me-2"></i>Đánh giá
-         </router-link>
-      </li>
     </ul>
     </aside>
 </template>

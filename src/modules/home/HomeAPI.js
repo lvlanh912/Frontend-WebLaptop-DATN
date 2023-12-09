@@ -24,7 +24,16 @@ export async function getChildsCategory(ParentCategoryId){
         throw error
     }
 }
-
+export async function GetSameLeverCategory(categoryID){
+    try {
+      const response= await axios.get(`/categories/get-same-categories?categoryID=${categoryID}`)
+        let data = new ResponseAPI();
+        data = response.data;
+        return data.result;
+    } catch (error) {
+        throw error
+    }
+}
 export async function FindCategory(keyword){
     if(keyword&&keyword.length>0){
       let data= await FindCategoryByName(keyword)

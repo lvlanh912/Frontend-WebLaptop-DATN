@@ -98,7 +98,17 @@
           <tbody>
             <tr v-for="Product in data.items" :key="Product.Id">
               <td :title="Product.productName">
-                {{ SetmaxLength(Product.productName) }}
+                <div  class="d-flex">
+                      <div  class="align-middle white-space-nowrap py-0 me-3">
+                        <a  class="d-block rounded-2 border">
+                          <img  :src="BackendHost+'/images/products/'+Product.images[0]" alt="" width="36">
+                        </a>
+                      </div>
+                      <div  class="align-middle white-space-nowrap align-self-center ms-2">
+                        <span  class="fw-bold"> {{ SetmaxLength(Product.productName) }}</span>
+                      </div>
+                    </div>
+               
               </td>
 
               <td>{{ Product.stock }}</td>
@@ -175,6 +185,7 @@ export default {
     const isShowInfor = ref(false)
     const isShowEdit = ref(false)
     const product_pick = ref()
+    const BackendHost=ref(backendHost)
 
     const SetmaxLength = (e) => {
       if (e.length > 40) return e.slice(0, 40) + "...."
@@ -280,6 +291,7 @@ export default {
     }
 
     return {
+      BackendHost,
       pagesize,
       SetmaxLength,
       data,

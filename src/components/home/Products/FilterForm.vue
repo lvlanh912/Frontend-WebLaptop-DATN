@@ -114,7 +114,10 @@ import { useRoute } from 'vue-router'
       }
       const toVND=(n)=>new Intl.NumberFormat("vi-VN", {style: "currency",currency: "VND",}).format(n)
       
-      const onSubmit = () => emit("filData", filterobj)
+      const onSubmit = () => {
+        emit("filData", filterobj)
+        onClose()
+      }
       const onCancel = () => {
        emit("CancelFil")
        onClose()
