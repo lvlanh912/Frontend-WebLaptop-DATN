@@ -1,5 +1,5 @@
 import axios from "axios";
-class ResponseAPI {
+export class ResponseAPI {
   constructor() {
     (this.Message = "Success"), (this.Result = {});
   }
@@ -603,6 +603,7 @@ export async function GetProductAddinYearStatistic(year){
     throw err;
   }
 }
+
 export async function GetTopProductStatistic(type,value,startime,endtime){
   try{
     let query={
@@ -611,6 +612,37 @@ export async function GetTopProductStatistic(type,value,startime,endtime){
       endtime:endtime==undefined?new Date():endtime
     }
     let response=await axios.get(`/statistic/${type}`,{
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+}
+
+export async function GetOrderOverview(){
+  try{
+  
+    let response=await axios.get(`/statistic/order-overview`)
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+}
+
+export async function GetOrderOverviewPerMonth(startDate,endDate){
+  try{
+    let query={
+      startDate:startDate,
+      endDate:endDate
+    }
+    let response=await axios.get(`/statistic/order-per-month`,{
       params:query
     })
     let data = new ResponseAPI();

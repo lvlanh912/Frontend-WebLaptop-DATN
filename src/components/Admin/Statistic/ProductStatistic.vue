@@ -29,7 +29,7 @@
             <p class=" text-center inherit">Tổng số lượng sản phẩm: {{ totalProduct }}</p>
         </div>
         <div class="position-relative mt-2">
-            <p class="text-center fw-bold fs-5">Xếp hạng sản phẩm</p>
+            <h5 class="text-center fs-5">Xếp hạng sản phẩm</h5>
             <div class="w-100 d-flex justify-content-between mt-2 px-2">
                 
                 <div class="col-12 col-md-5 d-flex"> Hiển thị 
@@ -51,9 +51,9 @@
                 <div class="col-12 col-xl-6 gap-xl-1">
                     <top-product :type="'sold'" :filter="Filter"/>
                 </div>
-                <div class="col-12 col-xl-6 gap-xl-1">
+                <!-- <div class="col-12 col-xl-6 gap-xl-1">
                     <top-product :type="'view'" :filter="Filter"/>
-                </div>
+                </div> -->
                 <div class="col-12 col-xl-6 gap-xl-1">
                     <top-product :type="'stock'" :filter="Filter"/>
                 </div>

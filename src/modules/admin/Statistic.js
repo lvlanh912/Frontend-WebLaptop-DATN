@@ -1,6 +1,6 @@
-import {GetProductStockStatistic,GetProductAddinYearStatistic,GetTopProductStatistic} from "../CallAPI.js"
+import {GetProductStockStatistic,GetProductAddinYearStatistic,GetTopProductStatistic,GetOrderOverview,GetOrderOverviewPerMonth} from "../CallAPI.js"
 import {GettopProductSold} from "../home/HomeAPI.js"
-export{GetProductStockStatistic,GettopProductSold}
+export{GetProductStockStatistic,GettopProductSold,GetOrderOverview,GetOrderOverviewPerMonth}
 export async function GetProductAdd_PerMoth(year)
 {
     console.log(year)

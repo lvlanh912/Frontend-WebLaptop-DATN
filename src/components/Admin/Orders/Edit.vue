@@ -107,6 +107,7 @@
                           <option :value="true">Đã thanh toán</option>
                           <option :value="false">Chưa thanh toán</option>
                         </select>
+                        <span class="text-success">{{ changertext }}</span>
                       </div>
                     </div>
                   </div>
@@ -126,7 +127,7 @@
                         <option :value="2">
                           Đơn hàng đã xác nhận, Đang giao hàng
                         </option>
-                        <option :value="3">Đã giao hàng thành công</option>
+                        <option :value="3">Đã giao hàng thành công (hoàn thành)</option>
                         <option :value="0">Đơn hàng đã huỷ</option>
                       </select>
                     </div>
@@ -189,7 +190,7 @@
 </template>
 
 <script>
-import {reactive, ref, computed, onMounted} from "vue"
+import {reactive, ref, computed, onMounted, watch} from "vue"
 import {Edit,GetFulladdress} from "../../../modules/admin/Order_Manager.js"
 
 export default {
@@ -201,6 +202,7 @@ export default {
   setup(props, {emit}) {
     const BackendHost = ref(backendHost)
     const order = ref(props.Order)
+    const changertext=ref('')
     const result = ref()
     const full_address=ref()
     onMounted(async()=>{
@@ -231,6 +233,14 @@ export default {
     const ToVND = (e) => {
       return e.toLocaleString("it-IT", {style: "currency", currency: "VND"})
     }
+    watch(order.value,(value)=> {
+      if(value.status.code==3){
+        value.isPaid=true
+        changertext.value="đã cập nhật trạng thái thanh toán"
+        setTimeout(()=>changertext.value='',3000)
+      }
+       
+    })
     const onSubmit = async () => {
       result.value = await Edit(
         order.value.id,
@@ -261,6 +271,7 @@ export default {
       closeThis,
       ToVND,
       full_address,
+      changertext
     }
   },
 }

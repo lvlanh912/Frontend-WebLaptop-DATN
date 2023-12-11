@@ -1,6 +1,6 @@
 <template >
     <my-header @show_menu="ishow=!ishow"/>
-    <div class="d-flex mt-5 pt-2" style="height: 100vh;" >
+    <div class="d-flex mt-5 pt-2" style="min-height: 100vh;" >
         <transition  mode="out-in">
         <my-sidebar v-if="ishow"/>
     </transition>

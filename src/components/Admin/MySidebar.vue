@@ -1,6 +1,6 @@
 <template>
     <aside class="bg-white flex-shrink-0 p-3 shadow" 
-    style="width: 250px; height: 100vh;">
+    style="width: 250px;min-height: 100vh;">
     <ul class="list-unstyled ps-0">
       <li class="mb-1">
         <router-link :to="{name:'adminhome'}" :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='adminhome'}">
