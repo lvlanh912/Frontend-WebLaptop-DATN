@@ -69,6 +69,16 @@ import { useStore } from 'vuex'
           store.dispatch("UpdateTotalCart")
         }
         catch(err){
+          if(err.response){
+            if(err.response.status==403){
+              Swal.fire({
+                icon: "warning",
+                title: "Lỗi",
+                text: "Vui lòng đăng nhập để thực hiện chức năng này",
+          })}
+
+          }
+          else
           Swal.fire({
             icon: "warning",
             title: "Lỗi",

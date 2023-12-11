@@ -9,7 +9,7 @@ import store from './Store.js';
 
 axios.defaults.baseURL = 'https://localhost:7251/api';
 //set header 
-//axios.defaults.headers.common['Authorization'] = "jelloo";
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*";
 const app = createApp(App)
 app.use(router);
 

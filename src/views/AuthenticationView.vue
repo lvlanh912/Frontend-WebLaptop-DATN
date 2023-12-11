@@ -21,7 +21,7 @@ components:{
 setup(){
   const store=useStore()
   const isloggin=ref(false)
-  if(store.state.user.jwtToken!=null){
+  if(store.state.user.jwtToken!=null&&!store.state.user.isAdmin){
     isloggin.value=true
     useRouter().push('/')
   }

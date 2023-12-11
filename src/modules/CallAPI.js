@@ -5,6 +5,19 @@ class ResponseAPI {
   }
 }
 export default ResponseAPI
+
+//Login
+//đăng nhập
+export async function SignIn(payload){
+  try {
+      const response= await axios.post(`/auth/admin/sign-in`,payload)
+        let data = new ResponseAPI();
+        data = response.data;
+        return data.result;
+    } catch (error) {
+        throw error
+    }
+}
 //Account
 //Get all
 export async function Get_All_Account(page, size, filterobj, sort) {
@@ -559,6 +572,52 @@ export async function Delete_Comment(id){
     const response = await axios.delete(`comments/${id}`)
     return response.data.Message;
   } catch (err) {
+    throw err;
+  }
+}
+
+//Thống kê
+//lấy số lượng sản phẩm còn hàng, sản phẩm hết hàng
+export async function GetProductStockStatistic(){
+  try{
+    let response=await axios.get('/statistic/product-stock',{
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+}
+//Lấy số lượng sản phẩm được thêm trong từng tháng
+export async function GetProductAddinYearStatistic(year){
+  try{
+    let response=await axios.get(`/statistic/product-add-year?year=${year}`,{
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+}
+export async function GetTopProductStatistic(type,value,startime,endtime){
+  try{
+    let query={
+      value:value,
+      starttime:startime,
+      endtime:endtime==undefined?new Date():endtime
+    }
+    let response=await axios.get(`/statistic/${type}`,{
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
     throw err;
   }
 }

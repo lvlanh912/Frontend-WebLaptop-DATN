@@ -21,7 +21,7 @@
               <label class="ms-2 form-check-label"> Hiện mật khẩu</label>
           </div>
           <div class="text-center py-4">
-              <button class="btn btn-danger text-white">Đăng nhập</button>
+              <button  class="btn btn-danger text-white">Đăng nhập</button>
           </div>
      </form>
     </div>
@@ -30,18 +30,28 @@
   <script>
   import { onBeforeMount, reactive,ref } from 'vue'
   import {checklogin} from '../../modules/admin/authentication.js'
+  import {SignIn} from '../../modules/CallAPI.js'
 import router from '../../router';
+import { useStore } from 'vuex';
+import Swal from 'sweetalert2';
   export default {
   setup(){
     onBeforeMount(()=>{
        checklogin()
     })
-
-     const Login=()=>{
+    const store=useStore()
+     const Login=async()=>{
           /^[a-zA-Z0-9]+$/.exec(user.username)?validate.username=true:validate.username=false;
           /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/.exec(user.password)?validate.password=true:validate.password=false;
-          //gọi đăng nhập ở đây
-        router.push({name:'admin'})
+          try{
+            const token=  await SignIn(user)
+            store.dispatch("SetLoginAdmin",token)
+            router.push({name:'adminhome'})
+        }
+        catch(err){
+            Swal.fire("Lỗi",err.message,"error")
+        }
+        
      }
      const user=reactive({
       username:'',
@@ -53,6 +63,7 @@ import router from '../../router';
       username:true,
       password:true
      })
+     
       return {Login,user,validate,ishow_pass}
   }
   }

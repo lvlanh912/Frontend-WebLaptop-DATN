@@ -55,8 +55,8 @@ import axios from 'axios';
 		fetch({commit},{pram2}){	
 				commit("Setdata",payload)		//thực hiện commit lên theo cú pháp: commit("tên hàm",data gửi vào)
 				},
-		SetLoginAdmin({commit}){
-			commit("SetLoginAdmin",islogin)
+		SetLoginAdmin({commit},token){
+			commit("SetLoginAdmin",token)
 		},
 		async SetLoginUser ({commit},token){
 			commit("SetLoginUser",token)

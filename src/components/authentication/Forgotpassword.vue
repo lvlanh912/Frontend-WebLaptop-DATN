@@ -1,6 +1,6 @@
 <template>
     <transition name="slide-fade">
-  <div v-if="isShow" style="min-width: 20rem;max-width: 50rem;" class=" card py-3 px-lg-5 px-sm-2 flex-column align-content-center">
+  <!-- <div v-if="isShow" style="min-width: 20rem;max-width: 50rem;" class=" card py-3 px-lg-5 px-sm-2 flex-column align-content-center">
             <h2 class=" p-2"> Bạn quên mật khẩu?</h2>
             <p class="text-body">Chỉ với 3 bước đơn giản chúng tôi sẽ cung cấp lại mật khẩu cho bạn!</p>
             <p class="m-0 p-0">1. Nhập địa chỉ Email của bạn</p>
@@ -14,7 +14,11 @@
                 <button class="btn btn-success text-white">Xác  nhận </button>
                 <router-link   class="btn btn-danger text-white" :to="{name:'login'}">Quay lại đăng nhập</router-link>
             </div>
-        </div>
+        </div> -->
+        <div class="">
+            <h4 class="">Đang hoàn thiện</h4>
+                <router-link   class="btn btn-danger text-white" :to="{name:'login'}">Quay lại đăng nhập</router-link>
+            </div>
     </transition>
 </template>
 

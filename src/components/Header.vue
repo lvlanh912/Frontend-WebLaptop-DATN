@@ -257,12 +257,16 @@ export default {
     const router = useRouter()
     const store=useStore()
     const cart_total=computed(()=>store.state.user.cartCount)
-    const islogin=ref(store.state.user.jwtToken!=null)
+    const islogin=ref(false)
     const list_category = ref([])
     const goBottom = () =>
       document.querySelector("footer").scrollIntoView({behavior: "smooth"})
     onBeforeMount(async () => {
       list_category.value = await getCategory_noParent()
+      if(store.state.user.isAdmin||store.state.user.jwtToken==null)
+        islogin.value=false
+      else
+        islogin.value=true
     })
 
     const onLogout=()=>{
@@ -272,7 +276,7 @@ export default {
     }
 
     onUpdated(()=>{
-      if(store.state.user.jwtToken==null)
+      if(store.state.user.isAdmin||store.state.user.jwtToken==null)
         islogin.value=false
       else
         islogin.value=true

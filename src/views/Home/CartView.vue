@@ -43,7 +43,7 @@
                  <!-- Giảm SL -->
                   <i @click="onDecrease(index)" class="bi bi-dash-lg  px-2 bg-red text-white"></i>
                   <!-- Số lượng trong giỏ -->
-                  <input v-model="item.quantity" type="number" class="bg-light text-center border-0 my-0 py-0" style="max-width: 40px;">
+                  <input v-model="item.quantity" disabled type="number" class="bg-light text-center border-0 my-0 py-0" style="max-width: 40px;">
                   <!-- Tăng SL -->
                   <i  @click="onIncrease(index)" class="bi bi-plus-lg px-2 bg-blue text-white"></i>
                 </div>

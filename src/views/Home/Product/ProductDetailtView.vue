@@ -25,13 +25,13 @@
           <hr>
           <!-- image list -->
           <div class=" mt-3 list-image row m-0 ps-1">
-           <div class="col-4 col-md-3 col-lg-3 px-0 ms-0 mt-2"  v-for="(item, index) in list_image" :key="index">
+           <div class="col-5 col-md-3 col-lg-3 px-0 ms-0 mt-2"  v-for="(item, index) in list_image" :key="index">
             <img
               @click="onShowImage(item)"
               :src="item"
               alt=""
-              class="img-big border"
-              style="max-width: 100px; max-height: 100px"
+              class="img-big"
+              style=" max-height: 100px"
             />
            </div>
           </div>
@@ -122,7 +122,7 @@
         </div>
         <!-- Bình luận/Đánh giá -->
         <div class="col-12 col-md-4 col-lg-6 px-2">
-          <comment  />
+          <comment :productId="product.id"  />
         </div>
       </div>
     </div>
@@ -176,6 +176,7 @@ export default {
       document.title=product.value.productName
     }
     onMounted(async () => {
+      window.scrollTo(0,0)
       productId.value = route.params.productId
       await getData()
       Ishowimage.value=true
@@ -187,6 +188,7 @@ export default {
       isShow.value=false
       productId.value = to.params.productId
       await getData()
+      show_image.value=null
       window.scrollTo(0,0)
       isShow.value=true
       next()

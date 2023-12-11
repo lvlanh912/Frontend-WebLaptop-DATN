@@ -77,7 +77,13 @@ const router = createRouter({
           component: ()=>import('../views/Admin/CommentsView.vue')
         }
       ],
-      component: () => import('../views/Admin/HomeView.vue')
+      component: () => import('../views/Admin/HomeView.vue'),
+      beforeEnter(to,from,next){
+        const store=useStore()
+        if(store.state.user.isAdmin==false)
+          router.push('/admin/dang-nhap')
+        next()
+      },
     },
     {
       path: '/admin/dang-nhap',
@@ -107,7 +113,7 @@ const router = createRouter({
           path: 'tai-khoan',name: 'profile', meta:{title:'Tài khoản của tôi'},component: () => import('../views/Home/ProfileView.vue'),
           beforeEnter(to,from,next){
             const store=useStore()
-            if(store.state.user.jwtToken==null)
+            if(store.state.user.jwtToken==null||store.state.user.isAdmin)
               router.push('/')
             next()
           },
@@ -145,7 +151,7 @@ const router = createRouter({
           path:'/gio-hang',name:'cart',meta:{title:'Giỏ hàng của tôi'},component:()=>import('../views/Home/CartView.vue'),
           beforeEnter(to,from,next){
             const store=useStore()
-            if(store.state.user.jwtToken==null)
+            if(store.state.user.jwtToken==null||store.state.user.isAdmin)
               router.push('/')
             next()
           }

@@ -42,11 +42,11 @@
          <i class="bi bi-currency-bitcoin text-yellow me-2"></i>Thanh toán
         </router-link>
       </li>
-      <li class="mb-1">
+      <!-- <li class="mb-1">
         <router-link :to="{name:'chats_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='chats_manager'}">
          <i class="bi bi-messenger text-blue me-2"></i>Chăm sóc khách hàng 
          </router-link>
-      </li>
+      </li> -->
       <li class="mb-1">
         <router-link :to="{name:'news_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='news_manager'}">
          <i class="bi bi-newspaper text-blue me-2"></i>Tin đăng
@@ -57,6 +57,11 @@
          <i class="bi bi-star-fill text-yellow me-2"></i>Đánh giá
          </router-link>
       </li>
+      <li class="mb-1" @click="onLogout">
+        <a role="button" class="w-100 text-start btn align-items-center rounded">
+          <i class="bi bi-box-arrow-left text-red me-2"></i>Đăng xuất
+        </a>
+      </li>
     </ul>
     </aside>
 </template>
@@ -64,11 +69,17 @@
 <script>
 import { ref,computed } from 'vue';
 import router from '../../router';
+import { useStore } from 'vuex';
 
 export default {
 setup(){
+  const store=useStore()
+  const onLogout=()=>{
+    store.dispatch("Logout")
+    router.push('/admin/dang-nhap')
+  }
 const page_name =computed(()=>router.currentRoute.value.name)
-  return {page_name}
+  return {page_name,onLogout}
 }
 }
 </script>
