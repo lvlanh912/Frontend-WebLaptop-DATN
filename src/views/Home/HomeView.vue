@@ -8,13 +8,13 @@
         </transition>
       </router-view>
     </section>
+    
     <footer-com />
   </Teleport>
 </template>
 
 <script>
 import Header from "../../components/Header.vue"
-
 import FooterCom from "../../components/Footer.vue"
 
 export default {

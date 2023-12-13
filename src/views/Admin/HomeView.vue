@@ -15,6 +15,7 @@ import { onMounted, ref } from 'vue';
 import MyHeader from '../../components/Admin/MyHeader.vue'
 import MySidebar from '../../components/Admin/MySidebar.vue'
 import MyTable from '../../components/Admin/Mytable.vue';
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from 'vue-router';
 export default {
 components:{MyHeader,MySidebar,MyTable},
  setup(){

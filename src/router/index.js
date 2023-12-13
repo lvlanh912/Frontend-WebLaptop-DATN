@@ -1,8 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory,createMemoryHistory  } from 'vue-router'
 import { useStore } from 'vuex'
-
+import {CheckAdmin} from '../modules/admin/home.js'
 
 const router = createRouter({
+  // history: createMemoryHistory (),
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -12,68 +13,68 @@ const router = createRouter({
         {
           path: '',
           name:'adminhome',
-          meta: { title: 'Trang quản trị' },
+          meta: { title: 'Trang quản trị',checkAdmin:true },
           component: ()=>import('../views/Admin/DefaultView.vue')
         },
         {
           path: 'quan-ly-don-hang',
           name:'orders_manager',
-          meta: { title: 'Quản lý đơn hàng' },
+          meta: { title: 'Quản lý đơn hàng',checkAdmin:true },
           component: ()=>import('../views/Admin/OrdersView.vue')
         },
         {
           path: 'quan-ly-tai-khoan',
           name:'user_manager',
-          meta: { title: 'Quản lý tài khoản' },
+          meta: { title: 'Quản lý tài khoản',checkAdmin:true },
           component: ()=>import('../views/Admin/AccountsView.vue')
         },
         {
           path: 'quan-ly-ma-giam-gia',
           name:'vouchers_manager',
-          meta: { title: 'Quản lý Voucher' },
+          meta: { title: 'Quản lý Voucher',checkAdmin:true },
           component: ()=>import('../views/Admin/VouchersView.vue')
         },
         {
           path: 'quan-ly-san-pham',
           name:'products_manager',
-          meta: { title: 'Quản lý sản phẩm' },
+          meta: { title: 'Quản lý sản phẩm',checkAdmin:true },
           component: ()=>import('../views/Admin/ProductsView.vue')
         },
         {
           path: 'quan-ly-danh-muc-san-pham/:id?',
           name:'categories_manager',
-          meta: { title: 'Quản lý danh mục sản phẩm' },
+          meta: { title: 'Quản lý danh mục sản phẩm',checkAdmin:true },
           component: ()=>import('../views/Admin/CategoriesView.vue'),
           props:true
         },
         {
           path: 'quan-ly-cong-thanh-toan',
           name:'payments_manager',
-          meta: { title: 'Quản lý phương thức thanh toán' },
+          meta: { title: 'Quản lý phương thức thanh toán',checkAdmin:true },
           component: ()=>import('../views/Admin/PaymentsView.vue')
         },
         {
           path: 'cham-soc-khach-hang',
           name:'chats_manager',
-          meta: { title: 'Quản lý chat' },
+          meta: { title: 'Quản lý chat',checkAdmin:true },
           component: ()=>import('../views/Admin/ChatsView.vue')
         },
         {
           path: 'thong-ke',
           name:'statistics_manager',
-          meta: { title: 'Thống kê' },
+          meta: { title: 'Thống kê',checkAdmin:true },
           component: ()=>import('../views/Admin/StatisticsView.vue')
         },
         {
           path: 'quan-ly-tin-tuc',
           name:'news_manager',
-          meta: { title: 'Quản lý tin tức' },
+          meta: { title: 'Quản lý tin tức',checkAdmin:true },
           component: ()=>import('../views/Admin/NewsView.vue')
         },
         {
           path: 'quan-ly-danh-gia/:accountId?',
           name:'comments_manager',
-          meta: { title: 'Quản lý đánh giá' },
+          meta: { title: 'Quản lý đánh giá',checkAdmin:true },
           component: ()=>import('../views/Admin/CommentsView.vue')
         }
       ],
@@ -101,6 +102,15 @@ const router = createRouter({
       children:[
         {
           path: 'dang-nhap',name: 'login',meta:{title:'Đăng nhập'},component: () => import('../views/AuthenticationView.vue')
+        },
+        {
+          path: 'ho-tro',name: 'chat',meta:{title:'Liên hệ trực tuyến'},component: () => import('../views/home/ChatView.vue'),
+           beforeEnter(to,from,next){
+            const store=useStore()
+            if(store.state.user.jwtToken==null||store.state.user.isAdmin)
+              router.push('/')
+            next()
+          }
         },
         {
           path: 'dang-ky',name: 'signup', meta:{title:'Đăng Ký'},component: () => import('../views/AuthenticationView.vue')
@@ -198,6 +208,8 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
+    if(to.meta.checkAdmin)
+     CheckAdmin()
     document.title = to.meta.title??"Index";
     next()
   

@@ -42,11 +42,11 @@
          <i class="bi bi-currency-bitcoin text-yellow me-2"></i>Thanh toán
         </router-link>
       </li>
-      <!-- <li class="mb-1">
+      <li class="mb-1">
         <router-link :to="{name:'chats_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='chats_manager'}">
          <i class="bi bi-messenger text-blue me-2"></i>Chăm sóc khách hàng 
          </router-link>
-      </li> -->
+      </li>
       <li class="mb-1">
         <router-link :to="{name:'news_manager'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='news_manager'}">
          <i class="bi bi-newspaper text-blue me-2"></i>Tin đăng

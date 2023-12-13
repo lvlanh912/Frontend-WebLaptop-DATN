@@ -1,6 +1,9 @@
-import{Get_all_Product} from '../CallAPI.js'
+import { useRouter } from 'vue-router';
+import{Get_all_Product,isAdmin} from '../CallAPI.js'
 import ResponseAPI from '../CallAPI.js'
 import axios from 'axios';
+import { useStore } from 'vuex';
+export {isAdmin}
 //get top view product
 export async function Gettop6() {
   try {
@@ -19,6 +22,19 @@ export async function Gettop6() {
       title: "Có lỗi xảy ra khi lấy danh sách sản phẩm xem nhiều",
       text: err.message,
     });
+  }
+}
+export async function CheckAdmin(){
+  const router=useRouter()
+  const store=useStore()
+  try{
+    await isAdmin()
+  }
+  catch(err)
+  {
+   if(err.response.status==401)
+      store.dispatch("Logout")
+     router.push('/admin/dang-nhap')
   }
 }
 //get order-pending

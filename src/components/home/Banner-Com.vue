@@ -28,11 +28,11 @@ export default defineComponent({
   },
   setup(){
     const images_banner=ref([
-     '../../../public/slide/Banner_1.webp',
-     '../../../public/slide/Banner_2.webp',
-     '../../../public/slide/Banner_3.webp',
-     '../../../public/slide/Banner_4.webp',
-     '../../../public/slide/Banner_5.webp'
+     '../../../src/assets/image/Banner/Banner_1.webp',
+     '../../../src/assets/image/Banner/Banner_2.webp',
+     '../../../src/assets/image/Banner/Banner_3.webp',
+     '../../../src/assets/image/Banner/Banner_4.webp',
+     '../../../src/assets/image/Banner/Banner_5.webp'
     ])
     return{images_banner}
   }

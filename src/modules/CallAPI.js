@@ -18,6 +18,17 @@ export async function SignIn(payload){
         throw error
     }
 }
+//check isadmin
+export async function isAdmin(){
+  try {
+      const response= await axios.get(`/users/isAdmin`)
+        let data = new ResponseAPI();
+        data = response.data;
+        return data.result;
+    } catch (error) {
+        throw error
+    }
+}
 //Account
 //Get all
 export async function Get_All_Account(page, size, filterobj, sort) {
@@ -652,4 +663,49 @@ export async function GetOrderOverviewPerMonth(startDate,endDate){
   catch(err){
     throw err;
   }
+}
+
+export async function GetRevenueOverview(startDate,endDate){
+  try{
+    let query={
+      startDate:startDate,
+      endDate:endDate
+    }
+    let response=await axios.get(`/statistic/revenue`,{
+      params:query
+    })
+    let data = new ResponseAPI();
+    data = response.data;
+    return data.result;
+  }
+  catch(err){
+    throw err;
+  }
+}
+
+export async function GetChatList(pageindex,pagesize,sort){
+  try{
+    let query={
+      pageindex:pageindex,
+      pagesize:pagesize,
+      sort:sort
+    }
+    let response=await axios.get(`/chats`,{
+      params:query
+    })
+   let data = response.data;
+    return data.result.items;
+  }
+  catch(err){
+    throw err;
+  }
+}
+export async function GetAccountById(id){
+  try {
+      const response= await axios.get(`/users/${id}`)
+        let data = response.data;
+        return data.result
+    } catch (error) {
+        throw error
+    }
 }
