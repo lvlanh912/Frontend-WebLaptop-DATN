@@ -1,32 +1,6 @@
-![image](https://github.com/lvlanh912/Frontend-WebLaptop-DATN/assets/57809918/7f66ddec-578d-4262-a437-cc391413af6c)# vue-lab01
-
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+![image](https://github.com/lvlanh912/Frontend-WebLaptop-DATN/assets/57809918/7f66ddec-578d-4262-a437-cc391413af6c)# 
+My API is built using ASP.NET CORE 6
+(https://github.com/lvlanh912/BackendAPI_WebLaptop)
 #demo
 ![image](https://github.com/lvlanh912/Frontend-WebLaptop-DATN/assets/57809918/35a8f69e-2b7c-4a41-8a0b-d9891b99ac50)
 ![image](https://github.com/lvlanh912/Frontend-WebLaptop-DATN/assets/57809918/d9343d13-20c2-480d-be57-936929ad8c0e)
