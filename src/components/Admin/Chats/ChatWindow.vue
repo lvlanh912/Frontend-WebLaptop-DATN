@@ -3,7 +3,7 @@
         <!-- Tài khoản chat -->
         <div class="card-header  d-flex justify-content-between">
           <span class="fw-bold fs-5">{{ fullname }}</span>
-          <a role="button" class="btn btn-outline-danger  d-flex"><span class="align-self-center fw-bold">Kết thúc</span></a>
+          <a @click="onClose" role="button" class="btn btn-outline-danger  d-flex"><span class="align-self-center fw-bold">Kết thúc</span></a>
         </div>
         <!-- Nội dung chat -->
         <div id="chat" class="card-body p-3 p-sm-4 h-100" style="overflow-x: visible;overflow-y: scroll;">
@@ -45,6 +45,10 @@ setup(props){
     const tobottomChat=()=>setTimeout(()=>document.querySelector('#chat').scrollTop= document.querySelector('#chat').scrollHeight,1000)
 
     connection.on('ReceiveMessage', (data)=>{tobottomChat()})
+
+    const onClose=()=>{
+        
+    }
     const onSubmit=async()=>{
         if(messagetext.value.trim()!=''){
             await SendToUser(props.Chat_picked.accountId,messagetext.value)
