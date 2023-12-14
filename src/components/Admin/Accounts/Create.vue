@@ -10,7 +10,7 @@
           <div class="modal-body">
             <div class="input-group mb-3 col-12">
               <label class="col-2 align-self-center">Avatar</label>
-              <input @change="uploadfile" type="file" class="form-control" accept=".png, .jpg, .jpeg" />
+              <input @change="uploadfile" type="file" class="form-control" accept=".png, .jpg, .jpeg, .webp" />
             </div>
             <div class="row mb-2">
               <div class="col-lg-6">

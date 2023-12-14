@@ -27,8 +27,12 @@
     </div>
     <!-- Tuỳ chọn -->
     <div class="d-flex justify-content-end">
-      <p v-if="item.stock==0"  class="text-orange fw-bolder pt-2 mb-0 me-2" ><i class="bi bi-exclamation-circle me-2"></i> Hết hàng </p>
-      <p v-else class="m-0 ms-2 d-inline-block text-start d-flex align-items-center has fw-bold">
+      <!-- <p v-if="item.stock==0"  class="m-0 ms-2 d-inline-block pt-2 text-start d-flex align-items-center has text-orange fw-bold" ><i class="me-2"></i> Hết hàng </p> -->
+      <p  v-if="item.stock==0" class="m-0 ms-2 d-inline-block pt-2 text-start d-flex align-items-center has text-orange  fw-bold">
+        <i class="bi bi-exclamation-circle fs-6"></i>
+        &nbsp; Hết hàng</p>
+
+      <p v-else class="m-0 ms-2 d-inline-block pt-2 text-start d-flex align-items-center has fw-bold">
         <i class="bi bi-check-circle fs-6"></i>
         &nbsp; Còn hàng</p>
     </div>

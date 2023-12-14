@@ -104,7 +104,7 @@ const router = createRouter({
           path: 'dang-nhap',name: 'login',meta:{title:'Đăng nhập'},component: () => import('../views/AuthenticationView.vue')
         },
         {
-          path: 'ho-tro',name: 'chat',meta:{title:'Liên hệ trực tuyến'},component: () => import('../views/home/ChatView.vue'),
+          path: 'ho-tro',name: 'chat',meta:{title:'Liên hệ trực tuyến'},component: () => import('./../views/Home/ChatView.vue'),
            beforeEnter(to,from,next){
             const store=useStore()
             if(store.state.user.jwtToken==null||store.state.user.isAdmin)
@@ -128,10 +128,11 @@ const router = createRouter({
             next()
           },
           children:[
-            { path: '',name:'profile-home',component: () => import('../views/Home/Profile/InforAccountView.vue')},
-            { path: 'dia-chi-giao-hang',name:'shipping-address',component: () => import('../views/Home/Profile/ShippingAddressView.vue')},
-            { path: 'phien-dang-nhap',name:'session',component: () => import('../views/Home/Profile/SessionView.vue')},
-            { path: 'don-hang',name:'myorder',component: () => import('../views/Home/Profile/OrderView.vue')}
+            { path: '',name:'profile-home',meta:{title:'Tài khoản của tôi'},component: () => import('../views/Home/Profile/InforAccountView.vue')},
+            { path: 'dia-chi-giao-hang',name:'shipping-address',meta:{title:'Địa chỉ giao hàng của tôi'},component: () => import('../views/Home/Profile/ShippingAddressView.vue')},
+            { path: 'phien-dang-nhap',name:'session',meta:{title:'Phiên đăng nhập'},component: () => import('../views/Home/Profile/SessionView.vue')},
+            { path: 'don-hang',name:'myorder',meta:{title:'Đơn hàng của tôi'},component: () => import('../views/Home/Profile/OrderView.vue')},
+            { path: 'doi-mat-khau',name:'password',meta:{title:'Đổi mật khẩu'},component: () => import('../views/Home/Profile/PasswordChange.vue')}
 
 
           ]

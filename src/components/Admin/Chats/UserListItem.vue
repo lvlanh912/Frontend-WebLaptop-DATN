@@ -25,14 +25,14 @@ props:{
     }
 },
 setup(props){
-const chat=reactive(props.chatitem)
+const chat=computed(()=>props.chatitem)
 const accountInfor= ref({})
 const BackendHost=backendHost
 onMounted(async()=>{
-    accountInfor.value= await GetAccountById(chat.accountId)
+    accountInfor.value= await GetAccountById(chat.value.accountId)
 })
 const accountinfor=computed(()=>accountInfor.value )
-const lastmessage=computed(()=>chat.messages[chat.messages.length-1])
+const lastmessage=computed(()=>chat.value.messages[chat.value.messages.length-1])
 return {chat,accountinfor,accountInfor,lastmessage,BackendHost}
 }
 }

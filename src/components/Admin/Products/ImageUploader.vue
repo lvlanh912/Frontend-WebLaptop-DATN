@@ -32,7 +32,7 @@
           class="form-control"
           @change="AddImage"
           type="file"
-          accept=".png, .jpg, .jpeg"
+          accept=".png, .jpg, .jpeg, .webp"
         />
       </div>
     </div>

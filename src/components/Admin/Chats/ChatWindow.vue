@@ -9,9 +9,9 @@
         <div id="chat" class="card-body p-3 p-sm-4 h-100" style="overflow-x: visible;overflow-y: scroll;">
           <div  v-for="item,index in message" :key="index" :class="{'d-flex':true,'justify-content-end':item.isAdmin}">
             <div class="mt-2 my-2">
-                <p :class="{'m-0':true,'text-end':item.isAdmin}">
-                    <span :class="{'mb-0 border px-2 py-1 rounded-2':true,'bg-blue text-white':item.isAdmin}"> {{ item.content }}</span>
-                </p>
+                <div :class="{'m-0':true,'text-end ':item.isAdmin}">
+                    <label :class="{'mb-0 border px-2 py-1 rounded-2':true,'bg-blue text-white pe-2':item.isAdmin}"> {{ item.content }}</label>
+                </div>
               <span class="mb-0 text-muted" style="font-size: small;">{{ new Date(item.timeSend).toLocaleString() }}</span>
             </div>
           </div>
@@ -31,40 +31,58 @@
 
 <script>
 import { computed, onMounted, ref } from 'vue'
-import {SendToUser,connection,GetListChat} from '../../../modules/ChatService.js'
+import {SendToUser,connection,DisconnectWithUser} from '../../../modules/ChatService.js'
 export default {
 props:{
     Chat_picked:{
     },
     User:{}
 },
-setup(props){
+setup(props,{emit}){ 
     const messagetext=ref('')
     const message=computed(()=>props.Chat_picked.messages)
+    const chatId=computed(()=>props.Chat_picked.id)
     const fullname=computed(()=> props.User.fullname)
-    const tobottomChat=()=>setTimeout(()=>document.querySelector('#chat').scrollTop= document.querySelector('#chat').scrollHeight,1000)
+    const userId=computed(()=>props.User.id)
+    const tobottomChat=()=>setTimeout(()=>document.querySelector('#chat').scrollTop= document.querySelector('#chat').scrollHeight,100)
 
     connection.on('ReceiveMessage', (data)=>{tobottomChat()})
 
     const onClose=()=>{
+      //Đóng chat
+      Swal.fire({
+      title: "Kết thúc đoạn chat",
+      text: "Sẽ xoá lịch sử cuộc hội thoại",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Vẫn kết thúc"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+       await DisconnectWithUser(userId.value)
+       emit("onDisconectChat",chatId.value)
+        Swal.fire({
+          title: "Thành công",
+          icon: "success"
+        });
+        
+  }
+});
         
     }
     const onSubmit=async()=>{
         if(messagetext.value.trim()!=''){
-            await SendToUser(props.Chat_picked.accountId,messagetext.value)
+            SendToUser(props.Chat_picked.accountId,messagetext.value)
             props.Chat_picked.messages.push({
                 content:messagetext.value,
                 isAdmin:true,
                 timeSend:new Date()
             })
+            tobottomChat()
         }
         messagetext.value=''
-        tobottomChat()
 }
-      
-
     return {message,onSubmit,
-        fullname,messagetext
+        fullname,messagetext,onClose
     
     
     }

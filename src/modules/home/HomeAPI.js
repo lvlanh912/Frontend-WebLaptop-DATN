@@ -436,3 +436,13 @@ export async function CreateComment(Payload){
           throw error
       }
 }
+//đổi mật khẩu
+export async function ChangePassword(Payload){
+    try {
+        const response= await axios.post(`/users/change-password`,Payload)
+          let data = response.data;
+          data.result;
+      } catch (error) {
+          throw error
+      }
+}

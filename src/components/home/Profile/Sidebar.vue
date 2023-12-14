@@ -9,6 +9,11 @@
         </router-link>
       </li>
       <li class="mb-1">
+        <router-link :to="{name:'myorder'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='myorder'}">
+         <i class="bi bi-shop-window text-blue me-2"></i> Đơn đặt hàng
+        </router-link>
+      </li>
+      <li class="mb-1">
         <router-link :to="{name:'shipping-address'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='shipping-address'}">
          <i class="bi bi-signpost-2-fill text-red me-2"></i> Địa chỉ giao hàng
         </router-link>
@@ -19,10 +24,11 @@
         </router-link>
       </li>
       <li class="mb-1">
-        <router-link :to="{name:'myorder'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='myorder'}">
-         <i class="bi bi-shop-window text-blue me-2"></i> Đơn đặt hàng
+        <router-link :to="{name:'password'}"  :class="{'w-100 text-start btn align-items-center rounded':true,'active':page_name=='password'}">
+         <i class="bi bi-lock-fill text-blue me-2"></i> Đổi mật khẩu
         </router-link>
       </li>
+     
     </ul>
     </aside>
 </template>

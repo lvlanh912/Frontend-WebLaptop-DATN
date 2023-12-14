@@ -694,7 +694,7 @@ export async function GetChatList(pageindex,pagesize,sort){
       params:query
     })
    let data = response.data;
-    return data.result.items;
+    return data.result;
   }
   catch(err){
     throw err;

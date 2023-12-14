@@ -2,32 +2,43 @@ import * as SignalR from '@microsoft/signalr'
 import { GetChatList,GetAccountById } from './CallAPI';
 import axios from 'axios';
 import store from '../Store';
-// var connection=new SignalR.HubConnectionBuilder().withUrl("localhost:5251/chatHub").build()
+export{GetChatList}
 const jwtToken=store.state.user.jwtToken
 export var connection = new SignalR.HubConnectionBuilder()
-.configureLogging(SignalR.LogLevel.Debug)
+.configureLogging(SignalR.NullLogger.apply)
+// .configureLogging(SignalR.LogLevel.Debug)
 .withUrl("https://localhost:7251/Hub", {
   accessTokenFactory: () => { return jwtToken.replace("Bearer ","")}
 })
-.withAutomaticReconnect().build();
+.withAutomaticReconnect()
+.build();
 async function IsStart() {
         if (connection.state === SignalR.HubConnectionState.Connected) 
             return true
           else {
+            console.log("Kết nối tiếp")
             await connection.start()
             return true
         }
 }
 export async function SendtoAdmin(content){
     if(await IsStart()){
-        connection.invoke(connection.invoke('SendMessageToAdmin',content))
-        console.log(connection.state)
+       connection.invoke('SendMessageToAdmin',content)
     }
         
 }
 export async function SendToUser(userId,content){
     if(await IsStart())
-        connection.invoke(connection.invoke('SendMessageToUser',userId,content))
+       connection.invoke('SendMessageToUser',userId,content)
+}
+export async function DisconnectWithUser(userId){
+  if(await IsStart())
+   await connection.invoke('AdminDisconnectChat',userId)
+}
+export async function DisconnectWithAdmin(){
+  if(await IsStart())
+   await connection.invoke('UserDisconnectChat')
+      
 }
 // Nhận được tin nhắn 
 // connection.on('ReceiveMessage', (data)=>{
@@ -36,17 +47,9 @@ export async function SendToUser(userId,content){
 export async function GetMyChat(){
     try{
       let response=await axios.get(`/chats/my-chat`)
-      return response.data.result.messages;
-    }
-    catch(err){
-      throw err;
-    }
-  }
-
-  export async function GetListChat(pageindex,pagesize,sort){
-    try{
-      let arr=await GetChatList(pageindex,pagesize,sort)
-      return arr
+      if(response.data.result)
+        return response.data.result.messages;
+      return []
     }
     catch(err){
       throw err;
