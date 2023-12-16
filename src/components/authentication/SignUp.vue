@@ -28,14 +28,22 @@
                 <input @change="v_email" v-model="Payload.email" :class="{'form-control':true,'is-invalid':Error.email,'is-valid':Error.email==null}" placeholder="Nhập email"  type="email">
                  <div  class="invalid-feedback">{{ Error.email }}</div>
                 </div>
+                <div class="input-group mt-2 ">
+                    <div class="d-flex justify-content-between w-100">
+                        <div class=" d-flex justify-content-end">
+                            <span class="input-group-text"> <i class="bi  bi-lock-fill m-auto"></i></span>
+                            <input v-model="otp" class="form-control" placeholder="Nhập mã xác nhận"  type="number">
+                        </div>
+                        <button @click="onSendOtp" style="font-size: small;" class="btn bg-success fw-bold text-white no-wrap ms-2">{{ SendButonText }}</button>
+                    </div>
+                </div>
                 <div class="input-group mt-2">
                     <span class="input-group-text"> <i class="bi bi-telephone-fill m-auto"></i></span>
                 <input @change="v_phone" v-model="Payload.phone"  @keypress="NumberOnly"
                  :class="{'form-control':true,'is-invalid':Error.phone,'is-valid':Error.phone==null}" placeholder="Nhập số điện thoại"  type="tel">
-                 <div  class="invalid-feedback">{{ Error.phone }}</div>
                 </div>
                 <div class=" d-flex justify-content-center align-content-center pt-2 mb-2 mt-4">
-                    <button @click="OnSignup" class=" btn text-white btn-primary px-4">Đăng ký</button>
+                    <button @click="OnSignup" class=" btn text-white btn-primary px-4 fw-bold ">Đăng ký</button>
                 </div>
         </div>
     <hr>
@@ -49,11 +57,14 @@
 
 <script>
 import { onMounted, reactive,ref } from 'vue'
-import {SignUp} from '../../modules/home/HomeAPI.js'
+import {SignUp,GetOTP} from '../../modules/home/HomeAPI.js'
 import { useRouter } from 'vue-router'
 export default {
   setup() {
+    const router=useRouter()
+    const SendButonText=ref('Gửi mã')
     const isShow=ref()
+    const otp=ref()
     const Error=reactive({
             username:'',
             fullname:'',
@@ -61,6 +72,7 @@ export default {
             password_repeat:'',
             email:'',
             phone:''
+            
     })
     const Payload=reactive({
             username:'',
@@ -70,9 +82,33 @@ export default {
             email:'',
             phone:''
     })
+    const onSendOtp=async()=>{
+        if(Payload.email.trim()=='')
+          return  Swal.fire('Địa chỉ email không được để trống',"","warning")
+        v_email()
+        if(Error.email==null)
+        try{ 
+            SendButonText.value="Đang gửi OTP"
+            await GetOTP(Payload.email)
+            SendButonText.value="Đã gửi OTP"
+            return  Swal.fire('Thành công',"Kiểm tra email của bạn","success")
+        }
+        catch(err){
+            SendButonText.value="Gửi lại OTP"
+            if(err.response)
+            return Swal.fire('Lỗi',err.response.data.message,"error")
+            return Swal.fire('something wrong','',"error")
+        }
+           
 
+    }
     const validate=()=>{
-        if(Payload.username==''||Payload.password==''||Payload.email==''||Payload.phone=='')
+        if(Payload.username==''||Payload.password==''||Payload.email==''||Payload.phone==''||otp.value=='')
+            return false
+        const regex=/^\d{6}$/;
+         if(!regex.test(otp.value))
+            return false
+        if(Error.username!=null||Error.password!=null||Error.email!=null||Error.phone!=null)
             return false
         return true
     }
@@ -83,14 +119,15 @@ export default {
     
     const OnSignup= async()=>{
         if(!validate())
-            return
+            return  Swal.fire('Vui lòng nhập đầy đủ thông tin')
         try{
-            await SignUp(Payload)
+            await SignUp(Payload,otp.value)
             Swal.fire({
             icon: "success",
             title: "Thành công",
             text: "Đăng ký thành công, Có thể đăng nhập",
           })
+          router.push('dang-nhap')
         }
         catch(err){
             Swal.fire({
@@ -113,7 +150,9 @@ export default {
       } else 
         return true;
     }
+    const v_otp=()=>{
 
+    }
     const v_username=()=>{
         if(Payload.username.length==0)
             Error.username='Tên đăng nhập không được để trống'
@@ -163,7 +202,7 @@ export default {
                 Error.phone=null
     }
     return {isShow,Payload,Error,OnSignup,NumberOnly,
-        v_username,v_fullname,v_password,v_password_repeat,v_email,v_phone
+        v_username,v_fullname,v_password,v_password_repeat,v_email,v_phone,otp,v_otp,onSendOtp,SendButonText
 
     }
 }

@@ -119,6 +119,12 @@ const router = createRouter({
           path: 'quen-mat-khau',name: 'forgetPassword', meta:{title:'Quên mật khẩu'},component: () => import('../views/AuthenticationView.vue')
         },
         {
+          path: 'resetpassword',name: 'resetpass', meta:{title:'Đổi mật khẩu'},component: () => import('../views/AuthenticationView.vue'),
+          props: (route) => ({
+            key: route.query.key
+          })
+        },
+        {
           //Người dùng
           path: 'tai-khoan',name: 'profile', meta:{title:'Tài khoản của tôi'},component: () => import('../views/Home/ProfileView.vue'),
           beforeEnter(to,from,next){
@@ -133,8 +139,6 @@ const router = createRouter({
             { path: 'phien-dang-nhap',name:'session',meta:{title:'Phiên đăng nhập'},component: () => import('../views/Home/Profile/SessionView.vue')},
             { path: 'don-hang',name:'myorder',meta:{title:'Đơn hàng của tôi'},component: () => import('../views/Home/Profile/OrderView.vue')},
             { path: 'doi-mat-khau',name:'password',meta:{title:'Đổi mật khẩu'},component: () => import('../views/Home/Profile/PasswordChange.vue')}
-
-
           ]
         },
         {
@@ -172,10 +176,34 @@ const router = createRouter({
           path:'/check-out',name:'checkout',meta:{title:'Đặt hàng'},component:()=>import('../views/Home/CheckOutView.vue'),
           beforeEnter(to,from,next){
             const store=useStore()
-            if(store.state.user.jwtToken==null)
+            if(store.state.user.jwtToken==null||store.state.user.isAdmin)
               router.push('/')
             next()
           }
+        },
+        {
+          //kết quả thanh toán
+          path:'/ket-qua-thanh-toan',name:'VNPayResult',meta:{title:'Kết quả giao dịch'},component:()=>import('../views/Home/PaymentOnline/VNpayResult.vue'),
+          props: route => ({
+            vnp_Amount	: route.query.vnp_Amount	,
+            vnp_BankCode	: route.query.vnp_BankCode	,
+            vnp_BankTranNo	: route.query.vnp_BankTranNo	,
+            vnp_CardType	: route.query.vnp_CardType	,
+            vnp_OrderInfo	: route.query.vnp_OrderInfo	,
+            vnp_PayDate	: route.query.vnp_PayDate	,
+            vnp_ResponseCode	: route.query.vnp_ResponseCode	,
+            vnp_SecureHash	: route.query.vnp_SecureHash	,
+            vnp_TmnCode	: route.query.vnp_TmnCode	,
+            vnp_TransactionNo	: route.query.vnp_TransactionNo	,
+            vnp_TransactionStatus	: route.query.vnp_TransactionStatus	,
+            vnp_TxnRef	: route.query.vnp_TxnRef	
+          })
+          // beforeEnter(to,from,next){
+          //   const store=useStore()
+          //   if(store.state.user.jwtToken==null||store.state.user.isAdmin)
+          //     router.push('/')
+          //   next()
+          // }
         },
         
         {

@@ -158,11 +158,54 @@ export async function getPostbyid(id){
 }
 
 //đăng ký tài khoản mới
-export async function SignUp(payload){
+export async function SignUp(payload,otp){
     try {
-        const response= await axios.post(`/auth/sign-up`,payload)
-          let data = new ResponseAPI();
-          data = response.data;
+        const response= await axios.post(`/auth/sign-up?otp=${otp}`,payload)
+          let data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+//Lấy OTP
+export async function GetOTP(email){
+    try {
+        const formData=new FormData()
+        formData.append('email',email)
+        const response= await axios.post(`/auth/get-otp`,formData,{
+            headers:{"Content-Type":"multipart/form-data"}
+          })
+          let data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+
+//Yêu cầu đặt lại mật khẩu
+export async function ResetPassword(accesstoken){
+    try {
+        const formData=new FormData()
+        formData.append('accesstoken',accesstoken)
+        const response= await axios.post(`/auth/reset-password`,formData,{
+            headers:{"Content-Type":"multipart/form-data"}
+          })
+          let data = response.data;
+          return data.result;
+      } catch (error) {
+          throw error
+      }
+}
+
+//Yêu cầu đặt lại mật khẩu
+export async function RequestResetPassword(email){
+    try {
+        const formData=new FormData()
+        formData.append('email',email)
+        const response= await axios.post(`/auth/forgot-password`,formData,{
+            headers:{"Content-Type":"multipart/form-data"}
+          })
+          let data = response.data;
           return data.result;
       } catch (error) {
           throw error
@@ -170,8 +213,18 @@ export async function SignUp(payload){
 }
 //đăng nhập
 export async function SignIn(payload){
-    try {
-        const response= await axios.post(`/auth/sign-in`,payload)
+    
+        let ipaddress;
+        const res=await fetch("https://api.ipify.org?format=json");
+        ipaddress=await res.json()
+
+        try {
+        const response= await axios.post(`/auth/sign-in`,payload,
+        {
+            headers: {
+                "X-Forwarded-For": ipaddress.ip??"127.0.0.1"
+              }
+        })
           let data = new ResponseAPI();
           data = response.data;
           return data.result;
@@ -384,15 +437,32 @@ export async function CheckOut(Payload){
 }
 //Tạo đơn hàng mới
 export async function CreateOrder(Payload){
+    let ipaddress;
+    fetch("https://api.ipify.org?format=json").then(res=>res.json().then(vl=>ipaddress=vl))
+
     try {
-        const response= await axios.post(`/orders/create-order`,Payload)
-          let data = new ResponseAPI();
-          data = response.data;
-          return data.result;
+        const response= await axios.post(`/orders/create-order`,Payload,{
+            headers: {
+                "X-Forwarded-For": ipaddress??"127.0.0.1"
+              }
+        })
+          return response 
       } catch (error) {
           throw error
       }
 }
+
+//huỷ đơn hàng
+export async function CancelMyOrder(orderId){
+
+    try {
+        const response= await axios.patch(`/orders/cancel-order?orderid=${orderId}`,)
+          return response.data
+      } catch (error) {
+          throw error
+      }
+}
+
 //Lấy danh sách đơn hàng
 export async function GetMyOrders(type=null,page=1,size=10){
     try {
@@ -442,6 +512,34 @@ export async function ChangePassword(Payload){
         const response= await axios.post(`/users/change-password`,Payload)
           let data = response.data;
           data.result;
+      } catch (error) {
+          throw error
+      }
+}
+
+//kiểm tra giao dịch
+export async function CheckVNPayPayment(Payload){
+    try {
+        const response= await axios.post(`/orders/vnpay-transaction`,Payload)
+          let data = response.data;
+         return data.message;
+      } catch (error) {
+          throw error
+      }
+}
+
+//Thực hiện thanh toán lại lấy link thanh toán VNPAY
+export async function ReGetVNPayLink(orderId){
+    try {
+        let ipaddress;
+        fetch("https://api.ipify.org?format=json").then(res=>res.json().then(vl=>ipaddress=vl))
+        const response= await axios.get(`/orders/vnpay-getlink?orderId=${orderId}`,{
+            headers: {
+                "X-Forwarded-For": ipaddress??"127.0.0.1"
+              }
+        })
+          let data = response.data;
+         return data.result;
       } catch (error) {
           throw error
       }

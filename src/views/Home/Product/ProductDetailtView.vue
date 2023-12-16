@@ -93,13 +93,13 @@
           </div>
           <!-- button -->
           <div class="d-flex gap-2 px-3">
-            <button
+            <router-link :to="{name:'checkout'}" @click="onBuynow"
               class="mt-3 w-100 bg-red text-center text-white btn align-self-center"
             >
               MUA NGAY
               <p class="d-none d-lg-block m-0">Giao hàng tận nơi nhanh chóng</p>
-            </button>
-            <button
+            </router-link >
+            <button @click="OnAddtoCart"
               class="mt-3 w-100 bg-blue text-center text-white btn align-self-center"
             >
               THÊM VÀO GIỎ HÀNG
@@ -139,10 +139,11 @@
 import Comment from "../../../components/home/Products/Comments.vue"
 import Crumb from "../../../components/home/Products/Crumb.vue"
 import {onBeforeRouteUpdate, useRoute, useRouter} from "vue-router"
-import {GetProductbyId,InsertView,GettopProductSold} from "../../../modules/home/HomeAPI.js"
+import {GetProductbyId,InsertView,GettopProductSold,AddtoCart} from "../../../modules/home/HomeAPI.js"
 import {ref, computed, onMounted} from "vue"
 import product from "../../../components/home/Product.vue"
 import Sanphamtuongtu from "../../../components/sanphamtuongtu.vue"
+import { useStore } from 'vuex'
 export default {
   components: {
     Comment,
@@ -153,6 +154,7 @@ export default {
   setup() {
     
     const route = useRoute()
+    const store=useStore()
     const Ishowimage=ref(false)
     const productId = ref("")
     const product = ref({images: []})
@@ -175,6 +177,46 @@ export default {
       product.value = await GetProductbyId(  productId.value)
       document.title=product.value.productName
     }
+  const OnAddtoCart=async()=> {
+        try{
+          await AddtoCart({
+            productId:productId.value,
+            quantity:1
+          })
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: "Sản phẩm đã được thêm vào giỏ hàng của bạn",
+          })
+
+          store.dispatch("UpdateTotalCart")
+        }
+        catch(err){
+          if(err.response){
+            if(err.response.status==403){
+              Swal.fire({
+                icon: "warning",
+                title: "Lỗi",
+                text: "Vui lòng đăng nhập để thực hiện chức năng này",
+          })}
+
+          }
+          else
+          Swal.fire({
+            icon: "warning",
+            title: "Lỗi",
+            text: err.message,
+          })
+        }
+        
+      }
+  const onBuynow=async()=>{
+    store.dispatch("SetItemCheckout",[{
+      product:product.value,
+      quantity:1
+    }])
+
+  }
     onMounted(async () => {
       window.scrollTo(0,0)
       productId.value = route.params.productId
@@ -214,7 +256,9 @@ export default {
       Ishowimage,
       onShowImage,
       isShow,
-      listProduct
+      listProduct,
+      OnAddtoCart,
+      onBuynow
       
     }
   },

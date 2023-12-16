@@ -119,7 +119,8 @@
                     </strong>
                     <div class="row">
                       <label class="col text-start">Trạng thái đơn hàng</label>
-                      <select
+                      <select 
+                        :disabled="oldStatus==0"
                         v-model="order.status.code"
                         class="form-select col"
                       >
@@ -130,6 +131,9 @@
                         <option :value="3">Đã giao hàng thành công (hoàn thành)</option>
                         <option :value="0">Đơn hàng đã huỷ</option>
                       </select>
+                    </div>
+                    <div class="row" v-if="order.status.code==0">
+                      <label class="text-muted text-red">Không được phép đổi trạng thái đơn hàng từ đã huỷ thành các trạng thái khác</label>
                     </div>
                   </div>
                   <!-- Thông tin người nhận -->
@@ -192,6 +196,7 @@
 <script>
 import {reactive, ref, computed, onMounted, watch} from "vue"
 import {Edit,GetFulladdress} from "../../../modules/admin/Order_Manager.js"
+import Swal from 'sweetalert2'
 
 export default {
   props: {
@@ -205,9 +210,11 @@ export default {
     const changertext=ref('')
     const result = ref()
     const full_address=ref()
+    const oldStatus=ref()
     onMounted(async()=>{
       if(order.value.accountId!=null)
         full_address.value=await GetFulladdress(order.value.shippingAddress.wardId)
+        oldStatus.value=props.Order.status.code
     })
     const Paymentmethod = computed(() => {
       if (order.value.paymentMethod != null)
@@ -239,8 +246,8 @@ export default {
         changertext.value="đã cập nhật trạng thái thanh toán"
         setTimeout(()=>changertext.value='',3000)
       }
-       
     })
+    
     const onSubmit = async () => {
       result.value = await Edit(
         order.value.id,
@@ -271,7 +278,9 @@ export default {
       closeThis,
       ToVND,
       full_address,
-      changertext
+      changertext,
+      oldStatus
+      
     }
   },
 }

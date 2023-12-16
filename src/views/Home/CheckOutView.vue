@@ -94,7 +94,7 @@
                 :key="item.id"
                 @click="selected_method = item"
                 :class="{
-                  'card  col-12 col-md-5 col-xl-3 text-center': true,
+                  'card col-12 col-md-5 col-xl-3 text-center': true,
                   selected: selected_method == item,
                 }"
               >
@@ -189,22 +189,32 @@ export default {
     }
     const onSubmit= async()=>{
       try{
-        await CreateOrder({ 
+       const result= await CreateOrder({ 
               paymentMethod:selected_method.value,
               items:Cart_show.value,
               shippingAddress:select_address.value.picked_address,
               voucher:voucherCode.value.trim()!=''?{code:voucherCode.value}:null
         })
-        Swal.fire("Đặt hàng thành công","","success")
-        //Xoá giỏ hàng các sản phẩm đã đặt
+         //Xoá giỏ hàng các sản phẩm đã đặt
         Cart_show.value.forEach(async item=>{
          await DeleteOneItem({
           productId:item.product.id,
           quantity:item.quantity
         })
         })
+        //cập nhật giỏ hàng
+        await store.dispatch("UpdateTotalCart")
+       if(result.status==200){//thanh toán online
+          Swal.fire("Đặt hàng thành công, đang chuyển sang trang thanh toán","","success")
+          return setTimeout(()=>window.location.href =result.data.result,1000) //chuyển sang trang thanh toán
+       }
+       else{
+         Swal.fire("Đặt hàng thành công","","success")
+       }
+       
+       
         //về trang quản lý đơn hàng
-        store.dispatch("UpdateTotalCart")
+       
         router.push('/tai-khoan/don-hang')
       }
       catch(error){

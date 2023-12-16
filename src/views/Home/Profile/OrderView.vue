@@ -70,7 +70,18 @@
                                             </div>
                                             <div class="col-12 d-flex mt-1">
                                                 <div class="col text-end text-muted align-self-end">Phương thức thanh toán</div>
-                                                <div class="col text-end text-dark">Thanh toán khi nhận hàng</div>
+                                                <div class="col text-end text-dark">{{ order.paymentMethod==null?"Thanh toán khi nhận hàng":order.paymentMethod.name }}</div>
+                                            </div>
+                                            <div v-if="order.paymentMethod!=null" class="col-12 d-flex mt-1 ">
+                                                    <div class="col text-end text-muted align-self-end">Tình trạng thanh toán</div>
+                                                    <div class="col text-end text-dark">{{order.isPaid?"Đã thanh toán":"Chưa thanh toán" }}</div>
+                                            </div>
+                                            <div v-if="order.paymentMethod!=null&&!order.isPaid&&order.status.code==1" class="col-12 d-flex mt-1 justify-content-end">
+                                                <div class="col text-end text-dark">
+                                                    <button @click="onPayment(order.id)" class="btn text-white bg-orange fw-bolder">
+                                                        Thanh toán ngay
+                                                    </button>
+                                                </div>
                                             </div>
                                     </div>
                                 </div>
@@ -81,6 +92,13 @@
                                    <span >
                                     Địa chỉ: {{ order.shippingAddress.address }} - {{  myaddress}}
                                    </span>
+                                </div>
+                                <div v-if="!order.isPaid&&order.status.code==1" class="col-12 d-flex mt-1 justify-content-end">
+                                    <div class="col text-end text-dark">
+                                        <button @click="onCancel(order.id)" class="btn text-white bg-red fw-bolder">
+                                            Xác nhận huỷ
+                                        </button>
+                                    </div>
                                 </div>
                                 
                             </div>
@@ -113,7 +131,7 @@
 <script>
 import 'vue3-carousel/dist/carousel.css'
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue'
-import { GetMyOrders,GetFulladdress} from '../../../modules/home/HomeAPI.js'
+import { GetMyOrders,GetFulladdress,ReGetVNPayLink,CancelMyOrder} from '../../../modules/home/HomeAPI.js'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { Carousel,Slide } from 'vue3-carousel'
@@ -153,12 +171,32 @@ components: {
         const ToVND = (e) => {
       return e.toLocaleString("it-IT", {style: "currency", currency: "VND"})
     }
-        
-
+    //Thanh toán lại 
+        const onPayment= async(orderId)=>{
+           try{
+            const linkpay=await ReGetVNPayLink(orderId)
+            console.log(linkpay)
+            Swal.fire("Đang chuyển hướng đến trang thanh toán")
+            return setTimeout(()=>window.location.href =linkpay,1000) 
+           }
+           catch{
+            Swal.fire("Something went wrong","","error")
+           }
+        }
         onBeforeMount(async() => {
            await Getdata()
         })
-        
+        //huỷ đơn hàng chưa xác nhận
+        const onCancel=async (orderId)=>{
+            try{
+                await CancelMyOrder(orderId)
+                Swal.fire("Đã huỷ đơn hàng")
+                await Getdata()
+            }
+            catch{
+                Swal.fire("Something went wrong","","error")
+            }
+        }
         const Getdata = async () => {
             try{
                 loading.value = true;
@@ -198,7 +236,9 @@ components: {
         snapAlign: 'center',
       }})
 
-    return{router,breakpoints,myOptions,mychosenOption,myOrder,ToVND,pickedOrder,changepage,totalpage,page_index,iserror,loading,myaddress}
+    return{router,breakpoints,myOptions,mychosenOption,myOrder,ToVND,pickedOrder,changepage,totalpage,page_index,iserror,loading,myaddress,
+        onPayment,onCancel
+    }
 }
 }
 </script>
