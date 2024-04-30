@@ -11,6 +11,7 @@ axios.defaults.baseURL = 'https://localhost:7251/api';
 // axios.defaults.baseURL = 'https://localhost:5001/api';
 //set header 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*";
+axios.defaults.headers.common['Access-Control-Allow-Methods'] = "GET, PUT, POST, DELETE, OPTIONS, post, get";
 const app = createApp(App)
 app.use(router);
 
